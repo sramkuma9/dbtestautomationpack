@@ -7,19 +7,19 @@ formatter.feature({
   "keyword": "Feature"
 });
 formatter.before({
-  "duration": 29457287,
+  "duration": 9242807,
   "status": "passed"
 });
 formatter.before({
-  "duration": 177888,
+  "duration": 16755957,
   "status": "passed"
 });
 formatter.before({
-  "duration": 292217,
+  "duration": 133157,
   "status": "passed"
 });
 formatter.before({
-  "duration": 156539,
+  "duration": 254295,
   "status": "passed"
 });
 formatter.scenario({
@@ -115,88 +115,51 @@ formatter.step({
       "line": 9
     },
     {
+      "comments": [
+        {
+          "line": 10,
+          "value": "#| Selenium  |  | Test     |  | Airtel  |  | BNI             |  | No Date Criteria |  | 1              |  | Jan              | 2017            |  | 31           |  | Dec            |  | 2019          |  | 21       |  | Oct        |  | 2019      |  | HQ Admin |  | false         |  | false             |  | false                      |  | true           |  | 20             |"
+        }
+      ],
       "cells": [
         "Selenium",
         "",
-        "Test",
         "",
-        "Airtel",
         "",
-        "BNI",
         "",
-        "No Date Criteria",
         "",
-        "1",
         "",
-        "Jan",
-        "2017",
         "",
-        "31",
         "",
-        "Dec",
         "",
-        "2019",
         "",
-        "21",
         "",
-        "Oct",
         "",
-        "2019",
         "",
-        "HQ Admin",
         "",
-        "false",
         "",
-        "false",
         "",
-        "false",
         "",
-        "true",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
         "",
         "20"
-      ],
-      "line": 10
-    },
-    {
-      "cells": [
-        "Selenium",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        ""
       ],
       "line": 11
     }
@@ -212,37 +175,37 @@ formatter.match({
   "location": "PowerSearchFindAPerson.I_m_in_the_BNI_home_page_and_click_Tools_Power_search(DataTable)"
 });
 formatter.result({
-  "duration": 402237106,
+  "duration": 380564957,
   "status": "passed"
 });
 formatter.match({
   "location": "PowerSearchFindAPerson.I_click_Find_a_Person_and_enter_the_below_details_and_click_search_button(DataTable)"
 });
 formatter.result({
-  "duration": 250879795649,
+  "duration": 124518672405,
   "status": "passed"
 });
 formatter.match({
   "location": "PowerSearchFindAPerson.Reports_for_the_specified_person_displayed_successfully_verify_with_DB()"
 });
 formatter.result({
-  "duration": 219812,
+  "duration": 290099,
   "status": "passed"
 });
 formatter.after({
-  "duration": 63359,
+  "duration": 51259,
   "status": "passed"
 });
 formatter.after({
-  "duration": 36897,
+  "duration": 42423,
   "status": "passed"
 });
 formatter.after({
-  "duration": 32805,
+  "duration": 40631,
   "status": "passed"
 });
 formatter.after({
-  "duration": 68842,
+  "duration": 34260,
   "status": "passed"
 });
 });

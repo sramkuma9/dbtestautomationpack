@@ -7,6 +7,7 @@ import bni.regression.libraries.ui.SignOut;
 import bni.regression.pageFactory.AddAVisitor;
 import bni.regression.pageFactory.BNIConnect;
 import bni.regression.pageFactory.FindAPerson;
+import bni.regression.pageFactory.SearchResults;
 import cucumber.api.DataTable;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -21,6 +22,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -37,18 +39,15 @@ public class PowerSearchFindAPerson {
     private Login login = new Login();
     private SignOut signOut = new SignOut();
     private BNIConnect bniConnect;
-    private AddAVisitor addAVisitor;
     private SelectCountryRegionChapter selectCountryRegionChapter = new SelectCountryRegionChapter();
-    public static String fixedDateTime;
-    public static String visitorDateTime;
-    public String name;
-    public String[] addAVisitorDetails = new String[8];
     public String firstName;
     public String lastName;
     public List<List<String>> loginSubList;
-    private CaptureScreenShot captureScreenShot;
     ReadWriteExcel readWriteExcel = new ReadWriteExcel();
     private FindAPerson findAPerson;
+    private SearchResults searchResults;
+    public static String fixedDateTime;
+    private CaptureScreenShot captureScreenShot;
 
     @Before
     public void setup() throws Exception {
@@ -148,7 +147,15 @@ public class PowerSearchFindAPerson {
             findAPerson.enterResultsPerPage(data.get("resultsPerPage"));
             TimeUnit.SECONDS.sleep(1);
             findAPerson.clickSearchButton();
-            TimeUnit.SECONDS.sleep(2);
+            TimeUnit.SECONDS.sleep(10);
+            ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+            driver.switchTo().window(tabs.get(1));
+            searchResults = new SearchResults(driver);
+            searchResults.clickExportIndiaButton();
+            String searchResultsExportxls = searchResults.getDateTime();
+            System.out.println(searchResultsExportxls);
+            TimeUnit.SECONDS.sleep(10);
+            driver.switchTo().window(tabs.get(0));
             // add database verification code
             signOut.signOutBni();
         }

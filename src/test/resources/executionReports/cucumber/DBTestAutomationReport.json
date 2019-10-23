@@ -6,7 +6,16 @@
         "before": [
           {
             "result": {
-              "duration": 29457287,
+              "duration": 9242807,
+              "status": "passed"
+            },
+            "match": {
+              "location": "ConvertVisitorToMember.setup()"
+            }
+          },
+          {
+            "result": {
+              "duration": 16755957,
               "status": "passed"
             },
             "match": {
@@ -15,7 +24,7 @@
           },
           {
             "result": {
-              "duration": 177888,
+              "duration": 133157,
               "status": "passed"
             },
             "match": {
@@ -24,20 +33,11 @@
           },
           {
             "result": {
-              "duration": 292217,
+              "duration": 254295,
               "status": "passed"
             },
             "match": {
               "location": "AddAndSearchBrandNewVisitor.setup()"
-            }
-          },
-          {
-            "result": {
-              "duration": 156539,
-              "status": "passed"
-            },
-            "match": {
-              "location": "ConvertVisitorToMember.setup()"
             }
           }
         ],
@@ -48,7 +48,16 @@
         "after": [
           {
             "result": {
-              "duration": 63359,
+              "duration": 51259,
+              "status": "passed"
+            },
+            "match": {
+              "location": "ConvertVisitorToMember.tearDown()"
+            }
+          },
+          {
+            "result": {
+              "duration": 42423,
               "status": "passed"
             },
             "match": {
@@ -57,7 +66,7 @@
           },
           {
             "result": {
-              "duration": 36897,
+              "duration": 40631,
               "status": "passed"
             },
             "match": {
@@ -66,20 +75,11 @@
           },
           {
             "result": {
-              "duration": 32805,
+              "duration": 34260,
               "status": "passed"
             },
             "match": {
               "location": "AddAndSearchBrandNewVisitor.tearDown()"
-            }
-          },
-          {
-            "result": {
-              "duration": 68842,
-              "status": "passed"
-            },
-            "match": {
-              "location": "ConvertVisitorToMember.tearDown()"
             }
           }
         ],
@@ -88,7 +88,7 @@
         "steps": [
           {
             "result": {
-              "duration": 402237106,
+              "duration": 380564957,
               "status": "passed"
             },
             "line": 4,
@@ -132,7 +132,7 @@
           },
           {
             "result": {
-              "duration": 250879795649,
+              "duration": 124518672405,
               "status": "passed"
             },
             "line": 8,
@@ -185,88 +185,51 @@
                 "line": 9
               },
               {
+                "comments": [
+                  {
+                    "line": 10,
+                    "value": "#| Selenium  |  | Test     |  | Airtel  |  | BNI             |  | No Date Criteria |  | 1              |  | Jan              | 2017            |  | 31           |  | Dec            |  | 2019          |  | 21       |  | Oct        |  | 2019      |  | HQ Admin |  | false         |  | false             |  | false                      |  | true           |  | 20             |"
+                  }
+                ],
                 "cells": [
                   "Selenium",
                   "",
-                  "Test",
                   "",
-                  "Airtel",
                   "",
-                  "BNI",
                   "",
-                  "No Date Criteria",
                   "",
-                  "1",
                   "",
-                  "Jan",
-                  "2017",
                   "",
-                  "31",
                   "",
-                  "Dec",
                   "",
-                  "2019",
                   "",
-                  "21",
                   "",
-                  "Oct",
                   "",
-                  "2019",
                   "",
-                  "HQ Admin",
                   "",
-                  "false",
                   "",
-                  "false",
                   "",
-                  "false",
                   "",
-                  "true",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
                   "",
                   "20"
-                ],
-                "line": 10
-              },
-              {
-                "cells": [
-                  "Selenium",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  ""
                 ],
                 "line": 11
               }
@@ -275,7 +238,7 @@
           },
           {
             "result": {
-              "duration": 219812,
+              "duration": 290099,
               "status": "passed"
             },
             "line": 12,
