@@ -27,6 +27,7 @@ public class TestAndDelete {
 //               System.out.println(sqlResult[i][j]);
 //            }
 //        }
+        // test
         searchAndRenameFile.searchFileAndRename("/home/ajay/Downloads","testRename",".xls");
     }
 }
