@@ -136,7 +136,6 @@ public class BNIConnect {
         int size = menusplit.length;
         Actions action = new Actions(driver);
         int counter = 0;
-        System.out.println("entering for loop");
         for (WebElement trElement : menuNavigate) {
             List<WebElement> td_collection = trElement.findElements(By.tagName("a"));
             String menuName = td_collection.get(0).getText();

@@ -48,10 +48,13 @@ public class PowerSearchFindAPerson {
     private SearchResults searchResults;
     public static String fixedDateTime;
     private CaptureScreenShot captureScreenShot;
+    SearchAndDeleteFile searchAndDeleteFile = new SearchAndDeleteFile();
+    SearchAndReturnFileName searchAndReturnFileName = new SearchAndReturnFileName();
 
     @Before
     public void setup() throws Exception {
         fixedDateTime = currentDateTime.dateTime();
+        searchAndDeleteFile.searchFileAndDelete(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"),"find-person-report",".xls");
         //readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
         //boolean setFlag = readWriteExcel.deleteCellData("src/test/resources/inputFiles/testInput.xlsx", "addVisitor", 0);
     }
@@ -152,9 +155,10 @@ public class PowerSearchFindAPerson {
             driver.switchTo().window(tabs.get(1));
             searchResults = new SearchResults(driver);
             searchResults.clickExportIndiaButton();
-            String searchResultsExportxls = searchResults.getDateTime();
-            System.out.println(searchResultsExportxls);
+            //String searchResultsExportxls = searchResults.getDateTime();
+            //System.out.println(searchResultsExportxls);
             TimeUnit.SECONDS.sleep(10);
+            String findAPersonReportName = searchAndReturnFileName.searchFile(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"),"find-person-report",".xls");
             driver.switchTo().window(tabs.get(0));
             // add database verification code
             signOut.signOutBni();

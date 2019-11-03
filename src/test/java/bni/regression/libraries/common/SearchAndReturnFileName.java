@@ -6,23 +6,23 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class SearchAndDeleteFile{
+public class SearchAndReturnFileName {
+    private CurrentDateTime currentDateTime = new CurrentDateTime();
+    private String newName;
 
-    public void searchFileAndDelete(String folderName, String startingString, String endingString){
+    public String searchFile(String folderName, String startingString, String endingString) throws IOException {
+        String fileName = null;
+        String returnFileName = null;
         File[] listFiles = new File(folderName).listFiles();
         for (int i = 0; i < listFiles.length; i++) {
             if (listFiles[i].isFile()) {
-                String fileName = listFiles[i].getName();
+                fileName = listFiles[i].getName();
                 if (fileName.startsWith(startingString)
                         && fileName.endsWith(endingString)) {
-                    Path filePath = Paths.get(folderName + fileName);
-                    try {
-                        Files.delete(filePath);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    returnFileName = fileName;
                 }
             }
         }
+        return returnFileName;
     }
 }
