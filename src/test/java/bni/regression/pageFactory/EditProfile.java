@@ -6,7 +6,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -23,6 +26,18 @@ public class EditProfile {
 
     @FindBy(css =  "#mainProfileUpdate")
     WebElement updateButton;
+
+    @FindBy(css =  "#userprofileicon")
+    WebElement userProfileButton;
+
+    @FindBy(css =  "#mainprofileicon")
+    WebElement mainProfileButton;
+
+    @FindBy(css =  "#memberLanguage")
+    WebElement languageListBox;
+
+    @FindBy(css =  "#editMemberUserProfileSubmitbutton")
+    WebElement languageUpdateButton;
 
     public EditProfile(WebDriver driver) {
         EditProfile.driver = driver;
@@ -43,5 +58,26 @@ public class EditProfile {
 
     public void clickUpdateButton(){
         updateButton.click();
+    }
+
+    public void clickLanguageUpdateButton(){
+        languageUpdateButton.click();
+    }
+
+    public void clickUserProfile(){
+        userProfileButton.click();
+    }
+
+    public void clickMainProfile(){
+        mainProfileButton.click();
+    }
+
+    public void selectLanguage(String language) {
+        Select languageSelect = new Select(languageListBox);
+        //List<WebElement>  text = languageSelect.getOptions();
+        //for (WebElement subElement : text) {
+          //  System.out.println(subElement.getText());
+        //}
+        languageSelect.selectByValue("language." + language);
     }
 }

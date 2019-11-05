@@ -1,5 +1,6 @@
 package bni.regression.pageFactory;
 
+import bni.regression.libraries.common.CaptureScreenShot;
 import bni.regression.libraries.common.ReadWritePropertyFile;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,6 +15,7 @@ public class ManageMembers {
     public static WebDriver driver;
     public WebDriverWait wait;
     private ReadWritePropertyFile readWritePropertyFile = new ReadWritePropertyFile();
+    private CaptureScreenShot captureScreenShot;
 
     @FindBy(css =  "#firstName")
     WebElement firstNameTextBox;
@@ -54,8 +56,10 @@ public class ManageMembers {
         editMemberButton.click();
     }
 
-    public void checkCompanyName(String expectedCompanyName){
+    public void checkCompanyName(String expectedCompanyName) throws Exception {
         String actualCompanyName = checkCompany.getText();
+        captureScreenShot = new CaptureScreenShot(driver);
+        captureScreenShot.takeSnapShot(driver, "viewEditMemberDetails");
         assertEquals("companyName is not correct", expectedCompanyName, actualCompanyName);
     }
 }

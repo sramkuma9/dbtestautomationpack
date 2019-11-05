@@ -160,6 +160,7 @@ public class BNIConnect {
                                 break;
                             }
                         }
+                        break;
                     case 3:
                         TimeUnit.SECONDS.sleep(3);
                         action.moveToElement(td_collection.get(0));
