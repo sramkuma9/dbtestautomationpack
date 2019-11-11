@@ -29,6 +29,9 @@ public class ManageMembers {
     @FindBy(css =  "#datalist > tbody > tr > td:nth-child(3)")
     WebElement checkCompany;
 
+    @FindBy(css =  "#datalist > tbody > tr > td:nth-child(5)")
+    WebElement checkStatus;
+
     @FindBy(css =  "#datalist > tbody > tr > td:nth-child(7) > a > img")
     WebElement editMemberButton;
 
@@ -56,10 +59,12 @@ public class ManageMembers {
         editMemberButton.click();
     }
 
-    public void checkCompanyName(String expectedCompanyName) throws Exception {
+    public void checkCompanyNameAndStatus(String expectedCompanyName, String expectedStatus) throws Exception {
         String actualCompanyName = checkCompany.getText();
+        String actualStatus = checkStatus.getText();
         captureScreenShot = new CaptureScreenShot(driver);
         captureScreenShot.takeSnapShot(driver, "viewEditMemberDetails");
         assertEquals("companyName is not correct", expectedCompanyName, actualCompanyName);
+        assertEquals("Status is not correct", expectedStatus, actualStatus);
     }
 }

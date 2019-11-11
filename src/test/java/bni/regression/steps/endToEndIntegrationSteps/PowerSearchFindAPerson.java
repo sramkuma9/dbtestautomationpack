@@ -150,7 +150,7 @@ public class PowerSearchFindAPerson {
             findAPerson.enterResultsPerPage(data.get("resultsPerPage"));
             TimeUnit.SECONDS.sleep(1);
             findAPerson.clickSearchButton();
-            TimeUnit.SECONDS.sleep(10);
+            TimeUnit.SECONDS.sleep(15);
             ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
             driver.switchTo().window(tabs.get(1));
             searchResults = new SearchResults(driver);

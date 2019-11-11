@@ -81,7 +81,6 @@ public class ConvertVisitorToMember {
             int colNumber = Integer.parseInt(language[1]);
             readWriteExcel.setExcelFile("src/test/resources/inputFiles/translation.xlsx");
             String transMenu = readWriteExcel.getCellData("translation",colNumber,2);
-            System.out.println(transMenu);
             bniConnect.selectItemFromSubListMenu(transMenu);
             TimeUnit.SECONDS.sleep(10);
             viewEditVisitorsList = new ViewEditVisitorsList(driver);

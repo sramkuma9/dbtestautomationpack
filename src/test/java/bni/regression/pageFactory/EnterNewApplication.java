@@ -30,6 +30,9 @@ public class EnterNewApplication {
     @FindBy(css = "#datalist1 > tbody > tr")
     List<WebElement> searchResults;
 
+    @FindBy(css = "#reconcile_member_btn")
+    WebElement reconcileApplicationButton;
+
     public EnterNewApplication(WebDriver driver) {
         EnterNewApplication.driver = driver;
         AjaxElementLocatorFactory factory = new AjaxElementLocatorFactory(driver, 100);
@@ -46,6 +49,11 @@ public class EnterNewApplication {
     public void clickAddButton() throws InterruptedException {
         addButton.click();
         TimeUnit.SECONDS.sleep(2);
+    }
+
+    public void clickReconcileApplicationButton() throws InterruptedException {
+        reconcileApplicationButton.click();
+        TimeUnit.SECONDS.sleep(4);
     }
 
     public void enterEmail(String emailId) throws InterruptedException {

@@ -135,13 +135,13 @@ public class ViewEditMemberDetails {
             TimeUnit.SECONDS.sleep(2);
             manageMembers.clickSearchMembers();
             TimeUnit.SECONDS.sleep(5);
-            manageMembers.checkCompanyName(data.get("companyName"));
+            manageMembers.checkCompanyNameAndStatus(data.get("companyName"),data.get("status"));
             signOut.signOutBni();
         }
     }
 
-    @Then("Logout and login again to check edited details are updated")
-    public void Logout_and_login_again_to_check_edited_details_are_updated() throws Exception {
+    @Then("Logout and login again to check edited details and status are updated")
+    public void Logout_and_login_again_to_check_edited_details_and_status__are_updated() throws Exception {
         System.out.println("view edit member script executed.");
     }
 }

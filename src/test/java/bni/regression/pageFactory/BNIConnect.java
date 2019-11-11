@@ -179,6 +179,7 @@ public class BNIConnect {
                         this.selectItemFromMainListMenu(menusplit[1]);
                         TimeUnit.SECONDS.sleep(5);
                         this.selectItemFromSubListMenu(menusplit[2]);
+                        break;
                 }
             }
             if (counter == 1) {
