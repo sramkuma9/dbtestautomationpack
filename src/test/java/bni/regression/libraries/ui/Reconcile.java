@@ -14,18 +14,20 @@ public class Reconcile {
     private CaptureScreenShot captureScreenShot = new CaptureScreenShot(LaunchBrowser.driver);
     private ReconcileApplications reconcileApplications;
 
-    public void reconcileApp(String firstName, String LastName, WebDriver driver) throws Exception{
+    public void reconcileApp(String firstName, String lastName) throws Exception{
         LaunchBrowser.driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        enterNewApplication = new EnterNewApplication(driver);
+        enterNewApplication = new EnterNewApplication(LaunchBrowser.driver);
         enterNewApplication.clickReconcileApplicationButton();
         TimeUnit.SECONDS.sleep(8);
-        reconcileApplications = new ReconcileApplications(driver);
+        reconcileApplications = new ReconcileApplications(LaunchBrowser.driver);
+        reconcileApplications.enterSearchCriteria(firstName, lastName);
+        TimeUnit.SECONDS.sleep(5);
         reconcileApplications.clickPaymentReceivedCheckBox();
-        Alert alert = driver.switchTo().alert();
+        Alert alert = LaunchBrowser.driver.switchTo().alert();
         alert.accept();
         TimeUnit.SECONDS.sleep(10);
         reconcileApplications.clickRecncileButton();
-        alert = driver.switchTo().alert();
+        alert = LaunchBrowser.driver.switchTo().alert();
         alert.accept();
         TimeUnit.SECONDS.sleep(10);
     }

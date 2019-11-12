@@ -70,6 +70,7 @@ public class AddAndSearchBrandNewVisitor {
     @When("I enter a valid new email id and click search and create new button and I enter the below details and click the save button and search the added visitor")
     public void When_I_enter_a_valid_existing_email_id_and_click_search_and_Add_button_and_I_enter_the_below_details_and_click_the_save_button_and_search_the_added_visitor(DataTable addPVVisitor) throws Exception {
         Integer i = 2;
+        Integer j = 1;
         for (Map<String, String> data : addPVVisitor.asMaps(String.class, String.class)) {
             String[] splitCredentials = loginSubList.get(i - 2).toString().replace("[", "").replace("]", "").split(",");
             driver = launchBrowser.getDriver();
@@ -94,16 +95,18 @@ public class AddAndSearchBrandNewVisitor {
             TimeUnit.SECONDS.sleep(14);
             String dateTimeStamp = currentDateTime.dateTime();
             visitorDateTime = (dateTimeStamp.replaceAll("/", "").replaceAll(":", "").replaceAll(" ", ""));
-            addAVisitor.enterEmail(data.get("firstName") + data.get("lastName") + visitorDateTime + "@gmail.com");
+            String lastName = data.get("lastName") + visitorDateTime;
+            addAVisitor.enterEmail(data.get("firstName") + lastName + "@gmail.com");
             TimeUnit.SECONDS.sleep(2);
             addAVisitor.clickSearchButton();
             readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
-            boolean setFlag = readWriteExcel.setCellData("src/test/resources/inputFiles/testInput.xlsx", "addVisitor", 0, i, data.get("firstName") + data.get("lastName") + visitorDateTime + "@gmail.com");
+            boolean setEmailFlag = readWriteExcel.setCellData("src/test/resources/inputFiles/testInput.xlsx", "addVisitor", 0, i, data.get("firstName") + data.get("lastName") + visitorDateTime + "@gmail.com");
+            boolean setLastNameFlag = readWriteExcel.setCellData("src/test/resources/inputFiles/testInput.xlsx", "addVisitor", 1, i-j, lastName);
             TimeUnit.SECONDS.sleep(2);
             addAVisitor.clickSearchByNameButton();
             TimeUnit.SECONDS.sleep(2);
             addAVisitor.enterFirstName(data.get("firstName"));
-            addAVisitor.enterLastName(data.get("lastName"));
+            addAVisitor.enterLastName(lastName);
             TimeUnit.SECONDS.sleep(1);
             WebDriverWait wait = new WebDriverWait(driver, 5);
             wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.name("submit"))));
@@ -130,7 +133,7 @@ public class AddAndSearchBrandNewVisitor {
             TimeUnit.SECONDS.sleep(2);
             addAVisitor.enterVisitorFirstName(data.get("firstName"));
             TimeUnit.SECONDS.sleep(1);
-            addAVisitor.enterVisitorLastName(data.get("lastName"));
+            addAVisitor.enterVisitorLastName(lastName);
             TimeUnit.SECONDS.sleep(2);
             addAVisitor.enterCompanyName(data.get("companyName"));
             TimeUnit.SECONDS.sleep(2);
@@ -164,7 +167,7 @@ public class AddAndSearchBrandNewVisitor {
             captureScreenShot.takeSnapShot(driver, "searchAndAddBrandNewVisitor");
             assertEquals("Visit date is not correct", expectedDate, addAVisitorDetails[0]);
             assertEquals("First Name is not correct", data.get("firstName"), addAVisitorDetails[1]);
-            assertEquals("Last Name is not correct", data.get("lastName"), addAVisitorDetails[2]);
+            assertEquals("Last Name is not correct", lastName, addAVisitorDetails[2]);
             assertEquals("Region is not correct", data.get("region"), addAVisitorDetails[3]);
             assertEquals("Chapter is not correct", data.get("chapter"), addAVisitorDetails[4]);
             assertEquals("Company Name is not correct", data.get("companyName"), addAVisitorDetails[5]);
@@ -174,6 +177,7 @@ public class AddAndSearchBrandNewVisitor {
             Alert alert = driver.switchTo().alert();
             alert.accept();
             i++;
+            j++;
             signOut.signOutBni();
         }
     }

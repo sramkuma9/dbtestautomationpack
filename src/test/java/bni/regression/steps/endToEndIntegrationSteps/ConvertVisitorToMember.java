@@ -2,6 +2,7 @@ package bni.regression.steps.endToEndIntegrationSteps;
 
 import bni.regression.libraries.common.*;
 import bni.regression.libraries.ui.Login;
+import bni.regression.libraries.ui.Reconcile;
 import bni.regression.libraries.ui.SelectCountryRegionChapter;
 import bni.regression.libraries.ui.SignOut;
 import bni.regression.pageFactory.*;
@@ -37,6 +38,7 @@ public class ConvertVisitorToMember {
     public  String [] convertToMemberDetails = new String [8];
     private ReadWritePropertyFile readWritePropertyFile = new ReadWritePropertyFile();
     private SelectCountryRegionChapter selectCountryRegionChapter = new SelectCountryRegionChapter();
+    private Reconcile reconcile = new Reconcile();
 
     @Before
     public void setup() throws Exception {
@@ -106,6 +108,7 @@ public class ConvertVisitorToMember {
             TimeUnit.SECONDS.sleep(2);
             readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
             String visitorEmailId = readWriteExcel.getCellData("addVisitor",0,i);
+            String lastName = readWriteExcel.getCellData("addVisitor",1,i);
             enterNewApplication = new EnterNewApplication(driver);
             enterNewApplication.enterEmail(visitorEmailId);
             TimeUnit.SECONDS.sleep(2);
@@ -132,7 +135,7 @@ public class ConvertVisitorToMember {
             TimeUnit.SECONDS.sleep(2);
             add.enterFirstName(data.get("firstName"));
             TimeUnit.SECONDS.sleep(2);
-            add.enterLastName(data.get("lastName"));
+            add.enterLastName(lastName);
             TimeUnit.SECONDS.sleep(2);
             add.enterAddressLine1(data.get("addressLine1"));
             TimeUnit.SECONDS.sleep(2);
@@ -160,12 +163,13 @@ public class ConvertVisitorToMember {
             captureScreenShot.takeSnapShot(driver, "convertVisitorToMember");
             assertEquals("Visit date is not correct", expectedDate, convertToMemberDetails[0] );
             assertEquals("First Name is not correct", data.get("firstName"), convertToMemberDetails[1] );
-            assertEquals("Last Name is not correct", data.get("lastName"), convertToMemberDetails[2] );
+            assertEquals("Last Name is not correct", lastName, convertToMemberDetails[2] );
             assertEquals("Region is not correct", data.get("region"), convertToMemberDetails[3] );
             assertEquals("Chapter is not correct", data.get("chapter"), convertToMemberDetails[4] );
             assertEquals("Company Name is not correct", data.get("companyName"), convertToMemberDetails[5] );
             i++;
             j++;
+            reconcile.reconcileApp(data.get("firstName"),lastName);
             signOut.signOutBni();
         }
     }
