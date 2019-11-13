@@ -31,6 +31,9 @@ public class OnlineRenewal {
     ReadWriteExcel readWriteExcel = new ReadWriteExcel();
     private ViewRegionBusinessRules viewRegionBusinessRules;
     private EditBusinessRules editBusinessRules;
+    private TermsOfUse termsOfUse;
+    private MemberRenewalApplication memberRenewalApplication;
+    private MemberRenewalApplicationPaymentProcessing memberRenewalApplicationPaymentProcessing;
 
     @Before
     public void setup() throws Exception {
@@ -82,12 +85,52 @@ public class OnlineRenewal {
             editBusinessRules.clickSubmitButton();
             TimeUnit.SECONDS.sleep(12);
             signOut.signOutBni();
-
+            driver = launchBrowser.getDriver();
+            launchBrowser.invokeBrowser();
+            TimeUnit.SECONDS.sleep(2);
+            login.loginToBni(data.get("userName"), data.get("password"));
+            TimeUnit.SECONDS.sleep(12);
+            termsOfUse.checkLastUpdatedDate();
+            TimeUnit.SECONDS.sleep(1);
+            termsOfUse.clickCheckBox();
+            TimeUnit.SECONDS.sleep(2);
+            termsOfUse.clickAcceptButton();
+            TimeUnit.SECONDS.sleep(12);
+            bniConnect = new BNIConnect(driver);
+            bniConnect.clickRenewNowLink();
+            TimeUnit.SECONDS.sleep(5);
+            memberRenewalApplication = new MemberRenewalApplication(driver);
+            memberRenewalApplication.clickMembershipPeriodCheckBox();
+            memberRenewalApplication.clickNetworkingOrgCheckBox();
+            memberRenewalApplication.clickInvitePeopleCheckBox();
+            memberRenewalApplication.clickReferralCheckBox();
+            memberRenewalApplication.clickConvictedCheckBox();
+            memberRenewalApplication.clickleadershipTeamCheckBox();
+            memberRenewalApplication.clickRecommendCheckBox();
+            memberRenewalApplication.clickrefferalChapterCheckBox();
+            TimeUnit.SECONDS.sleep(1);
+            memberRenewalApplication.enterDescribeBNI();
+            TimeUnit.SECONDS.sleep(1);
+            memberRenewalApplication.clickTermsAndConditionsCheckBox();
+            TimeUnit.SECONDS.sleep(1);
+            memberRenewalApplication.clickProceedToPayment();
+            TimeUnit.SECONDS.sleep(5);
+            memberRenewalApplicationPaymentProcessing = new MemberRenewalApplicationPaymentProcessing(driver);
+            memberRenewalApplicationPaymentProcessing.enterPayerName(data.get("payerName"));
+            memberRenewalApplicationPaymentProcessing.selectPayMethod();
+            TimeUnit.SECONDS.sleep(1);
+            memberRenewalApplicationPaymentProcessing.clickSubmitButton();
+            TimeUnit.SECONDS.sleep(3);
+            memberRenewalApplicationPaymentProcessing.checkConfirmationMessage();
+            TimeUnit.SECONDS.sleep(1);
+            memberRenewalApplicationPaymentProcessing.clickOkButton();
+            TimeUnit.SECONDS.sleep(8);
+            signOut.signOutBni();
         }
     }
 
-    @Then("Logout and login again to check edited details and status are updated")
-    public void Logout_and_login_again_to_check_edited_details_and_status__are_updated() throws Exception {
-        System.out.println("view edit member script executed.");
+    @Then("A confirmation message is displayed and I sign out from BNI")
+    public void A_confirmation_message_is_displayed_and_I_sign_out_from_BNI() throws Exception {
+        System.out.println("online renewal script executed.");
     }
 }

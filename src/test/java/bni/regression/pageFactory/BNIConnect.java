@@ -66,6 +66,9 @@ public class BNIConnect {
     @FindBy(css = "#convertToMemberHref")
     WebElement addButton;
 
+    @FindBy(css = "#columnlinks > a:nth-child(5)")
+    WebElement renewNowLink;
+
     public BNIConnect(WebDriver driver) {
         BNIConnect.driver = driver;
         AjaxElementLocatorFactory factory = new AjaxElementLocatorFactory(driver, 100);
@@ -243,5 +246,9 @@ public class BNIConnect {
     public void clickSignOutFooter() throws Exception {
         signOutFooter.click();
         TimeUnit.SECONDS.sleep(5);
+    }
+
+    public  void clickRenewNowLink(){
+        renewNowLink.click();
     }
 }
