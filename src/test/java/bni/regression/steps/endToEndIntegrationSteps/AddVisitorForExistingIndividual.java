@@ -2,8 +2,10 @@ package bni.regression.steps.endToEndIntegrationSteps;
 
 import bni.regression.libraries.common.*;
 import bni.regression.libraries.ui.Login;
+import bni.regression.libraries.ui.Reconcile;
 import bni.regression.libraries.ui.SelectCountryRegionChapter;
 import bni.regression.libraries.ui.SignOut;
+import bni.regression.pageFactory.Add;
 import bni.regression.pageFactory.AddAVisitor;
 import bni.regression.pageFactory.BNIConnect;
 import cucumber.api.DataTable;
@@ -13,11 +15,14 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import static bni.regression.steps.endToEndIntegrationSteps.AddAndSearchBrandNewVisitor.visitorDateTime;
 
 public class AddVisitorForExistingIndividual {
 
@@ -32,6 +37,9 @@ public class AddVisitorForExistingIndividual {
     private CaptureScreenShot captureScreenShot;
     ReadWriteExcel readWriteExcel = new ReadWriteExcel();
     private SelectCountryRegionChapter selectCountryRegionChapter = new SelectCountryRegionChapter();
+    private Add add;
+    private CurrentDateTime currentDateTime = new CurrentDateTime();
+    private Reconcile reconcile = new Reconcile();
 
     @Before
     public void setup() throws Exception {
@@ -74,47 +82,75 @@ public class AddVisitorForExistingIndividual {
             String language[] = readWritePropertyFile.loadAndReadPropertyFile("language", "properties/config.properties").split(",");
             int colNumber = Integer.parseInt(language[1]);
             readWriteExcel.setExcelFile("src/test/resources/inputFiles/translation.xlsx");
-            String transMenu = readWriteExcel.getCellData("translation",colNumber,1);
-            System.out.println(transMenu);
-            bniConnect.selectItemFromSubListMenu(transMenu);
-            addAVisitor = new AddAVisitor(driver);
+            String transMainMenu = readWriteExcel.getCellData("translation",colNumber,3);
+            String transSubMenu = readWriteExcel.getCellData("translation",colNumber,5);
+            bniConnect.selectItemFromMainListMenu(transMainMenu);
+            TimeUnit.SECONDS.sleep(2);
+            bniConnect.selectItemFromSubListMenu(transSubMenu);
+            TimeUnit.SECONDS.sleep(6);
+            bniConnect.enterEmailId(data.get("emailId"));
+            bniConnect.clickSearchButton();
+            TimeUnit.SECONDS.sleep(5);
+            bniConnect.clickAddButton();
+            try {
+                Alert alert = driver.switchTo().alert();
+                alert.dismiss();
+            }catch(Exception e) {
+                System.out.println("CofC popup is not displayed");
+            }
+            TimeUnit.SECONDS.sleep(8);
+            String dateTimeStamp = currentDateTime.dateTime();
+            visitorDateTime = (dateTimeStamp.replaceAll("/", "").replaceAll(":", "").replaceAll(" ", ""));
+            String lastName = data.get("lastName") + visitorDateTime;
+            readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
+            boolean setLastNameFlag = readWriteExcel.setCellData("src/test/resources/inputFiles/testInput.xlsx", "addVisitorForExistingIndividual", 1, i-1, lastName);
+            add = new Add(driver);
+            add.clickApplicationDateField();
+            TimeUnit.SECONDS.sleep(2);
+            add.selectVisitYear(data.get("applicationYear"));
+            TimeUnit.SECONDS.sleep(2);
+            add.selectVisitMonth(data.get("applicationMonth"));
+            TimeUnit.SECONDS.sleep(2);
+            add.selectDateFromDatePicker(data.get("applicationDay"));
+            TimeUnit.SECONDS.sleep(2);
+            add.selectRegion(data.get("region"));
+            TimeUnit.SECONDS.sleep(2);
+            add.selectChapter(data.get("chapter"));
+            TimeUnit.SECONDS.sleep(2);
+            add.selectProfession(data.get("profession"));
+            TimeUnit.SECONDS.sleep(2);
+            add.selectSpeciality(data.get("speciality"));
+            TimeUnit.SECONDS.sleep(2);
+            add.enterFirstName(data.get("firstName"));
+            TimeUnit.SECONDS.sleep(2);
+            add.enterLastName(lastName);
+            TimeUnit.SECONDS.sleep(2);
+            add.enterAddressLine1(data.get("addressLine1"));
+            TimeUnit.SECONDS.sleep(2);
+            add.selectCountry(data.get("country"));
+            TimeUnit.SECONDS.sleep(2);
+            add.enterPhone(data.get("phone"));
+            TimeUnit.SECONDS.sleep(2);
+            add.selectPaymentOption(data.get("paymentOption"));
+            TimeUnit.SECONDS.sleep(2);
+            add.selectMemberShipOption(data.get("membershipOption"));
+            TimeUnit.SECONDS.sleep(2);
+            add.clickSubmitButton();
             TimeUnit.SECONDS.sleep(15);
-            addAVisitor.enterEmail(data.get("emailId"));
+            bniConnect.navigateMenu("Operations,Region");
             TimeUnit.SECONDS.sleep(2);
-            addAVisitor.clickSearchButton();
+            selectCountryRegionChapter.selectCountryRegChap(splitCredentials[2].trim(), splitCredentials[3].trim(), splitCredentials[4].trim());
+            bniConnect = new BNIConnect(driver);
             TimeUnit.SECONDS.sleep(2);
-            addAVisitor.clickAddButton();
+            readWriteExcel.setExcelFile("src/test/resources/inputFiles/translation.xlsx");
+            String MainMenu = readWriteExcel.getCellData("translation",colNumber,3);
+            String SubMenu = readWriteExcel.getCellData("translation",colNumber,6);
+            bniConnect.selectItemFromMainListMenu(MainMenu);
             TimeUnit.SECONDS.sleep(2);
-            addAVisitor.selectChapter(data.get("chapter"));
-            TimeUnit.SECONDS.sleep(2);
-            addAVisitor.selectProfession(data.get("profession"));
-            TimeUnit.SECONDS.sleep(2);
-            addAVisitor.selectSpeciality(data.get("speciality"));
-            TimeUnit.SECONDS.sleep(2);
-            addAVisitor.selectInvitedBy(data.get("person"));
-            TimeUnit.SECONDS.sleep(2);
-            addAVisitor.clickVisitDateField();
-            TimeUnit.SECONDS.sleep(2);
-            addAVisitor.selectVisitYear(data.get("visitYear"));
-            TimeUnit.SECONDS.sleep(2);
-            addAVisitor.selectVisitMonth(data.get("visitMonth"));
-            TimeUnit.SECONDS.sleep(2);
-            addAVisitor.selectDateFromDatePicker(data.get("visitDay"));
-            TimeUnit.SECONDS.sleep(2);
-            addAVisitor.selectVisitorTitle(data.get("title"));
-            TimeUnit.SECONDS.sleep(2);
-            addAVisitor.enterVisitorFirstName(data.get("firstName"));
-            TimeUnit.SECONDS.sleep(1);
-            addAVisitor.enterVisitorLastName(data.get("lastName"));
-            TimeUnit.SECONDS.sleep(2);
-            addAVisitor.enterCompanyName(data.get("companyName"));
-            TimeUnit.SECONDS.sleep(2);
-            addAVisitor.selectVisitorCountry(data.get("country"));
-            TimeUnit.SECONDS.sleep(2);
-            addAVisitor.enterVisitorPhoneNumber(data.get("phone"));
-            TimeUnit.SECONDS.sleep(2);
-            addAVisitor.clickSaveButton();
-            TimeUnit.SECONDS.sleep(15);
+            bniConnect.selectItemFromSubListMenu(SubMenu);
+            TimeUnit.SECONDS.sleep(6);
+            System.out.println(lastName);
+            reconcile.reconcileApp(data.get("firstName"),lastName);
             i++;
             signOut.signOutBni();
         }

@@ -100,8 +100,8 @@ public class AddAndSearchBrandNewVisitor {
             TimeUnit.SECONDS.sleep(2);
             addAVisitor.clickSearchButton();
             readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
-            boolean setEmailFlag = readWriteExcel.setCellData("src/test/resources/inputFiles/testInput.xlsx", "addVisitor", 0, i, data.get("firstName") + data.get("lastName") + visitorDateTime + "@gmail.com");
-            boolean setLastNameFlag = readWriteExcel.setCellData("src/test/resources/inputFiles/testInput.xlsx", "addVisitor", 1, i-j, lastName);
+            boolean setEmailFlag = readWriteExcel.setCellData("src/test/resources/inputFiles/testInput.xlsx", "addBrandNewVisitor", 0, i, data.get("firstName") + data.get("lastName") + visitorDateTime + "@gmail.com");
+            boolean setLastNameFlag = readWriteExcel.setCellData("src/test/resources/inputFiles/testInput.xlsx", "addBrandNewVisitor", 1, i-j, lastName);
             TimeUnit.SECONDS.sleep(2);
             addAVisitor.clickSearchByNameButton();
             TimeUnit.SECONDS.sleep(2);

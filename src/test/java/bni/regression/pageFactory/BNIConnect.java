@@ -57,6 +57,15 @@ public class BNIConnect {
     @FindBy(css = "#help")
     List<WebElement> mainListMenu;
 
+    @FindBy(css = "#droppedMemberEmail")
+    WebElement emailTextBox;
+
+    @FindBy(css = "#searchDroppedMember")
+    WebElement searchButton;
+
+    @FindBy(css = "#convertToMemberHref")
+    WebElement addButton;
+
     public BNIConnect(WebDriver driver) {
         BNIConnect.driver = driver;
         AjaxElementLocatorFactory factory = new AjaxElementLocatorFactory(driver, 100);
@@ -212,6 +221,18 @@ public class BNIConnect {
                 break;
             }
         }
+    }
+
+    public void enterEmailId(String emailId){
+        emailTextBox.sendKeys(emailId);
+    }
+
+    public void clickSearchButton(){
+        searchButton.click();
+    }
+
+    public  void clickAddButton(){
+        addButton.click();
     }
 
     public void clickSignOut() throws Exception {

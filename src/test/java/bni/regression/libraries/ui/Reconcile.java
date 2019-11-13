@@ -17,7 +17,11 @@ public class Reconcile {
     public void reconcileApp(String firstName, String lastName) throws Exception{
         LaunchBrowser.driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         enterNewApplication = new EnterNewApplication(LaunchBrowser.driver);
-        enterNewApplication.clickReconcileApplicationButton();
+        try {
+            enterNewApplication.clickReconcileApplicationButton();
+        }catch(Exception e) {
+            System.out.println("Reconcile Applications button is not present");
+        }
         TimeUnit.SECONDS.sleep(8);
         reconcileApplications = new ReconcileApplications(LaunchBrowser.driver);
         reconcileApplications.enterSearchCriteria(firstName, lastName);

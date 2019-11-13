@@ -107,8 +107,8 @@ public class ConvertVisitorToMember {
             viewEditVisitorsList.clickConvertToMemberButton();
             TimeUnit.SECONDS.sleep(2);
             readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
-            String visitorEmailId = readWriteExcel.getCellData("addVisitor",0,i);
-            String lastName = readWriteExcel.getCellData("addVisitor",1,i);
+            String visitorEmailId = readWriteExcel.getCellData("addBrandNewVisitor",0,i);
+            String lastName = readWriteExcel.getCellData("addBrandNewVisitor",1,i);
             enterNewApplication = new EnterNewApplication(driver);
             enterNewApplication.enterEmail(visitorEmailId);
             TimeUnit.SECONDS.sleep(2);
