@@ -1,5 +1,7 @@
 Feature: Add a prospective visitor
 
+  # This scenario is dependent on the email id of the existing individual / visitor
+
   Scenario: Add a Prospective Visitor
     Given user logs into BNI and navigates to home page using the below data
       | userName | password  | country    | region    | chapter               |

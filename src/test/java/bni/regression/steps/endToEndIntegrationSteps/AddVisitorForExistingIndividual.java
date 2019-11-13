@@ -103,7 +103,7 @@ public class AddVisitorForExistingIndividual {
             visitorDateTime = (dateTimeStamp.replaceAll("/", "").replaceAll(":", "").replaceAll(" ", ""));
             String lastName = data.get("lastName") + visitorDateTime;
             readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
-            boolean setLastNameFlag = readWriteExcel.setCellData("src/test/resources/inputFiles/testInput.xlsx", "addVisitorForExistingIndividual", 1, i-1, lastName);
+            boolean setLastNameFlag = readWriteExcel.setCellData("src/test/resources/inputFiles/testInput.xlsx", "addVisitorForExistingIndividual", 0, i, lastName);
             add = new Add(driver);
             add.clickApplicationDateField();
             TimeUnit.SECONDS.sleep(2);
