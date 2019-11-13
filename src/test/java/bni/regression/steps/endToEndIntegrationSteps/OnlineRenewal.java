@@ -46,7 +46,7 @@ public class OnlineRenewal {
     }
 
     // Scenario: Navigate to Add a Visitor page
-    @Given(" A member is added newly to the region and member status is active now. On Admin menu ->Select Region->Manage Region -> View/Edit Region Business Rules. Keep “Allow Online Renewals” as Post-Approval only")
+    @Given("A member is added newly to the region and member status is active now. On Admin menu ->Select Region->Manage Region -> View/Edit Region Business Rules. Keep “Allow Online Renewals” as Post-Approval only")
     public void  A_member_is_added_newly_to_the_region_and_member_status_is_active_now_On_Admin_menuy(DataTable loginDetails) throws Exception {
         List<List<String>> login = loginDetails.raw();
         loginSubList = login.subList(1, login.size());
@@ -90,7 +90,9 @@ public class OnlineRenewal {
             TimeUnit.SECONDS.sleep(2);
             login.loginToBni(data.get("userName"), data.get("password"));
             TimeUnit.SECONDS.sleep(12);
-            termsOfUse.checkLastUpdatedDate();
+            driver = launchBrowser.getDriver();
+            termsOfUse = new TermsOfUse(driver);
+           // termsOfUse.checkLastUpdatedDate();
             TimeUnit.SECONDS.sleep(1);
             termsOfUse.clickCheckBox();
             TimeUnit.SECONDS.sleep(2);
