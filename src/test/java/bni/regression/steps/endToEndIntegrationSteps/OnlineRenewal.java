@@ -2,6 +2,7 @@ package bni.regression.steps.endToEndIntegrationSteps;
 
 import bni.regression.libraries.common.*;
 import bni.regression.libraries.ui.Login;
+import bni.regression.libraries.ui.ReconcileOnlineRenewals;
 import bni.regression.libraries.ui.SelectCountryRegionChapter;
 import bni.regression.libraries.ui.SignOut;
 import bni.regression.pageFactory.*;
@@ -35,6 +36,7 @@ public class OnlineRenewal {
     private TermsOfUse termsOfUse;
     private MemberRenewalApplication memberRenewalApplication;
     private MemberRenewalApplicationPaymentProcessing memberRenewalApplicationPaymentProcessing;
+    private ReconcileOnlineRenewals reconcileOnlineRenewals;
 
     @Before
     public void setup() throws Exception {
@@ -93,7 +95,7 @@ public class OnlineRenewal {
             TimeUnit.SECONDS.sleep(12);
             driver = launchBrowser.getDriver();
             termsOfUse = new TermsOfUse(driver);
-           // termsOfUse.checkLastUpdatedDate();
+            termsOfUse.checkLastUpdatedDate();
             TimeUnit.SECONDS.sleep(1);
             termsOfUse.clickCheckBox();
             TimeUnit.SECONDS.sleep(2);
@@ -128,6 +130,13 @@ public class OnlineRenewal {
             //TimeUnit.SECONDS.sleep(1);
             memberRenewalApplicationPaymentProcessing.clickOkButton();
             TimeUnit.SECONDS.sleep(8);
+            signOut.signOutBni();
+            driver = launchBrowser.getDriver();
+            launchBrowser.invokeBrowser();
+            TimeUnit.SECONDS.sleep(2);
+            login.loginToBni(splitCredentials[0].replaceAll(" ", ""), splitCredentials[1].replaceAll(" ", ""));
+            TimeUnit.SECONDS.sleep(12);
+            reconcileOnlineRenewals.reconcileApp(data.get("firstName"), data.get("lastName"),splitCredentials[2],splitCredentials[3],splitCredentials[4]);
             signOut.signOutBni();
         }
     }

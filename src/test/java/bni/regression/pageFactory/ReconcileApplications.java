@@ -27,6 +27,10 @@ public class ReconcileApplications {
     @FindBy(css = "#datalist > tbody > tr:nth-child(1) > td:nth-child(9) > a")
     WebElement reconcileButton;
 
+    @FindBy(css = "#datalist > tbody > tr:nth-child(1) > td:nth-child(5) > a")
+    WebElement appStatusLink;
+
+
     public ReconcileApplications(WebDriver driver) {
         ReconcileApplications.driver = driver;
         AjaxElementLocatorFactory factory = new AjaxElementLocatorFactory(driver, 100);
@@ -48,6 +52,11 @@ public class ReconcileApplications {
     public void clickRecncileButton()
     {
         reconcileButton.click();
+    }
+
+    public void clickAppStatusLink()
+    {
+        appStatusLink.click();
     }
 
 }
