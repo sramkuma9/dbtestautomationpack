@@ -26,9 +26,8 @@ public class MemberRenewalApplicationPaymentProcessing {
     @FindBy(css = "body > div.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.bniStyle.ui-draggable.ui-resizable > div.ui-dialog-buttonpane.ui-widget-content.ui-helper-clearfix > button")
     WebElement okButton;
 
-    @FindBy(css = "#\\31 573641006085")
+    @FindBy(css = "body > div.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.bniStyle.ui-draggable.ui-resizable > div.ui-dialog-content.ui-widget-content")
     WebElement confirmationMessage;
-
 
     public MemberRenewalApplicationPaymentProcessing(WebDriver driver) {
         MemberRenewalApplicationPaymentProcessing.driver = driver;

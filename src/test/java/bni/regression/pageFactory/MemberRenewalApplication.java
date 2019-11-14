@@ -17,7 +17,8 @@ public class MemberRenewalApplication {
     @FindBy(css = "#\\32 55 > input[type=RADIO]")
     WebElement networkingOrgCheckBox;
 
-    @FindBy(css = "#\\32 58 > input[type=RADIO]]")
+    @FindBy(css = "#\\32 58 > input[type=RADIO]")
+    //@FindBy(css="#\32 58 > input:nth-child(1)")#\32 58 > input[type=RADIO]
     WebElement invitePeopleCheckBox;
 
     @FindBy(css = "#\\32 53 > input[type=RADIO]")
@@ -26,10 +27,10 @@ public class MemberRenewalApplication {
     @FindBy(css = "#\\32 57 > input[type=RADIO]")
     WebElement convictedCheckBox;
 
-    @FindBy(css = "#\\32 68 > input[type=RADIO]]")
+    @FindBy(css = "#\\32 68 > input[type=RADIO]")
     WebElement recommendCheckBox;
 
-    @FindBy(css = "<input type=\"CHECKBOX\" name=\"CHECKBOX121\" value=\"251\">")
+    @FindBy(css = "#\\32 51 > input[type=CHECKBOX]")
     WebElement refferalChapterCheckBox;
 
     @FindBy(css = "#questions > ul > li:nth-child(9) > div > span > textarea")

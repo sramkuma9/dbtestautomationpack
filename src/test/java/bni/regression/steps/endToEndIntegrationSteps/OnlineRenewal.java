@@ -11,6 +11,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 
 import java.util.List;
@@ -123,8 +124,8 @@ public class OnlineRenewal {
             TimeUnit.SECONDS.sleep(1);
             memberRenewalApplicationPaymentProcessing.clickSubmitButton();
             TimeUnit.SECONDS.sleep(3);
-            memberRenewalApplicationPaymentProcessing.checkConfirmationMessage();
-            TimeUnit.SECONDS.sleep(1);
+            //memberRenewalApplicationPaymentProcessing.checkConfirmationMessage();
+            //TimeUnit.SECONDS.sleep(1);
             memberRenewalApplicationPaymentProcessing.clickOkButton();
             TimeUnit.SECONDS.sleep(8);
             signOut.signOutBni();
