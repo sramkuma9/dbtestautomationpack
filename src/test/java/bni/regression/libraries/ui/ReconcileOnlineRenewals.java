@@ -22,14 +22,14 @@ public class ReconcileOnlineRenewals {
     private RenewalApproval renewalApproval;
     private ViewRenewalApproval viewRenewalApproval;
 
-    public void reconcileApp(String firstName, String lastName, String cred2, String cred3, String cred4) throws Exception{
+    public void reconcileApp(String firstName, String lastName, String cred2, String cred3, String cred4) throws Exception {
         LaunchBrowser.driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-       WebDriver driver = launchBrowser.getDriver();
-        bniConnect = new BNIConnect(driver);
+        //WebDriver driver = launchBrowser.getDriver();
+        bniConnect = new BNIConnect(launchBrowser.driver);
         bniConnect.navigateMenu("Operations,Region");
         TimeUnit.SECONDS.sleep(3);
         selectCountryRegionChapter.selectCountryRegChap(cred2.trim(), cred3.trim(), cred4.trim());
-        bniConnect = new BNIConnect(driver);
+        bniConnect = new BNIConnect(launchBrowser.driver);
         TimeUnit.SECONDS.sleep(3);
         String language[] = readWritePropertyFile.loadAndReadPropertyFile("language", "properties/config.properties").split(",");
         int colNumber = Integer.parseInt(language[1]);
@@ -40,26 +40,22 @@ public class ReconcileOnlineRenewals {
         String transSubMenu = readWriteExcel.getCellData("translation", colNumber, 6);
         bniConnect.selectItemFromSubListMenu(transSubMenu);
         TimeUnit.SECONDS.sleep(5);
-        enterNewApplication = new EnterNewApplication(driver);
-        try {
-            enterNewApplication.clickReconcileApplicationButton();
-        }catch(Exception e) {
-            System.out.println("Reconcile Applications button is not present");
-        }
+        enterNewApplication = new EnterNewApplication(launchBrowser.driver);
         TimeUnit.SECONDS.sleep(8);
-        reconcileApplications = new ReconcileApplications(driver);
+        reconcileApplications = new ReconcileApplications(launchBrowser.driver);
         reconcileApplications.enterSearchCriteria(firstName, lastName);
         TimeUnit.SECONDS.sleep(5);
         reconcileApplications.clickAppStatusLink();
         TimeUnit.SECONDS.sleep(4);
-        renewalApproval = new RenewalApproval(driver);
+        renewalApproval = new RenewalApproval(launchBrowser.driver);
         renewalApproval.clickAgreeCheckBox();
         renewalApproval.clickApproveButton();
-        TimeUnit.SECONDS.sleep(3);
-        viewRenewalApproval = new ViewRenewalApproval(driver);
+        TimeUnit.SECONDS.sleep(10);
+        viewRenewalApproval = new ViewRenewalApproval(launchBrowser.driver);
+        viewRenewalApproval.checkApprovalStatus();
         viewRenewalApproval.clickBackButton();
         TimeUnit.SECONDS.sleep(8);
-        reconcileApplications = new ReconcileApplications(driver);
+        reconcileApplications = new ReconcileApplications(launchBrowser.driver);
         reconcileApplications.enterSearchCriteria(firstName, lastName);
         TimeUnit.SECONDS.sleep(5);
         reconcileApplications.clickPaymentReceivedCheckBox();

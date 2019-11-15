@@ -126,8 +126,6 @@ public class OnlineRenewal {
             TimeUnit.SECONDS.sleep(1);
             memberRenewalApplicationPaymentProcessing.clickSubmitButton();
             TimeUnit.SECONDS.sleep(3);
-            //memberRenewalApplicationPaymentProcessing.checkConfirmationMessage();
-            //TimeUnit.SECONDS.sleep(1);
             memberRenewalApplicationPaymentProcessing.clickOkButton();
             TimeUnit.SECONDS.sleep(8);
             signOut.signOutBni();
@@ -136,6 +134,7 @@ public class OnlineRenewal {
             TimeUnit.SECONDS.sleep(2);
             login.loginToBni(splitCredentials[0].replaceAll(" ", ""), splitCredentials[1].replaceAll(" ", ""));
             TimeUnit.SECONDS.sleep(12);
+            reconcileOnlineRenewals = new ReconcileOnlineRenewals();
             reconcileOnlineRenewals.reconcileApp(data.get("firstName"), data.get("lastName"),splitCredentials[2],splitCredentials[3],splitCredentials[4]);
             signOut.signOutBni();
         }
