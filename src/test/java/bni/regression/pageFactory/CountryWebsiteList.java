@@ -23,6 +23,9 @@ public class CountryWebsiteList {
     @FindBy(css = "#websiteViewPagesDatatable > tbody > tr:nth-child(1) > td.text-center > div > a:nth-child(1) > i")
     WebElement previewButton;
 
+    @FindBy(css = "body > div.wrapper > aside > section > ul > li:nth-child(4) > a")
+    WebElement regionWebsiteListLink;
+
     public CountryWebsiteList(WebDriver driver) {
         CountryWebsiteList.driver = driver;
         AjaxElementLocatorFactory factory = new AjaxElementLocatorFactory(driver, 100);
@@ -37,6 +40,10 @@ public class CountryWebsiteList {
 
     public void clickSettingsButton(){
         settingsButton.click();
+    }
+
+    public void clickRegionWebsiteListLink(){
+        regionWebsiteListLink.click();
     }
 
     public void enterCountrySearch(String country){
