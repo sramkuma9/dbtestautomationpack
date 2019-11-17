@@ -33,6 +33,7 @@ public class EditPageFor {
     }
 
     public void enterPageTitle() {
+        pageTitleTextBox.clear();
         pageTitleTextBox.sendKeys("Test Automation");
     }
 

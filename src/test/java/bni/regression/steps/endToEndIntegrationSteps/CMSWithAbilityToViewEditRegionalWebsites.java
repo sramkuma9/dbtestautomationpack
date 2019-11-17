@@ -10,6 +10,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 
 import java.util.ArrayList;
@@ -34,6 +35,8 @@ public class CMSWithAbilityToViewEditRegionalWebsites {
     private AdvanceChapterSearch advanceChapterSearch;
     private ChapterList chapterList;
     private RegionWebsiteList regionWebsiteList;
+    private MultiRegArgSite multiRegArgSite;
+    private EditPageFor editPageFor;
 
     @Before
     public void setup() throws Exception {
@@ -79,31 +82,24 @@ public class CMSWithAbilityToViewEditRegionalWebsites {
             TimeUnit.SECONDS.sleep(2);
             countryWebsiteList.clickSettingsButton();
             TimeUnit.SECONDS.sleep(8);
-
-
-
-
-            countryWebsiteList.enterCountrySearch(data.get("country"));
+            multiRegArgSite = new MultiRegArgSite(driver);
+            multiRegArgSite.enterSearchCriteria(data.get("editWebSiteString"));
+            TimeUnit.SECONDS.sleep(2);
+            multiRegArgSite.clickEditPageButton();
+            editPageFor = new EditPageFor(driver);
+            editPageFor.enterPageTitle();
+            TimeUnit.SECONDS.sleep(2);
+            editPageFor.clickSaveButton();
+            TimeUnit.SECONDS.sleep(5);
+            editPageFor.clickBackButton();
             TimeUnit.SECONDS.sleep(3);
-            countryWebsiteList.clickSettingsButton();
-            TimeUnit.SECONDS.sleep(8);
-            countryWebsiteList.enterPagesSearch("Find A Chapter");
-            TimeUnit.SECONDS.sleep(3);
-            countryWebsiteList.clickPreviewButton();
-            ArrayList<String> tabs1 = new ArrayList<String>(driver.getWindowHandles());
-            driver.switchTo().window(tabs1.get(2));
-            TimeUnit.SECONDS.sleep(8);
-            findAChapter = new FindAChapter(driver);
-            findAChapter.clickAdvanceSearchButton();
-            TimeUnit.SECONDS.sleep(8);
-            advanceChapterSearch = new AdvanceChapterSearch(driver);
-            advanceChapterSearch.selectRegion(data.get("region"));
-            TimeUnit.SECONDS.sleep(1);
-            advanceChapterSearch.clickFindButton();
-            chapterList = new ChapterList(driver);
-            chapterList.getChapterCount();
-            driver.switchTo().window(tabs1.get(0));
-            // add database verification code
+            multiRegArgSite = new MultiRegArgSite(driver);
+            multiRegArgSite.clickPublishButton();
+            TimeUnit.SECONDS.sleep(2);
+            Alert alert = driver.switchTo().alert();
+            alert.accept();
+            TimeUnit.SECONDS.sleep(12);
+            driver.switchTo().window(tabs.get(0));
             signOut.signOutBni();
         }
     }
