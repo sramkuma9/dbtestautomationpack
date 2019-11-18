@@ -11,6 +11,7 @@ public class TestAndDelete {
     ReadPDFReader readPDFReader = new ReadPDFReader();
     SearchAndReturnFileName searchAndReturnFileName = new SearchAndReturnFileName();
     SearchAndDeleteFile searchAndDeleteFile = new SearchAndDeleteFile();
+    EmailClient emailClient = new EmailClient();
 
     @Given("test and delete")
     public void test_and_delete() throws Exception {
@@ -27,6 +28,7 @@ public class TestAndDelete {
 //        }
         // test
         //searchAndRenameFile.searchFileAndRename("/home/ajay/Downloads/test","del",".xls");
-        searchAndDeleteFile.searchFileAndDelete("/home/ajay/Downloads/","FindAPersonReport",".xls");
+        //searchAndDeleteFile.searchFileAndDelete("/home/ajay/Downloads/","FindAPersonReport",".xls");
+        //emailClient.receiveEmail("pop.gmail.com","pop3","dbselenium@gmail.com","selenium1!");
     }
 }
