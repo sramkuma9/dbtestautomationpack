@@ -29,6 +29,6 @@ public class TestAndDelete {
         // test
         //searchAndRenameFile.searchFileAndRename("/home/ajay/Downloads/test","del",".xls");
         //searchAndDeleteFile.searchFileAndDelete("/home/ajay/Downloads/","FindAPersonReport",".xls");
-        //emailClient.receiveEmail("pop.gmail.com","pop3","dbselenium@gmail.com","selenium1!");
+        emailClient.checkEmail("imap.gmail.com","993","imaps","dbselenium@gmail.com","selenium1!");
     }
 }
