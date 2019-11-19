@@ -2,25 +2,19 @@ package bni.regression.libraries.common;
 
 import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.imap.IMAPStore;
-
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import java.util.Properties;
 
 public class EmailClient {
 
-    //private static final String username = "dbselenium@gmail.com";
-    //private static final String password = "selenium1!";
+    private ReadWritePropertyFile readWritePropertyFile = new ReadWritePropertyFile();
 
-    //public static void main(String[] args) {
-
-    public void checkEmail(String hostName, String port, String protocol, String userName, String password){
-
+    public void checkEmail(String userName, String password) {
         Properties properties = new Properties();
-        // properties.put("mail.debug", "true");
-        properties.put("mail.store.protocol", protocol);
-        properties.put("mail.imaps.host", hostName);
-        properties.put("mail.imaps.port", port);
+        properties.put("mail.store.protocol", readWritePropertyFile.loadAndReadPropertyFile("emailProtocol", "properties/config.properties"));
+        properties.put("mail.imaps.host", readWritePropertyFile.loadAndReadPropertyFile("emailHostName", "properties/config.properties"));
+        properties.put("mail.imaps.port", readWritePropertyFile.loadAndReadPropertyFile("emailPort", "properties/config.properties"));
         properties.put("mail.imaps.timeout", "10000");
 
         Session session = Session.getInstance(properties); // not
@@ -40,15 +34,15 @@ public class EmailClient {
             ensureOpen(inbox, userName, password);
             Message[] messages = inbox.getMessages();
             for (Message message : messages) {
-                        try {
-                            System.out.println("Mail Subject:- " + message.getSubject());
-                            Address[] froms = message.getFrom();
-                            String email = froms == null ? null : ((InternetAddress) froms[0]).getAddress();
-                            System.out.println("Mail Sender:- " + email);
-                        } catch (MessagingException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                try {
+                    System.out.println("Mail Subject:- " + message.getSubject());
+                    Address[] froms = message.getFrom();
+                    String email = froms == null ? null : ((InternetAddress) froms[0]).getAddress();
+                    System.out.println("Mail Sender:- " + email);
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                }
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
