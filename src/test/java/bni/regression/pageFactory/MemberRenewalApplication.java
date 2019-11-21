@@ -94,7 +94,7 @@ public class MemberRenewalApplication {
     }
 
     public void enterDescribeBNI(){
-        describeBNITextBox.sendKeys("Automation Testing");
+        describeBNITextBox.sendKeys("おはようございます");
     }
 
 }

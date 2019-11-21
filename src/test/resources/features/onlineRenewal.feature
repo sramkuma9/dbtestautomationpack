@@ -9,5 +9,5 @@ Feature: Online Renewal features
 
     When I login BNI app with Member login details and accept TOS, check latest TOS version is displayed,then click Renew Now button in the home page and enter the below details click Proceed to payment button. Enter card details and Proceed to payment
       | userName                |  | password     |  | firstName |  | lastName |  | tosVersion  |  | allowOnlineRenewals                             |  | membershipPeriod |  | additionalQuestions |  | payerName |  | methodOfPayment   |  | cardNumber     |  | nameOnCard |  | expriyDate |  | cvv |
-      | shanthibni+37@gmail.com |  | aadhira@2014 |  | Steffi    |  | chandran |  | May 28,2018 |  | LT Decision Only After Online Renewal Submitted |  | 2 Year           |  | yes                 |  | Shanthi   |  | Bank Card Payment |  | 4111 1111 1111 |  | Shanthi    |  | 12/19      |  | 123 |
+      | shanthibni+41@gmail.com |  | aadhira@2014 |  | Stella    |  | mary |  | May 28,2018 |  | LT Decision Only After Online Renewal Submitted |  | 2 Year           |  | yes                 |  | Shanthi   |  | Bank Card Payment |  | 4111 1111 1111 |  | Shanthi    |  | 12/19      |  | 123 |
     Then A confirmation message is displayed and I sign out from BNI

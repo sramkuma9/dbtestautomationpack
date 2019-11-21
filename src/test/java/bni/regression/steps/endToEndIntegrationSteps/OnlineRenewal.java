@@ -1,6 +1,9 @@
 package bni.regression.steps.endToEndIntegrationSteps;
 
-import bni.regression.libraries.common.*;
+import bni.regression.libraries.common.CaptureScreenShot;
+import bni.regression.libraries.common.LaunchBrowser;
+import bni.regression.libraries.common.ReadWriteExcel;
+import bni.regression.libraries.common.ReadWritePropertyFile;
 import bni.regression.libraries.ui.Login;
 import bni.regression.libraries.ui.ReconcileOnlineRenewals;
 import bni.regression.libraries.ui.SelectCountryRegionChapter;
@@ -12,7 +15,6 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 
 import java.util.List;
@@ -95,8 +97,7 @@ public class OnlineRenewal {
             TimeUnit.SECONDS.sleep(12);
             driver = launchBrowser.getDriver();
             termsOfUse = new TermsOfUse(driver);
-            termsOfUse.checkLastUpdatedDate();
-            TimeUnit.SECONDS.sleep(1);
+            //termsOfUse.checkLastUpdatedDate();
             termsOfUse.clickCheckBox();
             TimeUnit.SECONDS.sleep(2);
             termsOfUse.clickAcceptButton();

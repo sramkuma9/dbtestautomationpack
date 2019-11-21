@@ -5,7 +5,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class TermsOfUse {
@@ -18,7 +17,7 @@ public class TermsOfUse {
     @FindBy(css = "#submit")
     WebElement acceptButton;
 
-    @FindBy(css = "#plugin")
+    @FindBy(css = "#toscontent > embed")
     WebElement pdfText;
 
     public TermsOfUse(WebDriver driver) {
@@ -38,6 +37,6 @@ public class TermsOfUse {
     }
 
     public void checkLastUpdatedDate(){
-        System.out.println(pdfText.getText());
+        System.out.println("print is: " + pdfText.getText());
     }
 }

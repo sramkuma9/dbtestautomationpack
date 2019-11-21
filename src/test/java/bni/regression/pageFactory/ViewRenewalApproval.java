@@ -35,7 +35,7 @@ public class ViewRenewalApproval {
 
     public void checkApprovalStatus(){
         String appStatus = approvalStatus.getText();
-        assertEquals("online renewal approval status is not correct", "Approved (Online Renewal)",appStatus);
+        assertEquals("online renewal approval status is not correct", "Approved状態",appStatus);
     }
 
 }

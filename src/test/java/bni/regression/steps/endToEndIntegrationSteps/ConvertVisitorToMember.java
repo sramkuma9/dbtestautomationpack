@@ -1,6 +1,7 @@
 package bni.regression.steps.endToEndIntegrationSteps;
 
 import bni.regression.libraries.common.*;
+import bni.regression.libraries.db.DbConnect;
 import bni.regression.libraries.ui.Login;
 import bni.regression.libraries.ui.Reconcile;
 import bni.regression.libraries.ui.SelectCountryRegionChapter;
@@ -29,6 +30,7 @@ public class ConvertVisitorToMember {
     private Login login = new Login();
     private SignOut signOut = new SignOut();
     private BNIConnect bniConnect;
+    DbConnect dbConnect = new DbConnect();
     private AddAVisitor addAVisitor;
     private CaptureScreenShot captureScreenShot;
     private ViewEditVisitorsList viewEditVisitorsList;
@@ -88,7 +90,7 @@ public class ConvertVisitorToMember {
             viewEditVisitorsList = new ViewEditVisitorsList(driver);
             viewEditVisitorsList.clickFromStartDateField();
             TimeUnit.SECONDS.sleep(2);
-            viewEditVisitorsList.selectYear("2019");
+            viewEditVisitorsList.selectYear("2010");
             TimeUnit.SECONDS.sleep(2);
             viewEditVisitorsList.selectMonth("Jan");
             TimeUnit.SECONDS.sleep(2);
@@ -169,6 +171,9 @@ public class ConvertVisitorToMember {
             assertEquals("Company Name is not correct", data.get("companyName"), convertToMemberDetails[5] );
             i++;
             j++;
+            Integer actCount = 1;
+            Integer expCount = dbConnect.queryRecordCount(readWritePropertyFile.loadAndReadPropertyFile("convertVisitorToMember", "properties/sql.properties") + visitorEmailId + "';");
+            assertEquals("Email count in DataBase is not correct",actCount, expCount);
             reconcile.reconcileApp(data.get("firstName"),lastName);
             signOut.signOutBni();
         }
