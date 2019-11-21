@@ -1,6 +1,7 @@
 package bni.regression.steps.endToEndIntegrationSteps;
 
 import bni.regression.libraries.common.*;
+import bni.regression.libraries.common.email.GmailClient;
 import bni.regression.libraries.db.DbConnect;
 import cucumber.api.java.en.Given;
 
@@ -11,7 +12,7 @@ public class TestAndDelete {
     ReadPDFReader readPDFReader = new ReadPDFReader();
     SearchAndReturnFileName searchAndReturnFileName = new SearchAndReturnFileName();
     SearchAndDeleteFile searchAndDeleteFile = new SearchAndDeleteFile();
-    EmailClient emailClient = new EmailClient();
+    GmailClient gmailClient = new GmailClient();
 
     @Given("test and delete")
     public void test_and_delete() throws Exception {
@@ -29,6 +30,7 @@ public class TestAndDelete {
         // test
         //searchAndRenameFile.searchFileAndRename("/home/ajay/Downloads/test","del",".xls");
         //searchAndDeleteFile.searchFileAndDelete("/home/ajay/Downloads/","FindAPersonReport",".xls");
-        emailClient.checkEmail("dbselenium@gmail.com","selenium1!");
+        gmailClient.checkEmail("dbselenium@gmail.com","selenium1!");
+
     }
 }

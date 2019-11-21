@@ -1,8 +1,8 @@
 package bni.regression.steps.endToEndIntegrationSteps;
 
 import bni.regression.libraries.common.*;
+import bni.regression.libraries.db.DbConnect;
 import bni.regression.libraries.ui.Login;
-import bni.regression.libraries.ui.SelectCountryRegionChapter;
 import bni.regression.libraries.ui.SignOut;
 import bni.regression.pageFactory.*;
 import cucumber.api.DataTable;
@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import static junit.framework.TestCase.assertEquals;
+
 public class CMSWithDefaultAndCustomisedContents {
 
     public static WebDriver driver;
@@ -31,6 +33,7 @@ public class CMSWithDefaultAndCustomisedContents {
     ReadWriteExcel readWriteExcel = new ReadWriteExcel();
     private CaptureScreenShot captureScreenShot;
     private CountryWebsiteList countryWebsiteList;
+    DbConnect dbConnect = new DbConnect();
     private FindAChapter findAChapter;
     private AdvanceChapterSearch advanceChapterSearch;
     private ChapterList chapterList;
@@ -65,7 +68,7 @@ public class CMSWithDefaultAndCustomisedContents {
             driver = launchBrowser.getDriver();
             bniConnect = new BNIConnect(driver);
             captureScreenShot = new CaptureScreenShot(driver);
-            bniConnect.navigateMenu("Tools,CMS,Manage Your Websites (New CMS)");
+            bniConnect.navigateMenu("Tools,Manage Websites,Manage Your Websites (New CMS)");
             TimeUnit.SECONDS.sleep(8);
             ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
             driver.switchTo().window(tabs.get(1));
@@ -77,9 +80,9 @@ public class CMSWithDefaultAndCustomisedContents {
             countryWebsiteList.enterPagesSearch("Find A Chapter");
             TimeUnit.SECONDS.sleep(3);
             countryWebsiteList.clickPreviewButton();
+            TimeUnit.SECONDS.sleep(12);
             ArrayList<String> tabs1 = new ArrayList<String>(driver.getWindowHandles());
             driver.switchTo().window(tabs1.get(2));
-            TimeUnit.SECONDS.sleep(8);
             findAChapter = new FindAChapter(driver);
             findAChapter.clickAdvanceSearchButton();
             TimeUnit.SECONDS.sleep(8);
@@ -88,9 +91,10 @@ public class CMSWithDefaultAndCustomisedContents {
             TimeUnit.SECONDS.sleep(1);
             advanceChapterSearch.clickFindButton();
             chapterList = new ChapterList(driver);
-            chapterList.getChapterCount();
+            Integer actualChapterCount =  chapterList.getChapterCount();
+            Integer expChapterCount = dbConnect.queryRecordCount(readWritePropertyFile.loadAndReadPropertyFile("CMSWithDefaultAndCustomisedContents", "properties/sql.properties"));
+            assertEquals("Chapter count is not correct", expChapterCount, actualChapterCount);
             driver.switchTo().window(tabs1.get(0));
-            // add database verification code
             signOut.signOutBni();
         }
     }

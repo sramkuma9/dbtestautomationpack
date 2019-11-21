@@ -14,7 +14,7 @@ public class CountryWebsiteList {
     @FindBy(css = "#websiteListDatatable_filter > label > input")
     WebElement countrySearchTextBox;
 
-    @FindBy(css = "#websiteListDatatable > tbody > tr:nth-child(1) > td:nth-child(7) > div > a:nth-child(1)")
+    @FindBy(css = "#websiteListDatatable > tbody > tr > td:nth-child(8) > div > a:nth-child(1)")
     WebElement settingsButton;
 
     @FindBy(css = "#websiteViewPagesDatatable_filter > label > input")

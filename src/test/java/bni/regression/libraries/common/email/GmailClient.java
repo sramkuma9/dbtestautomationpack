@@ -1,12 +1,13 @@
-package bni.regression.libraries.common;
+package bni.regression.libraries.common.email;
 
+import bni.regression.libraries.common.ReadWritePropertyFile;
 import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.imap.IMAPStore;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import java.util.Properties;
 
-public class EmailClient {
+public class GmailClient {
 
     private ReadWritePropertyFile readWritePropertyFile = new ReadWritePropertyFile();
 

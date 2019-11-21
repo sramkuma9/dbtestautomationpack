@@ -1,12 +1,13 @@
 package bni.regression.pageFactory;
 
 import bni.regression.libraries.common.ReadWritePropertyFile;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
@@ -63,7 +64,8 @@ public class BNIConnect {
     @FindBy(css = "#searchDroppedMember")
     WebElement searchButton;
 
-    @FindBy(css = "#convertToMemberHref")
+    //@FindBy(css = "#convertToMemberHref")
+    @FindBy(css = "#convertToMemberHrefCofC")
     WebElement addButton;
 
     @FindBy(css = "#columnlinks > a:nth-child(5)")

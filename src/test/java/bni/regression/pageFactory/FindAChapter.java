@@ -14,6 +14,9 @@ public class FindAChapter {
     @FindBy(css = "#mm-0 > section:nth-child(8) > div > div > p.legend > a")
     WebElement advanceSearch;
 
+    @FindBy(css = "#cookieconsent:desc > div > a")
+    WebElement iUnderstand;
+
     public FindAChapter(WebDriver driver) {
         FindAChapter.driver = driver;
         AjaxElementLocatorFactory factory = new AjaxElementLocatorFactory(driver, 100);
@@ -24,6 +27,10 @@ public class FindAChapter {
 
     public void clickAdvanceSearchButton() {
         advanceSearch.click();
+    }
+
+    public void clickIUnderstandButton() {
+        iUnderstand.click();
     }
 
 }

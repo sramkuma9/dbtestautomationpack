@@ -68,7 +68,7 @@ public class CMSWithAbilityToViewEditRegionalWebsites {
             driver = launchBrowser.getDriver();
             bniConnect = new BNIConnect(driver);
             captureScreenShot = new CaptureScreenShot(driver);
-            bniConnect.navigateMenu("Tools,CMS,Manage Your Websites (New CMS)");
+            bniConnect.navigateMenu("Tools,Manage Websites,Manage Your Websites (New CMS)");
             TimeUnit.SECONDS.sleep(8);
             ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
             driver.switchTo().window(tabs.get(1));
@@ -80,7 +80,7 @@ public class CMSWithAbilityToViewEditRegionalWebsites {
             TimeUnit.SECONDS.sleep(3);
             regionWebsiteList.enterSearchCriteria(data.get("region"));
             TimeUnit.SECONDS.sleep(2);
-            countryWebsiteList.clickSettingsButton();
+            regionWebsiteList.clickSettingsButton();
             TimeUnit.SECONDS.sleep(8);
             multiRegArgSite = new MultiRegArgSite(driver);
             multiRegArgSite.enterSearchCriteria(data.get("editWebSiteString"));

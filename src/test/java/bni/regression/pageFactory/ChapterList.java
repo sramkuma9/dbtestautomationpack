@@ -5,7 +5,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ChapterList {
@@ -23,10 +22,10 @@ public class ChapterList {
         wait = new WebDriverWait(driver, 5);
     }
 
-    public String getChapterCount() {
+    public Integer getChapterCount() {
         String chapterTotalCount = chapterCount.getText();
         String[] chapterCountSplit = chapterTotalCount.split(" ");
-        return chapterCountSplit[5];
+        return Integer.valueOf(chapterCountSplit[5]);
     }
 
 }
