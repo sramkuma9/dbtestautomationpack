@@ -81,6 +81,7 @@ public class AddAndSearchBrandNewVisitor {
             driver = launchBrowser.getDriver();
             bniConnect = new BNIConnect(driver);
             captureScreenShot = new CaptureScreenShot(driver);
+
             bniConnect.navigateMenu("Operations,Chapter");
             TimeUnit.SECONDS.sleep(3);
             selectCountryRegionChapter.selectCountryRegChap(splitCredentials[2].trim(), splitCredentials[3].trim(), splitCredentials[4].trim());
