@@ -4,7 +4,6 @@ import bni.regression.libraries.common.ReadWritePropertyFile;
 import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.imap.IMAPStore;
 import org.junit.platform.commons.util.StringUtils;
-
 import javax.mail.*;
 import javax.mail.internet.ContentType;
 import javax.mail.internet.InternetAddress;
@@ -135,7 +134,7 @@ public class GmailClient {
                 continue; // dealing with attachments only
             }
             InputStream is = bodyPart.getInputStream();
-            File f = new File("/home/ajay/Downloads/" + bodyPart.getFileName());
+            File f = new File(readWritePropertyFile.loadAndReadPropertyFile("emailDownloadPath", "properties/config.properties") + bodyPart.getFileName());
             FileOutputStream fos = new FileOutputStream(f);
             byte[] buf = new byte[4096];
             int bytesRead;
