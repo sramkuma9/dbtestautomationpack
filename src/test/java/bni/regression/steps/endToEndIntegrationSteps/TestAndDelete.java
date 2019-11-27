@@ -29,7 +29,7 @@ public class TestAndDelete {
 //        }
         //searchAndRenameFile.searchFileAndRename("/home/ajay/Downloads/test","del",".xls");
         //searchAndDeleteFile.searchFileAndDelete("/home/ajay/Downloads/","FindAPersonReport",".xls");
-        gmailClient.checkEmail("dbselenium@gmail.com","selenium1!");
+        gmailClient.checkEmail("dbselenium@gmail.com","selenium1!","Attachment","dbselenium@gmail.com");
 
     }
 }
