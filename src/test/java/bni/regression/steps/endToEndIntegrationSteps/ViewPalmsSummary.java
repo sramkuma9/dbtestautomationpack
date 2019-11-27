@@ -7,8 +7,7 @@ import bni.regression.libraries.common.ReadWritePropertyFile;
 import bni.regression.libraries.ui.Login;
 import bni.regression.libraries.ui.SelectCountryRegionChapter;
 import bni.regression.libraries.ui.SignOut;
-import bni.regression.pageFactory.BNIConnect;
-import bni.regression.pageFactory.EnterOneToOnes;
+import bni.regression.pageFactory.*;
 import cucumber.api.DataTable;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -36,7 +35,9 @@ public class ViewPalmsSummary {
     private ReadWritePropertyFile readWritePropertyFile = new ReadWritePropertyFile();
     ReadWriteExcel readWriteExcel = new ReadWriteExcel();
     private EnterOneToOnes enterOneToOnes;
-
+    private ViewChapterPalmsSummary viewChapterPalmsSummary;
+    private ViewChapterPalms viewChapterPalms;
+    private SlipsAuditReport slipsAuditReport;
 
     @Before
     public void setup() throws Exception {
@@ -95,13 +96,51 @@ public class ViewPalmsSummary {
             enterOneToOnes.selectDateFromDatePicker(data.get("day"));
             TimeUnit.SECONDS.sleep(1);
             enterOneToOnes.clickSaveButton();
-            try{
+            try {
                 Alert alert = driver.switchTo().alert();
                 alert.accept();
-            }catch (ElementNotVisibleException e){
+            } catch (ElementNotVisibleException e) {
                 System.out.println("warning alert not found...");
             }
             TimeUnit.SECONDS.sleep(12);
+            signOut.signOutBni();
+            driver = launchBrowser.getDriver();
+            launchBrowser.invokeBrowser();
+            TimeUnit.SECONDS.sleep(2);
+            login.loginToBni(data.get("userName"), data.get("password"));
+            TimeUnit.SECONDS.sleep(12);
+            selectCountryRegionChapter.selectCountryRegChap(data.get("country"), data.get("region"), data.get("chapter"));
+            bniConnect = new BNIConnect(driver);
+            TimeUnit.SECONDS.sleep(3);
+            readWriteExcel.setExcelFile("src/test/resources/inputFiles/translation.xlsx");
+            String transMainMenu = readWriteExcel.getCellData("translation", colNumber, 9);
+            String transSubMenu = readWriteExcel.getCellData("translation", colNumber, 10);
+            bniConnect.selectItemFromSubListMenu(transMainMenu);
+            TimeUnit.SECONDS.sleep(5);
+            bniConnect.selectItemFromSubListMenu(transSubMenu);
+            TimeUnit.SECONDS.sleep(5);
+            viewChapterPalmsSummary = new ViewChapterPalmsSummary(driver);
+            viewChapterPalmsSummary.clickEnterFromDateTextBox();
+            TimeUnit.SECONDS.sleep(1);
+            viewChapterPalmsSummary.selectVisitYear(data.get("enterFromYear"));
+            TimeUnit.SECONDS.sleep(1);
+            viewChapterPalmsSummary.selectVisitMonth(data.get("enterFromMonth"));
+            TimeUnit.SECONDS.sleep(1);
+            viewChapterPalmsSummary.selectDateFromDatePicker(data.get("enterFromDay"));
+            TimeUnit.SECONDS.sleep(2);
+            viewChapterPalmsSummary.clickViewReportsButton();
+            TimeUnit.SECONDS.sleep(5);
+            viewChapterPalmsSummary.enterSearchCriteria("searchString");
+            TimeUnit.SECONDS.sleep(2);
+            viewChapterPalmsSummary.clickStatusLink();
+            TimeUnit.SECONDS.sleep(5);
+            viewChapterPalms.clickSlipsAuditReportButton();
+            TimeUnit.SECONDS.sleep(8);
+            slipsAuditReport.checkSlipsAuditReport();
+            TimeUnit.SECONDS.sleep(2);
+            slipsAuditReport.clickCloseButton();
+            TimeUnit.SECONDS.sleep(3);
+            signOut.signOutBni();
         }
     }
 

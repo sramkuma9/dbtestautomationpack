@@ -12,75 +12,53 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class EnterOneToOnes {
+public class ViewChapterPalmsSummary {
     public static WebDriver driver;
     public WebDriverWait wait;
 
-    @FindBy(css = "#metWith")
-    WebElement metWithListBox;
 
-    @FindBy(css = "#invitedBy")
-    WebElement invitedByListBox;
+    @FindBy(css = "#Search")
+    WebElement viewReportsButton;
 
-    @FindBy(css = "body > div.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-draggable > div.ui-dialog-buttonpane.ui-widget-content.ui-helper-clearfix > button:nth-child(2)")
-    WebElement saveButton;
+    @FindBy(css = "#datalist > tbody > tr.odd > td:nth-child(3) > a")
+    WebElement statusLink;
 
-    @FindBy(css = "#location")
-    WebElement locationTextBox;
-
-    @FindBy(css = "#topicsOfConversation")
-    WebElement topicsOfConversationTextBox;
-
-    @FindBy(css = "#oneToOneDate")
-    WebElement dateTextBox;
+    @FindBy(css = "#fromDate")
+    WebElement enterFromDateTextBox;
 
     @FindBy(css = "#ui-datepicker-div > table > tbody > tr")
-    List<WebElement> datePicker;
+    List<WebElement> enterFromDatePicker;
 
     @FindBy(css = "#ui-datepicker-div > div > div > select.ui-datepicker-month")
-    WebElement applicationMonth;
+    WebElement enterFromDateMonth;
 
     @FindBy(css = "#ui-datepicker-div > div > div > select.ui-datepicker-year")
-    WebElement applicationYear;
+    WebElement enterFromDateYear;
 
-    public EnterOneToOnes(WebDriver driver) {
-        EnterOneToOnes.driver = driver;
+    @FindBy(css = "#datalist_filter > input[type=text]")
+    WebElement searchTextBox;
+
+    public ViewChapterPalmsSummary(WebDriver driver) {
+        ViewChapterPalmsSummary.driver = driver;
         AjaxElementLocatorFactory factory = new AjaxElementLocatorFactory(driver, 100);
         //This initElements method will create all WebElements
         PageFactory.initElements(factory, this);
         wait = new WebDriverWait(driver, 5);
     }
 
-    public void enterLocation(String location){
-        locationTextBox.sendKeys(location);
-    }
-
-    public void enterTopicsOfConversation(String topicsOfConversation){
-        topicsOfConversationTextBox.sendKeys(topicsOfConversation);
-    }
-
-    public void selectMetWith(String metWith) {
-        Select metWithSelect = new Select(metWithListBox);
-        metWithSelect.selectByVisibleText(metWith);
-    }
-
-    public void selectInvitedBy(String invitedBy) {
-        Select invitedBySelect = new Select(invitedByListBox);
-        invitedBySelect.selectByVisibleText(invitedBy);
-    }
     public void selectVisitMonth(String month) {
-        Select visitMonthSelect = new Select(applicationMonth);
+        Select visitMonthSelect = new Select(enterFromDateMonth);
         visitMonthSelect.selectByVisibleText(month);
     }
 
     public void selectVisitYear(String year) {
-        Select visitYearSelect = new Select(applicationYear);
+        Select visitYearSelect = new Select(enterFromDateYear);
         visitYearSelect.selectByVisibleText(year);
     }
 
     public void selectDateFromDatePicker(String day) throws Exception{
         Integer breaker = 2;
-        for(WebElement trElement : datePicker)
+        for(WebElement trElement : enterFromDatePicker)
         {
             List<WebElement> td_collection=trElement.findElements(By.tagName("td"));
             for (int row = 0; row < 7; row++) {
@@ -99,13 +77,22 @@ public class EnterOneToOnes {
         }
     }
 
-    public void clickApplicationDateField() throws InterruptedException {
-        dateTextBox.click();
+    public void clickViewReportsButton() throws InterruptedException {
+        viewReportsButton.click();
         TimeUnit.SECONDS.sleep(1);
     }
 
-    public void clickSaveButton() throws InterruptedException {
-        saveButton.click();
-        TimeUnit.SECONDS.sleep(2);
+    public void clickEnterFromDateTextBox() throws InterruptedException {
+        enterFromDateTextBox.click();
+        TimeUnit.SECONDS.sleep(1);
     }
+
+    public void enterSearchCriteria(String searchString) throws InterruptedException{
+        searchTextBox.sendKeys(searchString);
+    }
+
+    public void clickStatusLink() throws InterruptedException{
+        statusLink.click();
+    }
+
 }
