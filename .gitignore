@@ -236,3 +236,17 @@
 /target/test-classes/bni/regression/libraries/common/email/GmailClient.class
 /target/test-classes/bni/regression/libraries/common/nada/InboxEmail.class
 /target/test-classes/bni/regression/pageFactory/ManageMembers.class
+/target/test-classes/features/addAndsearchBrandNewVisitor.feature
+/target/test-classes/features/addVisitorForExistingIndividual.feature
+/target/test-classes/bni/regression/pageFactory/ChapterList.class
+/target/test-classes/bni/regression/steps/endToEndIntegrationSteps/CMSWithDefaultAndCustomisedContents.class
+/target/test-classes/properties/config.properties
+/target/test-classes/features/convertVisitorToMember.feature
+/src/test/resources/executionReports/cucumber/DBTestAutomationReport.json
+/target/test-classes/bni/regression/pageFactory/EnterChapterPalms.class
+/target/test-classes/bni/regression/steps/endToEndIntegrationSteps/EnterPalms.class
+/target/test-classes/features/enterPalms.feature
+/target/test-classes/bni/regression/pageFactory/ReviewVisitor.class
+/target/test-classes/bni/regression/pageFactory/SlipsAuditReport.class
+/target/test-classes/bni/regression/pageFactory/ViewChapterPalms.class
+/target/test-classes/bni/regression/pageFactory/ViewChapterPalmsSummary.class

@@ -12,34 +12,36 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class ViewChapterPalmsSummary {
+public class EnterChapterPalms {
     public static WebDriver driver;
     public WebDriverWait wait;
 
-
     @FindBy(css = "#Search")
-    WebElement viewReportsButton;
+    WebElement enterPalmsButton;
 
-    @FindBy(css = "#datalist > tbody > tr.odd > td:nth-child(3) > a")
-    WebElement statusLink;
-
-    @FindBy(css = "#fromDate")
-    WebElement enterFromDateTextBox;
-
-    @FindBy(css = "#ui-datepicker-div > table > tbody > tr")
-    List<WebElement> enterFromDatePicker;
-
-    @FindBy(css = "#ui-datepicker-div > div > div > select.ui-datepicker-month")
-    WebElement enterFromDateMonth;
-
-    @FindBy(css = "#ui-datepicker-div > div > div > select.ui-datepicker-year")
-    WebElement enterFromDateYear;
+    @FindBy(css = "#submit")
+    WebElement submitPalmsButton;
 
     @FindBy(css = "#datalist_filter > input[type=text]")
     WebElement searchTextBox;
 
-    public ViewChapterPalmsSummary(WebDriver driver) {
-        ViewChapterPalmsSummary.driver = driver;
+    @FindBy(css = "#datalist > tbody > tr > td:nth-child(9)")
+    WebElement meetingTextBox;
+
+    @FindBy(css = "#fromDate")
+    WebElement enterMeetingDateTextBox;
+
+    @FindBy(css = "#ui-datepicker-div > table > tbody > tr")
+    List<WebElement> enterMeetingDatePicker;
+
+    @FindBy(css = "#ui-datepicker-div > div > div > select.ui-datepicker-month")
+    WebElement enterMeetingDateMonth;
+
+    @FindBy(css = "#ui-datepicker-div > div > div > select.ui-datepicker-year")
+    WebElement enterMeetingDateYear;
+
+    public EnterChapterPalms(WebDriver driver) {
+        EnterChapterPalms.driver = driver;
         AjaxElementLocatorFactory factory = new AjaxElementLocatorFactory(driver, 100);
         //This initElements method will create all WebElements
         PageFactory.initElements(factory, this);
@@ -47,18 +49,18 @@ public class ViewChapterPalmsSummary {
     }
 
     public void selectVisitMonth(String month) {
-        Select visitMonthSelect = new Select(enterFromDateMonth);
+        Select visitMonthSelect = new Select(enterMeetingDateMonth);
         visitMonthSelect.selectByVisibleText(month);
     }
 
     public void selectVisitYear(String year) {
-        Select visitYearSelect = new Select(enterFromDateYear);
+        Select visitYearSelect = new Select(enterMeetingDateYear);
         visitYearSelect.selectByVisibleText(year);
     }
 
     public void selectDateFromDatePicker(String day) throws Exception{
         Integer breaker = 2;
-        for(WebElement trElement : enterFromDatePicker)
+        for(WebElement trElement : enterMeetingDatePicker)
         {
             List<WebElement> td_collection=trElement.findElements(By.tagName("td"));
             for (int row = 0; row < 7; row++) {
@@ -76,13 +78,18 @@ public class ViewChapterPalmsSummary {
         }
     }
 
-    public void clickViewReportsButton() throws InterruptedException {
-        viewReportsButton.click();
+    public void clickEnterPalmsButton() throws InterruptedException {
+        enterPalmsButton.click();
         TimeUnit.SECONDS.sleep(1);
     }
 
-    public void clickEnterFromDateTextBox() throws InterruptedException {
-        enterFromDateTextBox.click();
+    public void clickSubmitPalms() throws InterruptedException {
+        submitPalmsButton.click();
+        TimeUnit.SECONDS.sleep(1);
+    }
+
+    public void clickEnterMeetingDateTextBox() throws InterruptedException {
+        enterMeetingDateTextBox.click();
         TimeUnit.SECONDS.sleep(1);
     }
 
@@ -90,8 +97,7 @@ public class ViewChapterPalmsSummary {
         searchTextBox.sendKeys(searchString);
     }
 
-    public void clickStatusLink() throws InterruptedException{
-        statusLink.click();
+    public void enterMeeting() throws InterruptedException{
+        meetingTextBox.sendKeys("1");
     }
-
 }

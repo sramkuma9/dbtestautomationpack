@@ -16,6 +16,9 @@ public class SlipsAuditReport {
     @FindBy(css = "#heading_1")
     WebElement slipsAuditReportHeading;
 
+    @FindBy(css =  "#buttons_1 > a:nth-child(1)")
+    WebElement exportButton;
+
     @FindBy(css = "body > div.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-draggable > div.ui-dialog-buttonpane.ui-widget-content.ui-helper-clearfix > button:nth-child(2)")
     WebElement closeButton;
 
@@ -31,9 +34,13 @@ public class SlipsAuditReport {
         closeButton.click();
     }
 
-    public void checkSlipsAuditReport() throws InterruptedException{
-        boolean actualResult = slipsAuditReportHeading.getText().contains("Slips Audit Report for");
-        assertEquals("Slips Audit Report is Displayed.", true,actualResult);
+    public void clickExportButton() throws InterruptedException{
+        exportButton.click();
     }
 
+    public void checkSlipsAuditReport() throws InterruptedException{
+        System.out.println(slipsAuditReportHeading.getText());
+        boolean actualResult = slipsAuditReportHeading.getText().contains("Slips Audit Report for");
+        assertEquals("Slips Audit Report is not displayed.", true,actualResult);
+    }
 }
