@@ -85,7 +85,6 @@ public class EnterOneToOnes {
             List<WebElement> td_collection=trElement.findElements(By.tagName("td"));
             for (int row = 0; row < 7; row++) {
                 String dayItem = td_collection.get(row).getText();
-                System.out.println(dayItem);
                 if (day.equals(dayItem)) {
                     td_collection.get(row).findElement(By.tagName("a")).click();
                     TimeUnit.SECONDS.sleep(3);

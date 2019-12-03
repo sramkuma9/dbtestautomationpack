@@ -18,7 +18,7 @@ public class SearchResults {
     private ReadWritePropertyFile readWritePropertyFile = new ReadWritePropertyFile();
 
     @FindBy(css =  "#buttons_1 > a:nth-child(1)")
-    //@FindBy(css = "links_1")
+    //@FindBy(css = "#links_1")
     WebElement exportIndiaButton;
 
     @FindBy(css =  "#params_2")

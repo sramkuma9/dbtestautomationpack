@@ -98,7 +98,7 @@ public class ConvertVisitorToMember {
             TimeUnit.SECONDS.sleep(2);
             viewEditVisitorsList.clickToEndDateField();
             TimeUnit.SECONDS.sleep(2);
-            viewEditVisitorsList.selectYear("2019");
+            viewEditVisitorsList.selectYear("2023");
             TimeUnit.SECONDS.sleep(2);
             viewEditVisitorsList.selectMonth("Sep");
             TimeUnit.SECONDS.sleep(2);

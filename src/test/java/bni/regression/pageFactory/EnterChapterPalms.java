@@ -1,8 +1,6 @@
 package bni.regression.pageFactory;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
@@ -98,6 +96,16 @@ public class EnterChapterPalms {
     }
 
     public void enterMeeting() throws InterruptedException{
+        ((JavascriptExecutor) driver).executeScript("document.getElementById('datalist').style.display='block';");
+        meetingTextBox.click();
+        TimeUnit.SECONDS.sleep(1);
+        //String js = "arguments[0].setAttribute('value','1')";
+        //((JavascriptExecutor) driver).executeScript(js, meetingTextBox);
+        System.out.println(meetingTextBox.isEnabled());
+        //meetingTextBox.clear();
+        meetingTextBox.sendKeys(Keys.valueOf("1"));
         meetingTextBox.sendKeys("1");
+        System.out.println(meetingTextBox.getText());
+        System.out.println(meetingTextBox.getAttribute("value"));
     }
 }

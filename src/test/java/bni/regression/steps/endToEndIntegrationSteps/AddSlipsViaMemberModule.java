@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class ViewPalmsSummary {
+public class AddSlipsViaMemberModule {
 
     public static WebDriver driver;
     private Login login = new Login();
@@ -48,13 +48,13 @@ public class ViewPalmsSummary {
     }
 
     // Scenario: Navigate to Add a Visitor page
-    @Given("User logged in with member login")
+    @Given("member login using below details")
     public void step_1(DataTable loginDetails) throws Exception {
         List<List<String>> login = loginDetails.raw();
         loginSubList = login.subList(1, login.size());
     }
 
-    @When("I select Enter One to Ones from Member Module, Enter the below details and click save")
+    @When("the member select Enter One to Ones from Member Module, Enter the below details and click save")
     public void step_2(DataTable viewPalms) throws Exception {
         Integer i = 2;
         for (Map<String, String> data : viewPalms.asMaps(String.class, String.class)) {
@@ -107,7 +107,7 @@ public class ViewPalmsSummary {
         // Add database verification code.
     }
 
-    @Then("palms Summary report is displayed, check via DB")
+    @Then("a database entry is made")
     public void step_3(){
         System.out.println("View palms summary script executed.");
     }
