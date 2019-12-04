@@ -283,3 +283,8 @@
 /target/test-classes/executionReports/screenShots/2019/11/28/searchAndAddBrandNewVisitor23:53:15.jpg
 /src/test/resources/executionReports/screenShots/2019/11/28/searchAndAddBrandNewVisitor23:56:32.jpg
 /target/test-classes/executionReports/screenShots/2019/11/28/searchAndAddBrandNewVisitor23:56:32.jpg
+/target/test-classes/bni/regression/steps/endToEndIntegrationSteps/AddSlipsViaMemberModule.class
+/target/test-classes/bni/regression/steps/endToEndIntegrationSteps/CreateNationalEvent.class
+/target/test-classes/features/createNationalEvent.feature
+/target/test-classes/bni/regression/pageFactory/CreateNewNationalEvent.class
+/target/test-classes/bni/regression/pageFactory/NationalManageEvents.class

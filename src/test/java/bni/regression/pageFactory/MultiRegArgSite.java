@@ -5,7 +5,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class MultiRegArgSite {
@@ -20,6 +19,9 @@ public class MultiRegArgSite {
 
     @FindBy(css = "#websiteViewPagesDatatable_filter > label > input")
     WebElement searchTextBox;
+
+    @FindBy(css = "#box-site-info > div.box-body > div > div:nth-child(2) > p:nth-child(2) > a")
+    WebElement previewUrl;
 
     public MultiRegArgSite(WebDriver driver) {
         MultiRegArgSite.driver = driver;
@@ -39,6 +41,10 @@ public class MultiRegArgSite {
 
     public void clickEditPageButton(){
         editPageButton.click();
+    }
+
+    public void clickPreviewUrl(){
+        previewUrl.click();
     }
 
 }

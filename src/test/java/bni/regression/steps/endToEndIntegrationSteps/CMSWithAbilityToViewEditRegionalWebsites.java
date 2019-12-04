@@ -37,6 +37,7 @@ public class CMSWithAbilityToViewEditRegionalWebsites {
     private RegionWebsiteList regionWebsiteList;
     private MultiRegArgSite multiRegArgSite;
     private EditPageFor editPageFor;
+    private CMSPreviewUrl cmsPreviewUrl;
 
     @Before
     public void setup() throws Exception {
@@ -83,11 +84,11 @@ public class CMSWithAbilityToViewEditRegionalWebsites {
             regionWebsiteList.clickSettingsButton();
             TimeUnit.SECONDS.sleep(8);
             multiRegArgSite = new MultiRegArgSite(driver);
-            multiRegArgSite.enterSearchCriteria(data.get("editWebSiteString"));
+            multiRegArgSite.enterSearchCriteria(data.get("searchWebSiteString"));
             TimeUnit.SECONDS.sleep(2);
             multiRegArgSite.clickEditPageButton();
             editPageFor = new EditPageFor(driver);
-            editPageFor.enterPageTitle();
+            editPageFor.enterPageTitle(data.get("editWebSiteString"));
             TimeUnit.SECONDS.sleep(2);
             editPageFor.clickSaveButton();
             TimeUnit.SECONDS.sleep(5);
@@ -99,6 +100,13 @@ public class CMSWithAbilityToViewEditRegionalWebsites {
             Alert alert = driver.switchTo().alert();
             alert.accept();
             TimeUnit.SECONDS.sleep(12);
+            multiRegArgSite.clickPreviewUrl();
+            TimeUnit.SECONDS.sleep(12);
+            ArrayList<String> tabs1 = new ArrayList<String>(driver.getWindowHandles());
+            driver.switchTo().window(tabs1.get(2));
+            //cmsPreviewUrl = new CMSPreviewUrl(driver);
+            //cmsPreviewUrl.checkFindAPersonLink(data.get("editWebSiteString"));
+            TimeUnit.SECONDS.sleep(2);
             driver.switchTo().window(tabs.get(0));
             signOut.signOutBni();
         }

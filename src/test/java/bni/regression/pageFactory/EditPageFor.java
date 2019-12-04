@@ -32,9 +32,9 @@ public class EditPageFor {
         saveButton.click();
     }
 
-    public void enterPageTitle() {
+    public void enterPageTitle(String websiteString) {
         pageTitleTextBox.clear();
-        pageTitleTextBox.sendKeys("Test Automation");
+        pageTitleTextBox.sendKeys(websiteString);
     }
 
     public void clickBackButton(){
