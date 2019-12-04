@@ -5,8 +5,8 @@ import bni.regression.libraries.ui.Login;
 import bni.regression.libraries.ui.SelectCountryRegionChapter;
 import bni.regression.libraries.ui.SignOut;
 import bni.regression.pageFactory.BNIConnect;
-import bni.regression.pageFactory.CreateNewNationalEvent;
-import bni.regression.pageFactory.NationalManageEvents;
+import bni.regression.pageFactory.CreateNewEvent;
+import bni.regression.pageFactory.ManageEvents;
 import cucumber.api.DataTable;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -15,12 +15,11 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.openqa.selenium.WebDriver;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class CreateNationalEvent {
+public class CreateRegionalEvent {
 
     public static WebDriver driver;
     private Login login = new Login();
@@ -32,8 +31,8 @@ public class CreateNationalEvent {
     private LaunchBrowser launchBrowser = new LaunchBrowser();
     private ReadWritePropertyFile readWritePropertyFile = new ReadWritePropertyFile();
     ReadWriteExcel readWriteExcel = new ReadWriteExcel();
-    private NationalManageEvents nationalManageEvents;
-    private CreateNewNationalEvent createNewNationalEvent;
+    private ManageEvents manageEvents;
+    private CreateNewEvent createNewEvent;
     private CurrentDateTime currentDateTime = new CurrentDateTime();
 
     @Before
@@ -47,16 +46,16 @@ public class CreateNationalEvent {
     }
 
     // Scenario: Navigate to Add a Visitor page
-    @Given("I navigate to homepage")
+    @Given("user navigates to homepage using below details")
     public void step_1(DataTable loginDetails) throws Exception {
         List<List<String>> login = loginDetails.raw();
         loginSubList = login.subList(1, login.size());
     }
 
-    @When("I enter the website with National level admin login details and navigate to Tools , click Events, Manage National Events,  click Create New National Event and enter below details and click Submit button and click Publish")
-    public void step_2(DataTable nationalEvent) throws Exception {
+    @When("user enter the website with Regional level admin login details and navigate to Tools , click Events, Manage National Events,  click Create New Regional Event and enter below details and click Submit button and click Publish")
+    public void step_2(DataTable regionalEvents) throws Exception {
         Integer i = 2;
-        for (Map<String, String> data : nationalEvent.asMaps(String.class, String.class)) {
+        for (Map<String, String> data : regionalEvents.asMaps(String.class, String.class)) {
             String[] splitCredentials = loginSubList.get(i - 2).toString().replace("[", "").replace("]", "").split(",");
             driver = launchBrowser.getDriver();
             launchBrowser.invokeBrowser();
@@ -69,80 +68,75 @@ public class CreateNationalEvent {
             selectCountryRegionChapter.selectCountryRegChap(splitCredentials[2].trim(), splitCredentials[3].trim(), splitCredentials[4].trim());
             bniConnect = new BNIConnect(driver);
             TimeUnit.SECONDS.sleep(3);
-            bniConnect.navigateMenu("Tools,Events,Manage National Events");
+            bniConnect.navigateMenu("Tools,Events,Manage Regional Events");
             TimeUnit.SECONDS.sleep(8);
-            nationalManageEvents = new NationalManageEvents(driver);
-            nationalManageEvents.clickCreateNewNationalEvent();
+            manageEvents = new ManageEvents(driver);
+            manageEvents.clickCreateNewEventButton();
             TimeUnit.SECONDS.sleep(8);
-            ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
-            driver.switchTo().window(tabs.get(1));
-            createNewNationalEvent = new CreateNewNationalEvent(driver);
+            createNewEvent = new CreateNewEvent(driver);
             TimeUnit.SECONDS.sleep(2);
-            createNewNationalEvent.selectEventType(data.get("eventType"));
+            createNewEvent.selectEventType(data.get("eventType"));
             TimeUnit.SECONDS.sleep(1);
             String eventNameDateTime = currentDateTime.dateTime();
             eventNameDateTime = (eventNameDateTime.replaceAll("/", "").replaceAll(":", "").replaceAll(" ", ""));
-            createNewNationalEvent.enterEventName(data.get("eventName") + eventNameDateTime);
+            createNewEvent.enterEventName(data.get("eventName") + eventNameDateTime);
             TimeUnit.SECONDS.sleep(1);
-            createNewNationalEvent.enterShortDescription(data.get("shortDescription"));
+            createNewEvent.enterShortDescription(data.get("shortDescription"));
             TimeUnit.SECONDS.sleep(1);
-            createNewNationalEvent.selectContactPerson(data.get("contactPerson"));
+            createNewEvent.selectContactPerson(data.get("contactPerson"));
             TimeUnit.SECONDS.sleep(1);
-            createNewNationalEvent.selectLocation(data.get("location"));
+            createNewEvent.selectLocation(data.get("location"));
             TimeUnit.SECONDS.sleep(1);
-            createNewNationalEvent.selectTimeZone(data.get("timeZone"), data.get("timeZoneCountry"));
+            createNewEvent.selectTimeZone(data.get("timeZone"), data.get("timeZoneCountry"));
             TimeUnit.SECONDS.sleep(1);
-            createNewNationalEvent.clickEventStartTime();
+            createNewEvent.clickEventStartTime();
             TimeUnit.SECONDS.sleep(1);
-            createNewNationalEvent.selectYear(data.get("eventStartYear"));
+            createNewEvent.selectYear(data.get("eventStartYear"));
             TimeUnit.SECONDS.sleep(1);
-            createNewNationalEvent.selectMonth(data.get("eventStartMonth"));
+            createNewEvent.selectMonth(data.get("eventStartMonth"));
             TimeUnit.SECONDS.sleep(1);
-            createNewNationalEvent.selectDateFromDatePicker(data.get("eventStartDay"));
+            createNewEvent.selectDateFromDatePicker(data.get("eventStartDay"));
             TimeUnit.SECONDS.sleep(1);
-            createNewNationalEvent.selectStartTimeHr(data.get("eventStartHour"));
+            createNewEvent.selectStartTimeHr(data.get("eventStartHour"));
             TimeUnit.SECONDS.sleep(1);
-            createNewNationalEvent.selectStartTimeMin(data.get("eventStartMin"));
+            createNewEvent.selectStartTimeMin(data.get("eventStartMin"));
             TimeUnit.SECONDS.sleep(1);
-            createNewNationalEvent.selectStartTime(data.get("startTime"));
+            createNewEvent.selectStartTime(data.get("startTime"));
             TimeUnit.SECONDS.sleep(1);
-            createNewNationalEvent.clickEventEndTime();
+            createNewEvent.clickEventEndTime();
             TimeUnit.SECONDS.sleep(1);
-            createNewNationalEvent.selectYear(data.get("eventEndYear"));
+            createNewEvent.selectYear(data.get("eventEndYear"));
             TimeUnit.SECONDS.sleep(1);
-            createNewNationalEvent.selectMonth(data.get("eventEndMonth"));
+            createNewEvent.selectMonth(data.get("eventEndMonth"));
             TimeUnit.SECONDS.sleep(1);
-            createNewNationalEvent.selectDateFromDatePicker(data.get("eventEndDay"));
+            createNewEvent.selectDateFromDatePicker(data.get("eventEndDay"));
             TimeUnit.SECONDS.sleep(1);
-            createNewNationalEvent.selectEndTimeHr(data.get("eventEndHour"));
+            createNewEvent.selectEndTimeHr(data.get("eventEndHour"));
             TimeUnit.SECONDS.sleep(1);
-            createNewNationalEvent.selectEndTimeMin(data.get("eventEndMin"));
+            createNewEvent.selectEndTimeMin(data.get("eventEndMin"));
             TimeUnit.SECONDS.sleep(1);
-            createNewNationalEvent.selectEndTime(data.get("endTime"));
+            createNewEvent.selectEndTime(data.get("endTime"));
             TimeUnit.SECONDS.sleep(1);
-            createNewNationalEvent.selectHostCountry(data.get("hostCountry"));
+            createNewEvent.enterFirstRemainderSent(data.get("firstRemainderSent"));
             TimeUnit.SECONDS.sleep(1);
-            createNewNationalEvent.enterFirstRemainderSent(data.get("firstRemainderSent"));
+            createNewEvent.enterSecondRemainderSent(data.get("secondRemainderSent"));
             TimeUnit.SECONDS.sleep(1);
-            createNewNationalEvent.enterSecondRemainderSent(data.get("secondRemainderSent"));
-            TimeUnit.SECONDS.sleep(1);
-            createNewNationalEvent.clickSubmitButton();
+            createNewEvent.clickSubmitButton();
             TimeUnit.SECONDS.sleep(5);
-            createNewNationalEvent.clickPublishButton();
+            createNewEvent.clickPublishButton();
             TimeUnit.SECONDS.sleep(8);
-            driver.switchTo().window(tabs.get(0));
-            nationalManageEvents = new NationalManageEvents(driver);
-            nationalManageEvents.clickViewNationalEvent();
+            manageEvents = new ManageEvents(driver);
+            manageEvents.clickViewEventsButton();
             TimeUnit.SECONDS.sleep(5);
-            nationalManageEvents.enterSearchString(data.get("eventName") + eventNameDateTime);
+            manageEvents.enterSearchString(data.get("eventName") + eventNameDateTime);
             TimeUnit.SECONDS.sleep(2);
-            nationalManageEvents.checkEventName(data.get("eventName") + eventNameDateTime);
+            manageEvents.checkEventName(data.get("eventName") + eventNameDateTime);
             TimeUnit.SECONDS.sleep(2);
             signOut.signOutBni();
         }
     }
 
-    @Then("National Event will be created and Published successfully. Navigate to Tools menu, Events, Manage National Events . Click View National Events button and verify Event added successfully")
+    @Then("Regional Event will be created and Published successfully. Navigate to Tools menu, Events, Manage Regional Events . Click View Regional Events button and verify Event added successfully")
     public void step_3() {
         System.out.println("Create National Events script executed.");
     }
