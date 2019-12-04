@@ -73,24 +73,24 @@ public class CreateNationalEvent {
             TimeUnit.SECONDS.sleep(8);
             nationalManageEvents = new NationalManageEvents(driver);
             nationalManageEvents.clickCreateNewNationalEvent();
+            TimeUnit.SECONDS.sleep(8);
             ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
             driver.switchTo().window(tabs.get(1));
             createNewNationalEvent = new CreateNewNationalEvent(driver);
-            createNewNationalEvent.selectCountry(data.get("country"));
-            TimeUnit.SECONDS.sleep(1);
+            TimeUnit.SECONDS.sleep(2);
             createNewNationalEvent.selectEventType(data.get("eventType"));
             TimeUnit.SECONDS.sleep(1);
             String eventNameDateTime = currentDateTime.dateTime();
             eventNameDateTime = (eventNameDateTime.replaceAll("/", "").replaceAll(":", "").replaceAll(" ", ""));
             createNewNationalEvent.enterEventName(data.get("eventName") + eventNameDateTime);
             TimeUnit.SECONDS.sleep(1);
-            createNewNationalEvent.enterShortDescription(data.get("shortDesc"));
+            createNewNationalEvent.enterShortDescription(data.get("shortDescription"));
             TimeUnit.SECONDS.sleep(1);
             createNewNationalEvent.selectContactPerson(data.get("contactPerson"));
             TimeUnit.SECONDS.sleep(1);
             createNewNationalEvent.selectLocation(data.get("location"));
             TimeUnit.SECONDS.sleep(1);
-            createNewNationalEvent.selectTimeZone(data.get("timeZone"));
+            createNewNationalEvent.selectTimeZone(data.get("timeZone"), data.get("timeZoneCountry"));
             TimeUnit.SECONDS.sleep(1);
             createNewNationalEvent.clickEventStartTime();
             TimeUnit.SECONDS.sleep(1);
@@ -129,17 +129,22 @@ public class CreateNationalEvent {
             createNewNationalEvent.clickSubmitButton();
             TimeUnit.SECONDS.sleep(5);
             createNewNationalEvent.clickPublishButton();
-            //driver.switchTo().window(tabs.get(0));
-            //signOut.signOutBni();
-
+            TimeUnit.SECONDS.sleep(8);
+            driver.switchTo().window(tabs.get(0));
+            nationalManageEvents = new NationalManageEvents(driver);
+            nationalManageEvents.clickViewNationalEvent();
+            TimeUnit.SECONDS.sleep(5);
+            nationalManageEvents.enterSearchString(data.get("eventName") + eventNameDateTime);
+            TimeUnit.SECONDS.sleep(2);
+            nationalManageEvents.checkEventName(data.get("eventName") + eventNameDateTime);
+            TimeUnit.SECONDS.sleep(2);
+            signOut.signOutBni();
         }
-
-        // Add database verification code.
     }
 
-    @Then("palms Summary report is displayed, check via DB")
+    @Then("National Event will be created and Published successfully. Navigate to Tools menu, Events, Manage National Events . Click View National Events button and verify Event added successfully")
     public void step_3() {
-        System.out.println("View palms summary script executed.");
+        System.out.println("Create National Events script executed.");
     }
 
 }

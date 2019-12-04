@@ -37,6 +37,15 @@ public class CreateNewNationalEvent {
     @FindBy(css = "#timezone")
     WebElement timeZoneListBox;
 
+    @FindBy(css = "#edit-date-default-timezone")
+    WebElement timeZonepopup;
+
+    @FindBy(css = "#edit-site-default-country")
+    WebElement countrypopup;
+
+    @FindBy(css = "body > div.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-draggable > div.ui-dialog-buttonpane.ui-widget-content.ui-helper-clearfix > button:nth-child(1)")
+    WebElement selectButton;
+
     @FindBy(css = "#eventStartDate")
     WebElement eventStartDateTextBox;
 
@@ -94,8 +103,9 @@ public class CreateNewNationalEvent {
     }
 
     public void selectCountry(String country) {
-        Select countrySelect = new Select(countryListBox);
-        countrySelect.selectByVisibleText(country);
+        //Select countrySelect = new Select(countryListBox);
+        //countrySelect.selectByVisibleText(country);
+        countryListBox.click();
     }
 
     public void selectEventType(String eventType){
@@ -122,17 +132,24 @@ public class CreateNewNationalEvent {
         locationSelect.selectByVisibleText(location);
     }
 
-    public void selectTimeZone(String timeZone){
-        Select timeZoneSelect = new Select(timeZoneListBox);
-        timeZoneSelect.selectByVisibleText(timeZone);
+    public void selectTimeZone(String timeZone, String country) throws InterruptedException {
+        timeZoneListBox.click();
+        TimeUnit.SECONDS.sleep(3);
+        Select timeZonePopUpSelect = new Select(timeZonepopup);
+        timeZonePopUpSelect.selectByVisibleText(timeZone);
+        TimeUnit.SECONDS.sleep(1);
+        Select countryPopUpSelect = new Select(countrypopup);
+        countryPopUpSelect.selectByVisibleText(country);
+        TimeUnit.SECONDS.sleep(1);
+        selectButton.click();
     }
 
     public void clickEventStartTime(){
-        eventStartDateTextBox.clear();
+        eventStartDateTextBox.click();
     }
 
     public void clickEventEndTime(){
-        eventEndDateTextBox.clear();
+        eventEndDateTextBox.click();
     }
 
     public void selectStartTimeHr(String stTimeHr){

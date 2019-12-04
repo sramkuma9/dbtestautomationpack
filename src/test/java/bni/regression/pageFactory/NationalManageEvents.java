@@ -7,6 +7,8 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import static org.junit.Assert.assertEquals;
+
 public class NationalManageEvents {
     public static WebDriver driver;
     public WebDriverWait wait;
@@ -16,6 +18,12 @@ public class NationalManageEvents {
 
     @FindBy(css = "#viewEvents")
     WebElement viewNationalEventsButton;
+
+    @FindBy(css = "#datalist_filter > input[type=text]")
+    WebElement searchTextBox;
+
+    @FindBy(css = "#datalist > tbody > tr:nth-child(1) > td:nth-child(1) > a")
+    WebElement eventName;
 
     public NationalManageEvents(WebDriver driver) {
         NationalManageEvents.driver = driver;
@@ -31,5 +39,14 @@ public class NationalManageEvents {
 
     public void clickViewNationalEvent() {
         viewNationalEventsButton.click();
+    }
+
+    public void enterSearchString(String eventName){
+        searchTextBox.sendKeys(eventName);
+    }
+
+    public void checkEventName(String expectedEventName){
+        String actualEventName = eventName.getText();
+        assertEquals("National event is not created successfully...", expectedEventName, actualEventName);
     }
 }
