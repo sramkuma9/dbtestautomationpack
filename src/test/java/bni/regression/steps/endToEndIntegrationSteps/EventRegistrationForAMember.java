@@ -84,8 +84,10 @@ public class EventRegistrationForAMember {
             }
             bniConnect.selectItemFromEventLists(eventName);
             TimeUnit.SECONDS.sleep(6);
+            viewEventDetails = new ViewEventDetails(driver);
             viewEventDetails.clickRegisterButton();
             TimeUnit.SECONDS.sleep(6);
+            registerForEvent = new RegisterForEvent(driver);
             registerForEvent.selectRole(data.get("role"));
             TimeUnit.SECONDS.sleep(1);
             registerForEvent.selectPaymentOption(data.get("paymentOption"));

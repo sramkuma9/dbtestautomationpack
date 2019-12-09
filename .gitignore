@@ -288,3 +288,7 @@
 /target/test-classes/features/createNationalEvent.feature
 /target/test-classes/bni/regression/pageFactory/CreateNewNationalEvent.class
 /target/test-classes/bni/regression/pageFactory/NationalManageEvents.class
+/target/test-classes/bni/regression/pageFactory/CreateNewEvent.class
+/target/test-classes/bni/regression/steps/endToEndIntegrationSteps/CreateRegionalEvent.class
+/target/test-classes/bni/regression/steps/endToEndIntegrationSteps/EventRegistrationForAMember.class
+/target/test-classes/features/eventRegistrationForAMember.feature

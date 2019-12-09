@@ -9,5 +9,5 @@ Feature: Event Registration for a member via application
     When Click My Network link in the home page, under Events select an event, click Register Me. On Register event page enter payment option click submit button
       | eventName      |  | role   |  | paymentOption                      |
       | TestAutomation |  | Member |  | Collected at Venue (if applicable) |
-      | Automation     |  | Member |  | Collected at Venue (if applicable) |
+      | Automation     |  | Member |  | Cash collected at venue |
     Then Verify Email is received in registered Email account
