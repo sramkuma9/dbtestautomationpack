@@ -81,6 +81,8 @@ public class CreateRegionalEvent {
             eventNameDateTime = (eventNameDateTime.replaceAll("/", "").replaceAll(":", "").replaceAll(" ", ""));
             createNewEvent.enterEventName(data.get("eventName") + eventNameDateTime);
             TimeUnit.SECONDS.sleep(1);
+            readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
+            boolean setEventFlag = readWriteExcel.setCellData("src/test/resources/inputFiles/testInput.xlsx", "createRegionalEvent", 0, i, data.get("eventName") + eventNameDateTime);
             createNewEvent.enterShortDescription(data.get("shortDescription"));
             TimeUnit.SECONDS.sleep(1);
             createNewEvent.selectContactPerson(data.get("contactPerson"));

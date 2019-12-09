@@ -71,6 +71,12 @@ public class BNIConnect {
     @FindBy(css = "#columnlinks > a:nth-child(5)")
     WebElement renewNowLink;
 
+    @FindBy(css = "#lpUlTabs > li")
+    List<WebElement> leftSideMenu;
+
+    @FindBy(css = "#listevents > div")
+    List<WebElement> eventLists;
+
     public BNIConnect(WebDriver driver) {
         BNIConnect.driver = driver;
         AjaxElementLocatorFactory factory = new AjaxElementLocatorFactory(driver, 100);
@@ -222,6 +228,32 @@ public class BNIConnect {
             String menuItem = td_collection.get(0).findElement(By.tagName("tr")).getText();
             if (item.equals(menuItem)) {
                 td_collection.get(0).findElement(By.tagName("tr")).findElement(By.tagName("a")).click();
+                TimeUnit.SECONDS.sleep(3);
+                break;
+            }
+        }
+    }
+
+    public void selectItemFromLeftSideMenu(String item) throws Exception {
+        TimeUnit.SECONDS.sleep(2);
+        for (WebElement trElement : leftSideMenu) {
+            List<WebElement> td_collection = trElement.findElements(By.tagName("a"));
+            String menuItem = td_collection.get(0).getText();
+            if (item.equals(menuItem)) {
+                td_collection.get(0).click();
+                TimeUnit.SECONDS.sleep(3);
+                break;
+            }
+        }
+    }
+
+    public void selectItemFromEventLists(String item) throws Exception {
+        TimeUnit.SECONDS.sleep(2);
+        for (WebElement trElement : eventLists) {
+            List<WebElement> td_collection = trElement.findElements(By.tagName("a"));
+            String menuItem = td_collection.get(0).getText();
+            if (item.equals(menuItem)) {
+                td_collection.get(0).click();
                 TimeUnit.SECONDS.sleep(3);
                 break;
             }
