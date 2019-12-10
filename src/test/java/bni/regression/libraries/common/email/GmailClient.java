@@ -4,6 +4,7 @@ import bni.regression.libraries.common.ReadWritePropertyFile;
 import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.imap.IMAPStore;
 import org.junit.platform.commons.util.StringUtils;
+
 import javax.mail.*;
 import javax.mail.internet.ContentType;
 import javax.mail.internet.InternetAddress;
@@ -18,13 +19,13 @@ public class GmailClient {
 
     private ReadWritePropertyFile readWritePropertyFile = new ReadWritePropertyFile();
 
-    public void checkEmail(String userName, String password, String subject, String toEmailId) {
+    public void checkEmail(String userName, String subject, String toEmailId) {
         Properties properties = new Properties();
         properties.put("mail.store.protocol", readWritePropertyFile.loadAndReadPropertyFile("emailProtocol", "properties/config.properties"));
         properties.put("mail.imaps.host", readWritePropertyFile.loadAndReadPropertyFile("emailHostName", "properties/config.properties"));
         properties.put("mail.imaps.port", readWritePropertyFile.loadAndReadPropertyFile("emailPort", "properties/config.properties"));
+        String password = readWritePropertyFile.loadAndReadPropertyFile("emailPassword", "properties/config.properties");
         properties.put("mail.imaps.timeout", "10000");
-
         Session session = Session.getInstance(properties); // not
         // getDefaultInstance
         IMAPStore store = null;
@@ -41,20 +42,28 @@ public class GmailClient {
             inbox = (IMAPFolder) store.getFolder("INBOX");
             ensureOpen(inbox, userName, password);
             Message[] messages = inbox.getMessages();
+            Integer checkSubject = 0;
             for (Message message : messages) {
                 try {
                     Address[] tos = message.getAllRecipients();
                     String receiver = tos == null ? null : ((InternetAddress) tos[0]).getAddress();
-                    if (message.getSubject().equals(subject) && receiver.equals(toEmailId)) {
+                    //if (message.getSubject().equals(subject) && receiver.equals(toEmailId)) {
+                    if (message.getSubject().contains(subject) && receiver.equals(toEmailId)) {
                         String emailBody = this.getTextFromMessage(message);
-                        System.out.println("Mail Content:- " + emailBody);
+                        //System.out.println("Mail Content:- " + emailBody);
                         Address[] froms = message.getFrom();
                         String Sender = froms == null ? null : ((InternetAddress) froms[0]).getAddress();
-                        System.out.println("Mail Sender:- " + Sender);
+                        //System.out.println("Mail Sender:- " + Sender);
+                        System.out.println("email received successfully.....");
+                        checkSubject++;
+                        break;
                     }
                 } catch (MessagingException e) {
                     e.printStackTrace();
                 }
+            }
+            if (!(checkSubject == 1)) {
+                System.out.println("email has not been received.....");
             }
 
         } catch (Exception e) {
@@ -129,7 +138,7 @@ public class GmailClient {
             BodyPart bodyPart = mimeMultipart.getBodyPart(i);
             result += getTextFromBodyPart(bodyPart);
             //System.out.println(bodyPart.getFileName());
-            if(!Part.ATTACHMENT.equalsIgnoreCase(bodyPart.getDisposition()) &&
+            if (!Part.ATTACHMENT.equalsIgnoreCase(bodyPart.getDisposition()) &&
                     StringUtils.isBlank(bodyPart.getFileName())) {
                 continue; // dealing with attachments only
             }
@@ -138,7 +147,7 @@ public class GmailClient {
             FileOutputStream fos = new FileOutputStream(f);
             byte[] buf = new byte[4096];
             int bytesRead;
-            while((bytesRead = is.read(buf))!=-1) {
+            while ((bytesRead = is.read(buf)) != -1) {
                 fos.write(buf, 0, bytesRead);
             }
             fos.close();

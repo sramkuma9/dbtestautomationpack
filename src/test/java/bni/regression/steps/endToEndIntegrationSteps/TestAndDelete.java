@@ -29,6 +29,8 @@ public class TestAndDelete {
 //        }
         //searchAndRenameFile.searchFileAndRename("/home/ajay/Downloads/test","del",".xls");
         //searchAndDeleteFile.searchFileAndDelete("/home/ajay/Downloads/","FindAPersonReport",".xls");
-       // gmailClient.checkEmail("dbselenium@gmail.com",readWritePropertyFile.loadAndReadPropertyFile("emailPassword", "properties/config.properties"),"Automation","dbselenium@gmail.com");
+       //gmailClient.checkEmail("shanthibni@gmail.com","BNI- Your registration is successful for TestAutomation20191204134548","shanthibni+32@gmail.com");
+       // gmailClient.checkEmail("shanthibni@gmail.com","email verification","shanthibni+45@gmail.com");
+        //gmailClient.checkEmail("dbselenium@gmail.com","Automation","dbselenium@gmail.com");
     }
 }

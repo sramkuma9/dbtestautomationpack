@@ -1,6 +1,7 @@
 package bni.regression.steps.endToEndIntegrationSteps;
 
 import bni.regression.libraries.common.*;
+import bni.regression.libraries.common.email.GmailClient;
 import bni.regression.libraries.ui.Login;
 import bni.regression.libraries.ui.SelectCountryRegionChapter;
 import bni.regression.libraries.ui.SignOut;
@@ -34,6 +35,7 @@ public class EventRegistrationForAMember {
     private ViewEventDetails viewEventDetails;
     private RegisterForEvent registerForEvent;
     private CurrentDateTime currentDateTime = new CurrentDateTime();
+    private GmailClient gmailClient;
 
     @Before
     public void setup() throws Exception {
@@ -95,7 +97,7 @@ public class EventRegistrationForAMember {
             registerForEvent.clickSubmitButton();
             TimeUnit.SECONDS.sleep(12);
             signOut.signOutBni();
-            //add email verification code.
+            //gmailClient.checkEmail("shanthibni@gmail.com","BNI- Your registration is successful for " + eventName,"shanthibni+32@gmail.com");
         }
     }
 
