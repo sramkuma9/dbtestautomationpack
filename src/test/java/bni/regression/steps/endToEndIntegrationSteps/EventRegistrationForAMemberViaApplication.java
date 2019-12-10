@@ -5,8 +5,9 @@ import bni.regression.libraries.common.email.GmailClient;
 import bni.regression.libraries.ui.Login;
 import bni.regression.libraries.ui.SelectCountryRegionChapter;
 import bni.regression.libraries.ui.SignOut;
+import bni.regression.pageFactory.AddARegistration;
+import bni.regression.pageFactory.AddARegistrationEventName;
 import bni.regression.pageFactory.BNIConnect;
-import bni.regression.pageFactory.RegisterForEvent;
 import bni.regression.pageFactory.ViewEventDetails;
 import cucumber.api.DataTable;
 import cucumber.api.java.After;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class EventRegistrationForAMember {
+public class EventRegistrationForAMemberViaApplication {
 
     public static WebDriver driver;
     private Login login = new Login();
@@ -32,10 +33,11 @@ public class EventRegistrationForAMember {
     private LaunchBrowser launchBrowser = new LaunchBrowser();
     private ReadWritePropertyFile readWritePropertyFile = new ReadWritePropertyFile();
     ReadWriteExcel readWriteExcel = new ReadWriteExcel();
-    private ViewEventDetails viewEventDetails;
-    private RegisterForEvent registerForEvent;
     private CurrentDateTime currentDateTime = new CurrentDateTime();
     private GmailClient gmailClient;
+    private ViewEventDetails viewEventDetails;
+    private AddARegistrationEventName addARegistrationEventName;
+    private AddARegistration addARegistration;
 
     @Before
     public void setup() throws Exception {
@@ -48,13 +50,13 @@ public class EventRegistrationForAMember {
     }
 
     // Scenario: Navigate to Add a Visitor page
-    @Given("BNI Home page entered with below login details")
+    @Given("user enters the BNI Home page with  Regional admin login details")
     public void step_1(DataTable loginDetails) throws Exception {
         List<List<String>> login = loginDetails.raw();
         loginSubList = login.subList(1, login.size());
     }
 
-    @When("Click My Network link in the home page, under Events select an event, click Register Me. On Register event page enter payment option click submit button")
+    @When("Click My Network link in the home page, under Events select an event, click Add a Registration button, enter first name and last name and click search button")
     public void step_2(DataTable eventRegistration) throws Exception {
         Integer i = 2;
         Integer excelRow = 1;
@@ -78,32 +80,41 @@ public class EventRegistrationForAMember {
             String transMainMenu = readWriteExcel.getCellData("translation", colNumber, 12);
             bniConnect.selectItemFromLeftSideMenu(transMainMenu);
             TimeUnit.SECONDS.sleep(5);
-            if(data.get("eventName").equals("TestAutomation")) {
+            if (data.get("eventName").equals("TestAutomation")) {
                 readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
                 eventName = readWriteExcel.getCellData("createRegionalEvent", 0, excelRow);
-            }else{
+            } else {
                 eventName = data.get("eventName");
             }
             bniConnect.selectItemFromEventLists(eventName);
             TimeUnit.SECONDS.sleep(6);
             viewEventDetails = new ViewEventDetails(driver);
-            viewEventDetails.clickRegisterButton();
+            viewEventDetails.clickAddARegistrationButton();
             TimeUnit.SECONDS.sleep(6);
-            registerForEvent = new RegisterForEvent(driver);
-            registerForEvent.selectRole(data.get("role"));
+            addARegistrationEventName = new AddARegistrationEventName(driver);
+            addARegistrationEventName.enterNameTextBox(data.get("name"));
             TimeUnit.SECONDS.sleep(1);
-            registerForEvent.selectPaymentOption(data.get("paymentOption"));
+            addARegistrationEventName.selectCountry(data.get("country"));
             TimeUnit.SECONDS.sleep(1);
-            registerForEvent.clickSubmitButton();
-            TimeUnit.SECONDS.sleep(12);
+            addARegistrationEventName.clickSearchUsersButton();
+            TimeUnit.SECONDS.sleep(5);
+            addARegistrationEventName.clickAddARegistrationButton();
+            TimeUnit.SECONDS.sleep(6);
+            addARegistration = new AddARegistration(driver);
+            addARegistration.selectRole(data.get("role"));
+            TimeUnit.SECONDS.sleep(1);
+            addARegistration.enterSpecialNeeds(data.get("specialNeeds"));
+            TimeUnit.SECONDS.sleep(1);
+            addARegistration.clickSubmitButton();
+            TimeUnit.SECONDS.sleep(15);
             signOut.signOutBni();
-            //gmailClient.checkEmail("shanthibni@gmail.com","BNI- Your registration is successful for " + eventName,"shanthibni+32@gmail.com");
+            //add database verification and email verification code.
         }
     }
 
-    @Then("Verify Email is received in registered Email account")
+    @Then("Click + symbol and enter special needs and click submit in Add a Registration page. Verify confirmation message")
     public void step_3() {
-        System.out.println("event registration for a member script executed.");
+        System.out.println("event registration for a member via application script executed.");
     }
 
 }
