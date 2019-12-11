@@ -9,8 +9,6 @@ import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.List;
-
 import static junit.framework.TestCase.assertEquals;
 
 public class EditProfile {
@@ -38,6 +36,16 @@ public class EditProfile {
 
     @FindBy(css =  "#editMemberUserProfileSubmitbutton")
     WebElement languageUpdateButton;
+
+    @FindBy(css =  "#memberdetailicon")
+    WebElement memberShipDetailsButton;
+
+    @FindBy(css =  "#editMemberMembershipDetails > div.editmemberbuttonarea.positionforfullwidth > a:nth-child(2)")
+    WebElement dropButton;
+
+    @FindBy(css =  "#editMemberMembershipDetails > label:nth-child(19) > span.fieldtext.fullwidth")
+    WebElement currentStatus;
+
 
     public EditProfile(WebDriver driver) {
         EditProfile.driver = driver;
@@ -72,6 +80,14 @@ public class EditProfile {
         mainProfileButton.click();
     }
 
+    public void clickMemberShipDetailsButton(){
+        memberShipDetailsButton.click();
+    }
+
+    public void clickDropButton(){
+        dropButton.click();
+    }
+
     public void selectLanguage(String language) {
         Select languageSelect = new Select(languageListBox);
         //List<WebElement>  text = languageSelect.getOptions();
@@ -79,5 +95,10 @@ public class EditProfile {
           //  System.out.println(subElement.getText());
         //}
         languageSelect.selectByValue("language." + language);
+    }
+
+    public void checkCurrentStatus(){
+        String actualStatus = currentStatus.getText().substring(0,7);
+        assertEquals("Member dropped status is not correct.", "Dropped", actualStatus);
     }
 }

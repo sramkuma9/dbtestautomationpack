@@ -47,7 +47,6 @@ public class GmailClient {
                 try {
                     Address[] tos = message.getAllRecipients();
                     String receiver = tos == null ? null : ((InternetAddress) tos[0]).getAddress();
-                    //if (message.getSubject().equals(subject) && receiver.equals(toEmailId)) {
                     if (message.getSubject().contains(subject) && receiver.equals(toEmailId)) {
                         String emailBody = this.getTextFromMessage(message);
                         //System.out.println("Mail Content:- " + emailBody);

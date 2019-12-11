@@ -77,6 +77,9 @@ public class BNIConnect {
     @FindBy(css = "#listevents > div")
     List<WebElement> eventLists;
 
+    @FindBy(css = "#datalist1 > tbody > tr.odd > td.sorting_2 > a")
+    WebElement membershipLink;
+
     public BNIConnect(WebDriver driver) {
         BNIConnect.driver = driver;
         AjaxElementLocatorFactory factory = new AjaxElementLocatorFactory(driver, 100);
@@ -284,5 +287,9 @@ public class BNIConnect {
 
     public  void clickRenewNowLink(){
         renewNowLink.click();
+    }
+
+    public  void clickMembershipLink(){
+        membershipLink.click();
     }
 }

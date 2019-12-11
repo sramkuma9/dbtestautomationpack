@@ -107,6 +107,7 @@ public class EventRegistrationForAMemberViaApplication {
             TimeUnit.SECONDS.sleep(1);
             addARegistration.clickSubmitButton();
             TimeUnit.SECONDS.sleep(15);
+            excelRow++;
             signOut.signOutBni();
             //add database verification and email verification code.
         }

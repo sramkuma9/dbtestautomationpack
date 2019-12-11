@@ -134,6 +134,7 @@ public class CreateRegionalEvent {
             TimeUnit.SECONDS.sleep(2);
             manageEvents.checkEventName(data.get("eventName") + eventNameDateTime);
             TimeUnit.SECONDS.sleep(2);
+            i++;
             signOut.signOutBni();
         }
     }
