@@ -13,6 +13,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.Assert.assertEquals;
+
 public class BNIConnect {
     public static WebDriver driver;
     public WebDriverWait wait;
@@ -79,6 +81,9 @@ public class BNIConnect {
 
     @FindBy(css = "#datalist1 > tbody > tr.odd > td.sorting_2 > a")
     WebElement membershipLink;
+
+    @FindBy(css = "#footer > div.copyright > p:nth-child(1)")
+    WebElement buildNumber;
 
     public BNIConnect(WebDriver driver) {
         BNIConnect.driver = driver;
@@ -291,5 +296,11 @@ public class BNIConnect {
 
     public  void clickMembershipLink(){
         membershipLink.click();
+    }
+
+    public void checkBuildNumber(String expBuildNumber){
+        String[] splitBuildNumber = buildNumber.getText().split("\n");
+        String [] acutualBuildNumber = splitBuildNumber[1].split(",");
+        assertEquals("Build number is not correct...", expBuildNumber,acutualBuildNumber[0]);
     }
 }
