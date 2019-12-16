@@ -46,6 +46,8 @@ public class EditProfile {
     @FindBy(css =  "#editMemberMembershipDetails > label:nth-child(19) > span.fieldtext.fullwidth")
     WebElement currentStatus;
 
+    @FindBy(css =  "#editMemberMembershipDetails > label:nth-child(23) > a")
+    WebElement amendDueDateButton;
 
     public EditProfile(WebDriver driver) {
         EditProfile.driver = driver;
@@ -100,5 +102,9 @@ public class EditProfile {
     public void checkCurrentStatus(){
         String actualStatus = currentStatus.getText().substring(0,7);
         assertEquals("Member dropped status is not correct.", "Dropped", actualStatus);
+    }
+
+    public void clickAmendDueDateButton(){
+        amendDueDateButton.click();
     }
 }

@@ -79,8 +79,8 @@ public class BNIConnect {
     @FindBy(css = "#listevents > div")
     List<WebElement> eventLists;
 
-    @FindBy(css = "#datalist1 > tbody > tr.odd > td.sorting_2 > a")
-    WebElement membershipLink;
+    @FindBy(css = "#datalist1 > tbody > tr")
+    List<WebElement> typeLink;
 
     @FindBy(css = "#footer > div.copyright > p:nth-child(1)")
     WebElement buildNumber;
@@ -294,8 +294,17 @@ public class BNIConnect {
         renewNowLink.click();
     }
 
-    public  void clickMembershipLink(){
-        membershipLink.click();
+    public void clickTypeLink(String item) throws Exception {
+        TimeUnit.SECONDS.sleep(2);
+        for (WebElement trElement : typeLink) {
+            List<WebElement> td_collection = trElement.findElements(By.tagName("td"));
+            String typeItem = td_collection.get(1).getText();
+            if (item.equals(typeItem)) {
+                td_collection.get(1).findElement(By.tagName("a")).click();
+                TimeUnit.SECONDS.sleep(3);
+                break;
+            }
+        }
     }
 
     public void checkBuildNumber(String expBuildNumber){

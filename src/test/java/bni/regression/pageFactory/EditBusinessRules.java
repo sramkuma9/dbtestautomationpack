@@ -8,14 +8,15 @@ import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.concurrent.TimeUnit;
-
 public class EditBusinessRules {
     public static WebDriver driver;
     public WebDriverWait wait;
 
     @FindBy(css = "#allowOnlineRenewals")
     WebElement allowOnlineRenewalsListBox;
+
+    @FindBy(css = "#lateStatusCutoff")
+    WebElement lateBrTextBox;
 
     @FindBy(css = "body > div.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-draggable > div.ui-dialog-buttonpane.ui-widget-content.ui-helper-clearfix > button:nth-child(1)")
     WebElement submitButton;
@@ -32,6 +33,11 @@ public class EditBusinessRules {
         Select onlineRenewalSelect = new Select(allowOnlineRenewalsListBox);
         onlineRenewalSelect.selectByVisibleText(onlineRenewal);
     }
+
+public void enterLateBrDays(String lateBR){
+        lateBrTextBox.clear();
+        lateBrTextBox.sendKeys(lateBR);
+}
 
     public void clickSubmitButton(){
         submitButton.click();
