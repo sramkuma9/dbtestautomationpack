@@ -99,9 +99,14 @@ public class EditProfile {
         languageSelect.selectByValue("language." + language);
     }
 
-    public void checkCurrentStatus(){
+    public void checkDroppedStatus(){
         String actualStatus = currentStatus.getText().substring(0,7);
         assertEquals("Member dropped status is not correct.", "Dropped", actualStatus);
+    }
+
+    public void checkLateStatus(String expStatus) {
+        String actualStatus = currentStatus.getText();
+        assertEquals("Member late status is not correct.", expStatus, actualStatus);
     }
 
     public void clickAmendDueDateButton(){

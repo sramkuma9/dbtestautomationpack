@@ -127,7 +127,7 @@ public class AmendStatusOfNonMemberViaDueDate {
         }
     }
 
-    @Then("Check if the status is changed to 'Late'")
+    @Then("signout")
     public void step_3() throws Exception {
         System.out.println("amend due date for a an active member script executed.");
     }
