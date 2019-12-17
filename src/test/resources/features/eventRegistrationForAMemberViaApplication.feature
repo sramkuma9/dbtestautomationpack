@@ -1,7 +1,7 @@
 ### This feature is dependant on create regional events
-#Feature: Event Registration for a member
+#Feature: Event Registration for a member via application
 #
-#  Scenario: To register for an event via application
+#  Scenario: To register for a member via application
 #    Given user enters the BNI Home page with  Regional admin login details
 #      | UserName                | Password     | country         | region        | chapter        |
 #      #| shanthibni+32@gmail.com | aadhira@2014 | Australia - BNI | BNI- Adelaide | Adelaide North |

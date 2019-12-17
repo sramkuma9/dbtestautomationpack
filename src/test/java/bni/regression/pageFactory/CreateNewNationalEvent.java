@@ -16,8 +16,11 @@ public class CreateNewNationalEvent {
     public static WebDriver driver;
     public WebDriverWait wait;
 
-    @FindBy(css = "#selectCountries > option")
-    WebElement countryListBox;
+    @FindBy(css = "#selectCountries")
+    List<WebElement> countryListBox;
+
+    @FindBy(css = "#selectAllCountries")
+    WebElement selectAllCountriesListBox;
 
     @FindBy(css = "#eventTypeSelect")
     WebElement eventTypeListBox;
@@ -102,32 +105,43 @@ public class CreateNewNationalEvent {
         wait = new WebDriverWait(driver, 5);
     }
 
-    public void selectCountry(String country) {
-        //Select countrySelect = new Select(countryListBox);
-        //countrySelect.selectByVisibleText(country);
-        countryListBox.click();
+    public void selectCountry(String country) throws InterruptedException {
+        selectAllCountriesListBox.click();
+        TimeUnit.SECONDS.sleep(2);
+        for (WebElement trElement : countryListBox) {
+            List<WebElement> td_collection = trElement.findElements(By.tagName("option"));
+            Integer listSize = td_collection.size();
+            for (int i = 0; i < listSize; i++) {
+                String countryItem = td_collection.get(i).getText();
+                if (country.equals(countryItem)) {
+                    td_collection.get(i).click();
+                    break;
+                }
+            }
+        }
     }
 
-    public void selectEventType(String eventType){
+
+    public void selectEventType(String eventType) {
         Select eventTypeSelect = new Select(eventTypeListBox);
         eventTypeSelect.selectByVisibleText(eventType);
     }
 
-    public void enterEventName(String eventName){
+    public void enterEventName(String eventName) {
         eventNameTextBox.sendKeys(eventName);
     }
 
-    public void enterShortDescription(String shortDesc){
+    public void enterShortDescription(String shortDesc) {
         shortDescriptionTextBox.clear();
         shortDescriptionTextBox.sendKeys(shortDesc);
     }
 
-    public void selectContactPerson(String contactPerson){
+    public void selectContactPerson(String contactPerson) {
         Select contactPersonSelect = new Select(contactPersonListBox);
         contactPersonSelect.selectByVisibleText(contactPerson);
     }
 
-    public void selectLocation(String location){
+    public void selectLocation(String location) {
         Select locationSelect = new Select(locationListBox);
         locationSelect.selectByVisibleText(location);
     }
@@ -144,40 +158,40 @@ public class CreateNewNationalEvent {
         selectButton.click();
     }
 
-    public void clickEventStartTime(){
+    public void clickEventStartTime() {
         eventStartDateTextBox.click();
     }
 
-    public void clickEventEndTime(){
+    public void clickEventEndTime() {
         eventEndDateTextBox.click();
     }
 
-    public void selectStartTimeHr(String stTimeHr){
+    public void selectStartTimeHr(String stTimeHr) {
         Select startTimeHrSelect = new Select(startTimeHr);
         startTimeHrSelect.selectByVisibleText(stTimeHr);
     }
 
-    public void selectStartTimeMin(String stTimeMin){
+    public void selectStartTimeMin(String stTimeMin) {
         Select startTimeMinSelect = new Select(startTimeMin);
         startTimeMinSelect.selectByVisibleText(stTimeMin);
     }
 
-    public void selectStartTime(String stTime){
+    public void selectStartTime(String stTime) {
         Select startTimeSelect = new Select(startTime);
         startTimeSelect.selectByVisibleText(stTime);
     }
 
-    public void selectEndTimeHr(String enTimeHr){
+    public void selectEndTimeHr(String enTimeHr) {
         Select endTimeHrSelect = new Select(endTimeHr);
         endTimeHrSelect.selectByVisibleText(enTimeHr);
     }
 
-    public void selectEndTimeMin(String enTimeMin){
+    public void selectEndTimeMin(String enTimeMin) {
         Select endTimeMinSelect = new Select(endTimeMin);
         endTimeMinSelect.selectByVisibleText(enTimeMin);
     }
 
-    public void selectEndTime(String enTime){
+    public void selectEndTime(String enTime) {
         Select endTimeSelect = new Select(endTime);
         endTimeSelect.selectByVisibleText(enTime);
     }
@@ -187,19 +201,19 @@ public class CreateNewNationalEvent {
         hostCountrySelect.selectByVisibleText(hostCountry);
     }
 
-    public void enterFirstRemainderSent(String firstRemSent){
+    public void enterFirstRemainderSent(String firstRemSent) {
         firstRemainderSent.sendKeys(firstRemSent);
     }
 
-    public void enterSecondRemainderSent(String secondRemSent){
+    public void enterSecondRemainderSent(String secondRemSent) {
         secondRemainderSent.sendKeys(secondRemSent);
     }
 
-    public void clickSubmitButton(){
+    public void clickSubmitButton() {
         submitButton.click();
     }
 
-    public void clickPublishButton(){
+    public void clickPublishButton() {
         publishButton.click();
     }
 
@@ -213,11 +227,10 @@ public class CreateNewNationalEvent {
         yearSelect.selectByVisibleText(year);
     }
 
-    public void selectDateFromDatePicker(String day) throws Exception{
+    public void selectDateFromDatePicker(String day) throws Exception {
         Integer breaker = 2;
-        for(WebElement trElement : datePicker)
-        {
-            List<WebElement> td_collection=trElement.findElements(By.tagName("td"));
+        for (WebElement trElement : datePicker) {
+            List<WebElement> td_collection = trElement.findElements(By.tagName("td"));
             for (int row = 0; row < 7; row++) {
                 String dayItem = td_collection.get(row).getText();
                 if (day.equals(dayItem)) {
@@ -227,7 +240,7 @@ public class CreateNewNationalEvent {
                     break;
                 }
             }
-            if (breaker==3) {
+            if (breaker == 3) {
                 break;
             }
         }

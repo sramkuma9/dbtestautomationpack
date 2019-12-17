@@ -78,6 +78,8 @@ public class CreateNationalEvent {
             driver.switchTo().window(tabs.get(1));
             createNewNationalEvent = new CreateNewNationalEvent(driver);
             TimeUnit.SECONDS.sleep(2);
+            createNewNationalEvent.selectCountry(data.get("country"));
+            TimeUnit.SECONDS.sleep(2);
             createNewNationalEvent.selectEventType(data.get("eventType"));
             TimeUnit.SECONDS.sleep(1);
             String eventNameDateTime = currentDateTime.dateTime();
