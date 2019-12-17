@@ -75,6 +75,8 @@ public class CreateRegionalEvent {
             TimeUnit.SECONDS.sleep(8);
             createNewEvent = new CreateNewEvent(driver);
             TimeUnit.SECONDS.sleep(2);
+            createNewEvent.selectRegion(data.get("region"));
+            TimeUnit.SECONDS.sleep(2);
             createNewEvent.selectEventType(data.get("eventType"));
             TimeUnit.SECONDS.sleep(1);
             String eventNameDateTime = currentDateTime.dateTime();

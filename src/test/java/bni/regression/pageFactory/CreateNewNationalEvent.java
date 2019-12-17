@@ -20,7 +20,7 @@ public class CreateNewNationalEvent {
     List<WebElement> countryListBox;
 
     @FindBy(css = "#selectAllCountries")
-    WebElement selectAllCountriesListBox;
+    WebElement selectAllCountriesCheckBox;
 
     @FindBy(css = "#eventTypeSelect")
     WebElement eventTypeListBox;
@@ -106,7 +106,7 @@ public class CreateNewNationalEvent {
     }
 
     public void selectCountry(String country) throws InterruptedException {
-        selectAllCountriesListBox.click();
+        selectAllCountriesCheckBox.click();
         TimeUnit.SECONDS.sleep(2);
         for (WebElement trElement : countryListBox) {
             List<WebElement> td_collection = trElement.findElements(By.tagName("option"));

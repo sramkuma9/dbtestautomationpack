@@ -16,6 +16,12 @@ public class CreateNewEvent {
     public static WebDriver driver;
     public WebDriverWait wait;
 
+    @FindBy(css = "#selectRegions")
+    List<WebElement> regionListBox;
+
+    @FindBy(css = "#selectAllRegions")
+    WebElement selectAllRegionsCheckBox;
+
     @FindBy(css = "#eventTypeSelect")
     WebElement eventTypeListBox;
 
@@ -216,4 +222,19 @@ public class CreateNewEvent {
         }
     }
 
+    public void selectRegion(String region) throws InterruptedException {
+        selectAllRegionsCheckBox.click();
+        TimeUnit.SECONDS.sleep(2);
+        for (WebElement trElement : regionListBox) {
+            List<WebElement> td_collection = trElement.findElements(By.tagName("option"));
+            Integer listSize = td_collection.size();
+            for (int i = 0; i < listSize; i++) {
+                String regionItem = td_collection.get(i).getText();
+                if (region.equals(regionItem)) {
+                    td_collection.get(i).click();
+                    break;
+                }
+            }
+        }
+    }
 }
