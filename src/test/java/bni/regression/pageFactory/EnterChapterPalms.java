@@ -20,6 +20,9 @@ public class EnterChapterPalms {
     @FindBy(css = "#submit")
     WebElement submitPalmsButton;
 
+    @FindBy(css = "#holiday")
+    WebElement noMeetingThisWeekButton;
+
     @FindBy(css = "#datalist_filter > input[type=text]")
     WebElement searchTextBox;
 
@@ -84,6 +87,10 @@ public class EnterChapterPalms {
     public void clickSubmitPalms() throws InterruptedException {
         submitPalmsButton.click();
         TimeUnit.SECONDS.sleep(1);
+    }
+
+    public void clickNoMeetingThisWeekButton() {
+        noMeetingThisWeekButton.click();
     }
 
     public void clickEnterMeetingDateTextBox() throws InterruptedException {

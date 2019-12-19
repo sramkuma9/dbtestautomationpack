@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class EnterPalms {
+public class EnterPalmsAndClickNoMeetingThisWeek {
 
     public static WebDriver driver;
     private Login login = new Login();
@@ -35,7 +35,7 @@ public class EnterPalms {
     ReadWriteExcel readWriteExcel = new ReadWriteExcel();
     private ReviewVisitor reviewVisitor;
     private EnterChapterPalms enterChapterPalms;
-    private ViewChapterPalms viewChapterPalms;
+    private ViewChapterPalmsSummary viewChapterPalmsSummary;
 
     @Before
     public void setup() throws Exception {
@@ -47,14 +47,13 @@ public class EnterPalms {
 
     }
 
-    // Scenario: Navigate to Add a Visitor page
-    @Given("I enter the application with below details , Operations->Chapter->Meeting Management->Enter PALMS. I am on the Review Visitor Ant - One - Chapter A page")
-    public void I_enter_the_application_with_below_details_Operations_Chapter_Meeting_Management_Enter_PALMS_I_am_on_the_Review_Visitor_Ant_One_Chapter_page(DataTable loginDetails) throws Exception {
+    @Given("I enter the application with below details. Operation, Chapter, Meeting Management, Enter PALMS, Click Continue without Approving visitors button. In Enter Chapter PALMS page, select Enter Meeting Date and click Enter PALMS button")
+    public void step_1(DataTable loginDetails) throws Exception {
         List<List<String>> login = loginDetails.raw();
         loginSubList = login.subList(1, login.size());
     }
 
-    @When("I click continue without Approving visitors button and enter the meeting date and click Enter PALMS")
+    @When("I Click No Meeting This Week button at the bottom of the page, click ok on  the message box. On View Chapter PALMS summary page, Enter above meeting date")
     public void step_2(DataTable enterPalms) throws Exception {
         Integer i = 2;
         for (Map<String, String> data : enterPalms.asMaps(String.class, String.class)) {
@@ -95,23 +94,31 @@ public class EnterPalms {
             TimeUnit.SECONDS.sleep(3);
             enterChapterPalms.clickEnterPalmsButton();
             TimeUnit.SECONDS.sleep(5);
-            enterChapterPalms.enterSearchCriteria(data.get("firstName") + " " + data.get("lastName"));
-            TimeUnit.SECONDS.sleep(2);
-            enterChapterPalms.enterMeeting();
-            TimeUnit.SECONDS.sleep(2);
-            enterChapterPalms.clickSubmitPalms();
+            enterChapterPalms.clickNoMeetingThisWeekButton();
             TimeUnit.SECONDS.sleep(2);
             Alert alert = driver.switchTo().alert();
             alert.accept();
-            TimeUnit.SECONDS.sleep(12);
-            viewChapterPalms.checkPalmsEntry();
+            TimeUnit.SECONDS.sleep(10);
+            viewChapterPalmsSummary.clickEnterFromDateTextBox();
+            TimeUnit.SECONDS.sleep(2);
+            viewChapterPalmsSummary.selectVisitYear(data.get("meetingYear"));
+            TimeUnit.SECONDS.sleep(2);
+            viewChapterPalmsSummary.selectVisitMonth(data.get("meetingMonth"));
+            TimeUnit.SECONDS.sleep(2);
+            viewChapterPalmsSummary.selectDateFromDatePicker(data.get("meetingDay"));
+            TimeUnit.SECONDS.sleep(2);
+            viewChapterPalmsSummary.clickViewReportsButton();
+            TimeUnit.SECONDS.sleep(6);
+            viewChapterPalmsSummary.enterSearchCriteria("Holiday");
+            TimeUnit.SECONDS.sleep(2);
+            viewChapterPalmsSummary.checkStatusLink();
             TimeUnit.SECONDS.sleep(2);
             signOut.signOutBni();
         }
     }
 
-    @Then("Manually enter 1 against 1-2-1  for Monica Daniel and  click Submit PALMS. In view chapter PALMS Summary page Verify 1 against Monica for 1-2-1 entered successfully")
+    @Then("Verify Holiday for the given date is saved successfully")
     public void step_3() throws Exception {
-        System.out.println("Enter palms script executed.");
+        System.out.println("Enter PALMS and Click No Meeting This Week script executed.");
     }
 }

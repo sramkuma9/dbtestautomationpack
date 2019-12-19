@@ -12,6 +12,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.Assert.assertEquals;
+
 public class ViewChapterPalmsSummary {
     public static WebDriver driver;
     public WebDriverWait wait;
@@ -86,12 +88,17 @@ public class ViewChapterPalmsSummary {
         TimeUnit.SECONDS.sleep(1);
     }
 
-    public void enterSearchCriteria(String searchString) throws InterruptedException{
+    public void enterSearchCriteria(String searchString){
         searchTextBox.sendKeys(searchString);
     }
 
-    public void clickStatusLink() throws InterruptedException{
+    public void clickStatusLink(){
         statusLink.click();
+    }
+
+    public void checkStatusLink(){
+        String actualStatus = statusLink.getText();
+        assertEquals("Holiday for the given date is not saved sucessfully...","Holiday", actualStatus);
     }
 
 }
