@@ -96,9 +96,9 @@ public class ViewChapterPalmsSummary {
         statusLink.click();
     }
 
-    public void checkStatusLink(){
+    public void checkStatusLink(String expStatus){
         String actualStatus = statusLink.getText();
-        assertEquals("Holiday for the given date is not saved sucessfully...","Holiday", actualStatus);
+        assertEquals("Holiday for the given date is not saved sucessfully...",expStatus, actualStatus);
     }
 
 }

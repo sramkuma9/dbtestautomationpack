@@ -41,6 +41,9 @@ public class EnterChapterPalms {
     @FindBy(css = "#ui-datepicker-div > div > div > select.ui-datepicker-year")
     WebElement enterMeetingDateYear;
 
+    @FindBy(css = "#discard")
+    WebElement discardPalmsButton;
+
     public EnterChapterPalms(WebDriver driver) {
         EnterChapterPalms.driver = driver;
         AjaxElementLocatorFactory factory = new AjaxElementLocatorFactory(driver, 100);
@@ -91,6 +94,10 @@ public class EnterChapterPalms {
 
     public void clickNoMeetingThisWeekButton() {
         noMeetingThisWeekButton.click();
+    }
+
+    public void clickDiscardPalmsButton() {
+        discardPalmsButton.click();
     }
 
     public void clickEnterMeetingDateTextBox() throws InterruptedException {
