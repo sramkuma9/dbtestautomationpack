@@ -32,6 +32,9 @@ public class BNIConnect {
     @FindBy(css = "#bniCountry")
     WebElement countryListBox;
 
+    @FindBy(css = "#translationIcon")
+    WebElement tButton;
+
     @FindBy(css = "#commonFilterListCountries > div > a")
     List<WebElement> countrySelect;
 
@@ -85,6 +88,12 @@ public class BNIConnect {
     @FindBy(css = "#footer > div.copyright > p:nth-child(1)")
     WebElement buildNumber;
 
+    @FindBy(css = "#footer > div.copyright > p:nth-child(3) > a:nth-child(2)")
+    WebElement privacyPolicyLink;
+
+    @FindBy(css = "#footer > div.copyright > p:nth-child(3) > a:nth-child(3)")
+    WebElement browserPolicyLink;
+
     public BNIConnect(WebDriver driver) {
         BNIConnect.driver = driver;
         AjaxElementLocatorFactory factory = new AjaxElementLocatorFactory(driver, 100);
@@ -93,10 +102,24 @@ public class BNIConnect {
         wait = new WebDriverWait(driver, 5);
     }
 
+    public void checkPrivacyPolicyTranslation(String expPrivacyPolicy){
+        String actualPrivacyPolicy = privacyPolicyLink.getText();
+        assertEquals("Privacy Policy translation is not correct", expPrivacyPolicy, actualPrivacyPolicy);
+    }
+
+    public void checkBrowserPolicyTranslation(String expBrowserPolicy){
+        String actualBrowserPolicy = browserPolicyLink.getText();
+        assertEquals("Browser Policy translation is not correct", expBrowserPolicy, actualBrowserPolicy);
+    }
+
     public void hoverOnOptions() {
         Actions action = new Actions(driver);
         action.moveToElement(options);
         action.build().perform();
+    }
+
+    public void clickTIcon(){
+        tButton.click();
     }
 
     public void selectCountry(String country) throws InterruptedException {
