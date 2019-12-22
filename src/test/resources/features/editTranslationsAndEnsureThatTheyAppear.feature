@@ -5,6 +5,6 @@ Feature: Edit Translations and ensure that they appear
       | userName                | password     | country    | region    | Chapter               |
       | shanthibni+22@gmail.com | aadhira@2014 | Antarctica | Ant - One | Ant - One - Chapter A |
     Then Amend the Translate English to Japanese page, click Footer and update the below details and click Submit button
-      | Browser Policy |  | Privacy Policy |
-      | ブラウザポリシー       |  | 個人情報保護方針       |
-    Then Verify at the footer page
+      | browserPolicy |  | privacyPolicy |
+      | ブラウザポリシー      |  | 個人情報保護方針      |
+    Then the browser policy and privacy policy reflect the above changes

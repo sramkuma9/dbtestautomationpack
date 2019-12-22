@@ -11,13 +11,13 @@ public class TranslationHome {
     public static WebDriver driver;
     public WebDriverWait wait;
 
-    @FindBy(css = "#common.footer.browserpolicy")
+    @FindBy(css = "#common\\.footer\\.browserpolicy")
     WebElement browserPolicyTextBox;
 
     @FindBy(css = "#browser > li.collapsable > ul > li:nth-child(5) > a")
     WebElement footerLink;
 
-    @FindBy(css = "#common.footer.privacypolicy")
+    @FindBy(css = "#common\\.footer\\.privacypolicy")
     WebElement privacyPolicyTextBox;
 
     @FindBy(css = "#submit")
@@ -37,7 +37,7 @@ public class TranslationHome {
     }
 
     public void enterPrivacyPolicy(String privacyPolicy){
-        browserPolicyTextBox.clear();
+        privacyPolicyTextBox.clear();
         privacyPolicyTextBox.sendKeys(privacyPolicy);
     }
 
