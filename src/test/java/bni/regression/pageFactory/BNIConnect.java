@@ -35,6 +35,9 @@ public class BNIConnect {
     @FindBy(css = "#translationIcon")
     WebElement tButton;
 
+    @FindBy(css = "#nav > a.help")
+    WebElement helpButton;
+
     @FindBy(css = "#commonFilterListCountries > div > a")
     List<WebElement> countrySelect;
 
@@ -121,6 +124,11 @@ public class BNIConnect {
     public void clickTIcon(){
         tButton.click();
     }
+
+    public void clickHelpIcon(){
+        helpButton.click();
+    }
+
 
     public void selectCountry(String country) throws InterruptedException {
         int counter = 0;
