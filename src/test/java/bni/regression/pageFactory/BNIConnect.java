@@ -102,7 +102,11 @@ public class BNIConnect {
     WebElement privacyPolicyLink;
 
     @FindBy(css = "#button_Country")
-    WebElement goButton;
+    WebElement goCountryButton;
+
+    @FindBy(css = "#button")
+    //@FindBy(css = "input[type = 'submit'][name = 'button'][class = 'linkbutton']")
+    WebElement goHqButton;
 
     @FindBy(css = "#footer > div.copyright > p:nth-child(3) > a:nth-child(3)")
     WebElement browserPolicyLink;
@@ -111,10 +115,19 @@ public class BNIConnect {
     List<WebElement> datePicker;
 
     @FindBy(css = "#ui-datepicker-div > div > div > select.ui-datepicker-month")
-    WebElement effectiveMonth;
+    WebElement Month;
 
     @FindBy(css = "#ui-datepicker-div > div > div > select.ui-datepicker-year")
-    WebElement effectiveYear;
+    WebElement Year;
+
+    @FindBy(css = "#startHQDateExitInterviewDisplay")
+    WebElement startDateTextBox;
+
+    @FindBy(css = "#endHQDateExitInterviewDisplay")
+    WebElement endDateTextBox;
+
+    @FindBy(css = "#exportWithoutHeadersreports_exit_interview")
+    WebElement exportWithoutHeadersCheckBox;
 
     public BNIConnect(WebDriver driver) {
         BNIConnect.driver = driver;
@@ -148,8 +161,20 @@ public class BNIConnect {
         helpButton.click();
     }
 
-    public void clickGoButton(){
-        goButton.click();
+    public void clickGoCountryButton(){
+        goCountryButton.click();
+    }
+
+    public void clickGoHqButton(){
+        goHqButton.click();
+    }
+
+    public void clickStartDateTextBox(){
+        startDateTextBox.click();
+    }
+
+    public void clickEndDateTextBox(){
+        endDateTextBox.click();
     }
 
     public void selectCountry(String country) throws InterruptedException {
@@ -350,6 +375,10 @@ public class BNIConnect {
         effectiveDateTextBox.click();
     }
 
+    public  void clickExportWithoutHeadersCheckBox(){
+        exportWithoutHeadersCheckBox.click();
+    }
+
     public void clickSignOut() throws Exception {
         signOut.click();
         TimeUnit.SECONDS.sleep(5);
@@ -403,13 +432,13 @@ public class BNIConnect {
         }
     }
 
-    public void selectEffectiveMonth(String month) {
-        Select visitMonthSelect = new Select(effectiveMonth);
-        visitMonthSelect.selectByVisibleText(month);
+    public void selectMonth(String month) {
+        Select MonthSelect = new Select(Month);
+        MonthSelect.selectByVisibleText(month);
     }
 
-    public void selectEffectiveYear(String year) {
-        Select visitYearSelect = new Select(effectiveYear);
-        visitYearSelect.selectByVisibleText(year);
+    public void selectYear(String year) {
+        Select YearSelect = new Select(Year);
+        YearSelect.selectByVisibleText(year);
     }
 }
