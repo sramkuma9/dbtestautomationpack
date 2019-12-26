@@ -8,6 +8,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
@@ -66,6 +67,9 @@ public class BNIConnect {
     @FindBy(css = "#help")
     List<WebElement> mainListMenu;
 
+    @FindBy(css = "#help")
+    List<WebElement> reportsViewActionsByMenu;
+
     @FindBy(css = "#droppedMemberEmail")
     WebElement emailTextBox;
 
@@ -91,11 +95,26 @@ public class BNIConnect {
     @FindBy(css = "#footer > div.copyright > p:nth-child(1)")
     WebElement buildNumber;
 
+    @FindBy(css = "#startCountryDateMembershipFeesReportDisplay_Country")
+    WebElement effectiveDateTextBox;
+
     @FindBy(css = "#footer > div.copyright > p:nth-child(3) > a:nth-child(2)")
     WebElement privacyPolicyLink;
 
+    @FindBy(css = "#button_Country")
+    WebElement goButton;
+
     @FindBy(css = "#footer > div.copyright > p:nth-child(3) > a:nth-child(3)")
     WebElement browserPolicyLink;
+
+    @FindBy(css = "#ui-datepicker-div > table > tbody > tr")
+    List<WebElement> datePicker;
+
+    @FindBy(css = "#ui-datepicker-div > div > div > select.ui-datepicker-month")
+    WebElement effectiveMonth;
+
+    @FindBy(css = "#ui-datepicker-div > div > div > select.ui-datepicker-year")
+    WebElement effectiveYear;
 
     public BNIConnect(WebDriver driver) {
         BNIConnect.driver = driver;
@@ -129,6 +148,9 @@ public class BNIConnect {
         helpButton.click();
     }
 
+    public void clickGoButton(){
+        goButton.click();
+    }
 
     public void selectCountry(String country) throws InterruptedException {
         int counter = 0;
@@ -273,6 +295,19 @@ public class BNIConnect {
         }
     }
 
+    public void selectItemFromReportsViewActionsByMenu(String item) throws Exception {
+        TimeUnit.SECONDS.sleep(2);
+        for (WebElement trElement : reportsViewActionsByMenu) {
+            List<WebElement> td_collection = trElement.findElements(By.tagName("tbody"));
+            String menuItem = td_collection.get(0).findElement(By.tagName("tr")).getText();
+            if (item.equals(menuItem)) {
+                td_collection.get(0).findElement(By.tagName("tr")).findElement(By.tagName("a")).click();
+                TimeUnit.SECONDS.sleep(3);
+                break;
+            }
+        }
+    }
+
     public void selectItemFromLeftSideMenu(String item) throws Exception {
         TimeUnit.SECONDS.sleep(2);
         for (WebElement trElement : leftSideMenu) {
@@ -311,6 +346,10 @@ public class BNIConnect {
         addButton.click();
     }
 
+    public  void clickEffectiveDateTextBox(){
+        effectiveDateTextBox.click();
+    }
+
     public void clickSignOut() throws Exception {
         signOut.click();
         TimeUnit.SECONDS.sleep(5);
@@ -342,5 +381,35 @@ public class BNIConnect {
         String[] splitBuildNumber = buildNumber.getText().split("\n");
         String [] acutualBuildNumber = splitBuildNumber[1].split(",");
         assertEquals("Build number is not correct...", expBuildNumber,acutualBuildNumber[0]);
+    }
+
+    public void selectDateFromDatePicker(String day) throws Exception{
+        Integer breaker = 2;
+        for(WebElement trElement : datePicker)
+        {
+            List<WebElement> td_collection=trElement.findElements(By.tagName("td"));
+            for (int row = 0; row < 7; row++) {
+                String dayItem = td_collection.get(row).getText();
+                if (day.equals(dayItem)) {
+                    td_collection.get(row).findElement(By.tagName("a")).click();
+                    TimeUnit.SECONDS.sleep(3);
+                    breaker++;
+                    break;
+                }
+            }
+            if (breaker==3) {
+                break;
+            }
+        }
+    }
+
+    public void selectEffectiveMonth(String month) {
+        Select visitMonthSelect = new Select(effectiveMonth);
+        visitMonthSelect.selectByVisibleText(month);
+    }
+
+    public void selectEffectiveYear(String year) {
+        Select visitYearSelect = new Select(effectiveYear);
+        visitYearSelect.selectByVisibleText(year);
     }
 }
