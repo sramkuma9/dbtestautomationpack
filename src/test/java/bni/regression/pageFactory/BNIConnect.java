@@ -39,6 +39,12 @@ public class BNIConnect {
     @FindBy(css = "#nav > a.help")
     WebElement helpButton;
 
+    @FindBy(css = "#showDroppedMembersRegionalPALMSReportDisplay")
+    WebElement showDroppedMemberCheckBox;
+
+    @FindBy(css = "#trackingPALMSRegionalPALMSReportDisplay")
+    WebElement trackingPalmsCheckBox;
+
     @FindBy(css = "#commonFilterListCountries > div > a")
     List<WebElement> countrySelect;
 
@@ -50,7 +56,6 @@ public class BNIConnect {
 
     @FindBy(css = "#bniChapter")
     WebElement chapterListBox;
-
 
     @FindBy(css = "#commonFilterListChapters > div > a")
     List<WebElement> chapterSelect;
@@ -129,6 +134,15 @@ public class BNIConnect {
     @FindBy(css = "#exportWithoutHeadersreports_exit_interview")
     WebElement exportWithoutHeadersCheckBox;
 
+    @FindBy(css = "#startDateRegionalPALMSReportDisplay")
+    WebElement startDateForRegionReport;
+
+    @FindBy(css = "#endDateRegionalPALMSReportDisplay")
+    WebElement endDateForRegionReport;
+
+    @FindBy(css = "#regionsRegionalPALMSReport")
+    List<WebElement> regionList;
+
     public BNIConnect(WebDriver driver) {
         BNIConnect.driver = driver;
         AjaxElementLocatorFactory factory = new AjaxElementLocatorFactory(driver, 100);
@@ -169,8 +183,24 @@ public class BNIConnect {
         goHqButton.click();
     }
 
+    public void clickShowDroppedMemberCheckBox(){
+        showDroppedMemberCheckBox.click();
+    }
+
+    public void clickTrackingPalmsCheckBox(){
+        trackingPalmsCheckBox.click();
+    }
+
     public void clickStartDateTextBox(){
         startDateTextBox.click();
+    }
+
+    public void clickStartDateForReportTextBox(){
+        startDateForRegionReport.click();
+    }
+
+    public void clickEndDateForReportTextBox(){
+        endDateForRegionReport.click();
     }
 
     public void clickEndDateTextBox(){
@@ -440,5 +470,19 @@ public class BNIConnect {
     public void selectYear(String year) {
         Select YearSelect = new Select(Year);
         YearSelect.selectByVisibleText(year);
+    }
+
+    public void selectRegionForReport(String region) {
+        for (WebElement trElement : regionList) {
+            List<WebElement> td_collection = trElement.findElements(By.tagName("option"));
+            Integer listSize = td_collection.size();
+            for (int i = 0; i < listSize; i++) {
+                String regionItem = td_collection.get(i).getText();
+                if (region.equals(regionItem)) {
+                    td_collection.get(i).click();
+                    break;
+                }
+            }
+        }
     }
 }
