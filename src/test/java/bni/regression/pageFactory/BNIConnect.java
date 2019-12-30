@@ -109,8 +109,13 @@ public class BNIConnect {
     @FindBy(css = "#button_Country")
     WebElement goCountryButton;
 
-    @FindBy(css = "#button")
-    //@FindBy(css = "input[type = 'submit'][name = 'button'][class = 'linkbutton']")
+    @FindBy(css = "#regional_PALMSReport > div > input")
+    WebElement goRegionButton;
+
+    @FindBy(css = "#chapter_Membership_Dues_Report_Form > div > input")
+    WebElement goChapterButton;
+
+    @FindBy(css = "#hq_exit_interview_report > div > input")
     WebElement goHqButton;
 
     @FindBy(css = "#footer > div.copyright > p:nth-child(3) > a:nth-child(3)")
@@ -139,6 +144,9 @@ public class BNIConnect {
 
     @FindBy(css = "#endDateRegionalPALMSReportDisplay")
     WebElement endDateForRegionReport;
+
+    @FindBy(css = "#endDateChapterMembershipDuesReportDisplay")
+    WebElement reportDateTextBox;
 
     @FindBy(css = "#regionsRegionalPALMSReport")
     List<WebElement> regionList;
@@ -181,6 +189,14 @@ public class BNIConnect {
 
     public void clickGoHqButton(){
         goHqButton.click();
+    }
+
+    public void clickGoChapterButton(){
+        goChapterButton.click();
+    }
+
+    public void clickGoRegionButton(){
+        goRegionButton.click();
     }
 
     public void clickShowDroppedMemberCheckBox(){
@@ -403,6 +419,10 @@ public class BNIConnect {
 
     public  void clickEffectiveDateTextBox(){
         effectiveDateTextBox.click();
+    }
+
+    public  void clickReportDateTextBox(){
+        reportDateTextBox.click();
     }
 
     public  void clickExportWithoutHeadersCheckBox(){

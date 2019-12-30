@@ -16,8 +16,12 @@ public class CountryReport {
     public WebDriverWait wait;
     private ReadWritePropertyFile readWritePropertyFile = new ReadWritePropertyFile();
 
-    // @FindBy(css =  "#buttons_1 > a:nth-child(1)")
-    @FindBy(css = "#links_1")
+    //@FindBy(css =  "#buttons_1 > script:nth-child(1) > a:nth-child(2)")
+    //@FindBy(css =  "#buttons_1 > a:nth-child(2)")//*[@id="links_1"]
+      @FindBy(css = "a[ref='/web/secure/WebReport?__params_key=eb0dbf4a-b92a-4ba2-82ba-c864304d37af&ReportType=XLS&encryptString=9fg78g9d04i4323i1kfdfovmn090r8e0ldkxnf9h7r9r0sdfgje928mn13fdgr4g5dg45r2rg1t8jh6df3sd2sd1d8b4g52j1j2t8r6sd6s54ht5k65u4k8ui68iouy65+9090459486409854469084gb9n80498gh40j9fgj09870dfy98h4f9d840yh65er1yaere41h5fgh9004y9er904sdfg8h7fgh132s1g321vb32m1n6gn44fguedy98jh4st464EW6R451AW6R4EZ32D4654C65ZX4D&firstTime=0&reportId=-1'][id='links_1']")
+    //@FindBy(css =  "#reporttoolbar_1 > tbody > tr:nth-child(1) > td:nth-child(2) > div:nth-child(1) > script:nth-child(1) > a:nth-child(2)")
+    //@FindBy(css = "#links_1")
+
     WebElement exportButton;
 
     @FindBy(css = "#buttons_1")

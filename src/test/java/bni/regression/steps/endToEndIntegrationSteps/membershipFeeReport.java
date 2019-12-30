@@ -87,7 +87,8 @@ public class membershipFeeReport {
             bniConnect.clickGoCountryButton();
             TimeUnit.SECONDS.sleep(15);
             countryReport = new CountryReport(driver);
-            countryReport.clickExportButtonFromList("Export");
+            //countryReport.clickExportButtonFromList("Export");
+            countryReport.clickExportButton();
             TimeUnit.SECONDS.sleep(10);
             countryReport.clickCloseButton();
             String reportName = searchAndReturnFileName.searchFile(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"), "country-membership-fee-report", ".xls");

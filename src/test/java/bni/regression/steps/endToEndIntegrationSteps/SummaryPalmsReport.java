@@ -102,7 +102,7 @@ public class SummaryPalmsReport {
                 bniConnect.clickTrackingPalmsCheckBox();
             }
             TimeUnit.SECONDS.sleep(1);
-            bniConnect.clickGoCountryButton();
+            bniConnect.clickGoRegionButton();
             TimeUnit.SECONDS.sleep(15);
             regionReport = new RegionReport(driver);
             regionReport.clickExportButtonFromList("Export");

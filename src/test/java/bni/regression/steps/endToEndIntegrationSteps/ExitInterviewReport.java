@@ -97,7 +97,6 @@ public class ExitInterviewReport {
             bniConnect.clickGoHqButton();
             TimeUnit.SECONDS.sleep(15);
             String reportName = searchAndReturnFileName.searchFile(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"), "hq-exit-interview-report", ".xls");
-            System.out.println(reportName);
             // add database verification code
             signOut.signOutBni();
         }

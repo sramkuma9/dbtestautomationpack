@@ -5,7 +5,7 @@ import bni.regression.libraries.ui.Login;
 import bni.regression.libraries.ui.SelectCountryRegionChapter;
 import bni.regression.libraries.ui.SignOut;
 import bni.regression.pageFactory.BNIConnect;
-import bni.regression.pageFactory.CountryReport;
+import bni.regression.pageFactory.ChapterReport;
 import cucumber.api.DataTable;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -36,7 +36,7 @@ public class membershipDuesReport {
     private CaptureScreenShot captureScreenShot;
     SearchAndDeleteFile searchAndDeleteFile = new SearchAndDeleteFile();
     SearchAndReturnFileName searchAndReturnFileName = new SearchAndReturnFileName();
-    private CountryReport countryReport;
+    private ChapterReport chapterReport;
 
     @Before
     public void setup() throws Exception {
@@ -76,7 +76,7 @@ public class membershipDuesReport {
             TimeUnit.SECONDS.sleep(5);
             bniConnect.selectItemFromReportsViewActionsByMenu("Membership Dues Report");
             TimeUnit.SECONDS.sleep(3);
-            bniConnect.clickEffectiveDateTextBox();
+            bniConnect.clickReportDateTextBox();
             TimeUnit.SECONDS.sleep(2);
             bniConnect.selectYear(data.get("reportYear"));
             TimeUnit.SECONDS.sleep(1);
@@ -84,12 +84,12 @@ public class membershipDuesReport {
             TimeUnit.SECONDS.sleep(1);
             bniConnect.selectDateFromDatePicker(data.get("reportDay"));
             TimeUnit.SECONDS.sleep(1);
-            bniConnect.clickGoHqButton();
+            bniConnect.clickGoChapterButton();
             TimeUnit.SECONDS.sleep(15);
-            countryReport = new CountryReport(driver);
-            countryReport.clickExportButtonFromList("Export");
+            chapterReport = new ChapterReport(driver);
+            chapterReport.clickExportButton();
             TimeUnit.SECONDS.sleep(10);
-            countryReport.clickCloseButton();
+            chapterReport.clickCloseButton();
             String reportName = searchAndReturnFileName.searchFile(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"), "country-membership-fee-report", ".xls");
             // add database verification code
             signOut.signOutBni();
