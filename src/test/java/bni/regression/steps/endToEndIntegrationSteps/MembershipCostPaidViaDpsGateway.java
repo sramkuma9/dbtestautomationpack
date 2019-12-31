@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class OnlineRenewal {
+public class MembershipCostPaidViaDpsGateway {
 
     public static WebDriver driver;
     private Login login = new Login();
@@ -39,6 +39,7 @@ public class OnlineRenewal {
     private MemberRenewalApplication memberRenewalApplication;
     private MemberRenewalApplicationPaymentProcessing memberRenewalApplicationPaymentProcessing;
     private ReconcileOnlineRenewals reconcileOnlineRenewals;
+    private PaymentCheckOut paymentCheckOut;
 
     @Before
     public void setup() throws Exception {
@@ -50,58 +51,27 @@ public class OnlineRenewal {
 
     }
 
-    // Scenario: Navigate to Add a Visitor page
-    @Given("A member is added newly to the region and member status is active now. On Admin menu ->Select Region->Manage Region -> View/Edit Region Business Rules. Keep “Allow Online Renewals” as Post-Approval only")
-    public void  A_member_is_added_newly_to_the_region_and_member_status_is_active_now_On_Admin_menuy(DataTable loginDetails) throws Exception {
+    @Given("User logged in as newly added member login")
+    public void  step_1(DataTable loginDetails) throws Exception {
         List<List<String>> login = loginDetails.raw();
         loginSubList = login.subList(1, login.size());
     }
 
-    @When("I login BNI app with Member login details and accept TOS, check latest TOS version is displayed,then click Renew Now button in the home page and enter the below details click Proceed to payment button. Enter card details and Proceed to payment")
-    public void step_2(DataTable onlineRenewal) throws Exception {
+    @When("click Renew Now button in home page and enter the below details. Click submit button")
+    public void step_2(DataTable paymentGateway) throws Exception {
         Integer i = 2;
-        for (Map<String, String> data : onlineRenewal.asMaps(String.class, String.class)) {
+        for (Map<String, String> data : paymentGateway.asMaps(String.class, String.class)) {
             String[] splitCredentials = loginSubList.get(i - 2).toString().replace("[", "").replace("]", "").split(",");
-            driver = launchBrowser.getDriver();
-            launchBrowser.invokeBrowser();
-            TimeUnit.SECONDS.sleep(2);
-            login.loginToBni(splitCredentials[0].replaceAll(" ", ""), splitCredentials[1].replaceAll(" ", ""));
-            TimeUnit.SECONDS.sleep(12);
-            driver = launchBrowser.getDriver();
-            bniConnect = new BNIConnect(driver);
-            captureScreenShot = new CaptureScreenShot(driver);
-            bniConnect.navigateMenu("Admin,Region");
-            TimeUnit.SECONDS.sleep(3);
-            selectCountryRegionChapter.selectCountryRegChap(splitCredentials[2].trim(), splitCredentials[3].trim(), splitCredentials[4].trim());
-            bniConnect = new BNIConnect(driver);
-            TimeUnit.SECONDS.sleep(3);
-            String language[] = readWritePropertyFile.loadAndReadPropertyFile("language", "properties/config.properties").split(",");
-            int colNumber = Integer.parseInt(language[1]);
-            readWriteExcel.setExcelFile("src/test/resources/inputFiles/translation.xlsx");
-            String transSubMenu = readWriteExcel.getCellData("translation", colNumber, 7);
-            bniConnect.selectItemFromSubListMenu(transSubMenu);
-            TimeUnit.SECONDS.sleep(5);
-            viewRegionBusinessRules = new ViewRegionBusinessRules(driver);
-            viewRegionBusinessRules.clickEditRulesButton();
-            TimeUnit.SECONDS.sleep(5);
-            editBusinessRules = new EditBusinessRules(driver);
-            editBusinessRules.selectAllowOnlineRenewals(data.get("allowOnlineRenewals"));
-            TimeUnit.SECONDS.sleep(1);
-            editBusinessRules.clickSubmitButton();
-            TimeUnit.SECONDS.sleep(12);
-            signOut.signOutBni();
             driver = launchBrowser.getDriver();
             launchBrowser.invokeBrowser();
             TimeUnit.SECONDS.sleep(2);
             login.loginToBni(data.get("userName"), data.get("password"));
             TimeUnit.SECONDS.sleep(12);
             driver = launchBrowser.getDriver();
-            termsOfUse = new TermsOfUse(driver);
-            //termsOfUse.checkLastUpdatedDate();
-            termsOfUse.clickCheckBox();
-            TimeUnit.SECONDS.sleep(2);
-            termsOfUse.clickAcceptButton();
-            TimeUnit.SECONDS.sleep(12);
+            bniConnect = new BNIConnect(driver);
+            captureScreenShot = new CaptureScreenShot(driver);
+            selectCountryRegionChapter.selectCountryRegChap(splitCredentials[2].trim(), splitCredentials[3].trim(), splitCredentials[4].trim());
+            TimeUnit.SECONDS.sleep(5);
             bniConnect = new BNIConnect(driver);
             bniConnect.clickRenewNowLink();
             TimeUnit.SECONDS.sleep(5);
@@ -118,31 +88,36 @@ public class OnlineRenewal {
             memberRenewalApplication.enterDescribeBNI();
             TimeUnit.SECONDS.sleep(1);
             memberRenewalApplication.clickTermsAndConditionsCheckBox();
-            TimeUnit.SECONDS.sleep(1);
+            TimeUnit.SECONDS.sleep(2);
             memberRenewalApplication.clickProceedToPayment();
             TimeUnit.SECONDS.sleep(5);
             memberRenewalApplicationPaymentProcessing = new MemberRenewalApplicationPaymentProcessing(driver);
             memberRenewalApplicationPaymentProcessing.enterPayerName(data.get("payerName"));
-            memberRenewalApplicationPaymentProcessing.selectPayMethod();
+            memberRenewalApplicationPaymentProcessing.selectCardPayMethod();
             TimeUnit.SECONDS.sleep(1);
             memberRenewalApplicationPaymentProcessing.clickSubmitButton();
             TimeUnit.SECONDS.sleep(3);
-            memberRenewalApplicationPaymentProcessing.clickOkButton();
+            paymentCheckOut = new PaymentCheckOut(driver);
+            paymentCheckOut.enterCardNumber(data.get("cardNumber"));
+            TimeUnit.SECONDS.sleep(1);
+            paymentCheckOut.enterNameOnCard(data.get("nameOnCard"));
+            TimeUnit.SECONDS.sleep(1);
+            paymentCheckOut.selectExpiryDateMonth(data.get("expiryMonth"));
+            TimeUnit.SECONDS.sleep(1);
+            paymentCheckOut.selectExpiryDateYear(data.get("expiryYear"));
+            TimeUnit.SECONDS.sleep(1);
+            paymentCheckOut.enterCvc(data.get("cvc"));
+            TimeUnit.SECONDS.sleep(1);
+            paymentCheckOut.clickSubmitButton();
             TimeUnit.SECONDS.sleep(8);
-            signOut.signOutBni();
-            driver = launchBrowser.getDriver();
-            launchBrowser.invokeBrowser();
-            TimeUnit.SECONDS.sleep(2);
-            login.loginToBni(splitCredentials[0].replaceAll(" ", ""), splitCredentials[1].replaceAll(" ", ""));
-            TimeUnit.SECONDS.sleep(12);
-            reconcileOnlineRenewals = new ReconcileOnlineRenewals();
-            reconcileOnlineRenewals.reconcileApp(data.get("firstName"), data.get("lastName"),splitCredentials[2],splitCredentials[3],splitCredentials[4]);
-            signOut.signOutBni();
+            paymentCheckOut.checkTransactionStatus();
+            TimeUnit.SECONDS.sleep(1);
+            driver.close();
         }
     }
 
-    @Then("A confirmation message is displayed and I sign out from BNI")
-    public void A_confirmation_message_is_displayed_and_I_sign_out_from_BNI() throws Exception {
-        System.out.println("online renewal script executed.");
+    @Then("Member renewed successfully for the appropriate period")
+    public void step_3() throws Exception {
+        System.out.println("Payment Gateway script executed.");
     }
 }

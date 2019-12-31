@@ -41,9 +41,14 @@ public class MemberRenewalApplicationPaymentProcessing {
         payerNameTextBox.sendKeys(payerName);
     }
 
-    public void selectPayMethod() {
+    public void selectNonCardPayMethod() {
         Select payMethodSelect = new Select(payMethodListBox);
         payMethodSelect.selectByValue("1");
+    }
+
+    public void selectCardPayMethod() {
+        Select payMethodSelect = new Select(payMethodListBox);
+        payMethodSelect.selectByValue("4");
     }
 
     public void clickOkButton() {

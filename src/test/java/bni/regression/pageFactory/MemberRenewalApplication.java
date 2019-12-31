@@ -11,7 +11,7 @@ public class MemberRenewalApplication {
     public static WebDriver driver;
     public WebDriverWait wait;
 
-    @FindBy(css = "#\\32  > input[type=RADIO]")
+    @FindBy(css = "#\\31  > input[type=RADIO]")
     WebElement membershipPeriodCheckBox;
 
     @FindBy(css = "#\\32 55 > input[type=RADIO]")
