@@ -4,9 +4,7 @@ import bni.regression.libraries.common.*;
 import bni.regression.libraries.ui.Login;
 import bni.regression.libraries.ui.SelectCountryRegionChapter;
 import bni.regression.libraries.ui.SignOut;
-import bni.regression.pageFactory.BNIConnect;
-import bni.regression.pageFactory.CountryManageRoles;
-import bni.regression.pageFactory.NationalAdmin;
+import bni.regression.pageFactory.*;
 import cucumber.api.DataTable;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -19,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class AssignRolesAtCountryLevel {
+public class AssignRolesAtRegionLevel {
 
     public static WebDriver driver;
     private Login login = new Login();
@@ -32,8 +30,9 @@ public class AssignRolesAtCountryLevel {
     private ReadWritePropertyFile readWritePropertyFile = new ReadWritePropertyFile();
     ReadWriteExcel readWriteExcel = new ReadWriteExcel();
     private CurrentDateTime currentDateTime = new CurrentDateTime();
-    private CountryManageRoles countryManageRoles;
-    private NationalAdmin nationalAdmin;
+    private RegionWideAccess regionWideAccess;
+    private RegionManageRoles regionManageRoles;
+
 
     @Before
     public void setup() throws Exception {
@@ -46,16 +45,16 @@ public class AssignRolesAtCountryLevel {
     }
 
     // Scenario: Navigate to Add a Visitor page
-    @Given("Iam in the BNI home page, and click Admin, Country")
+    @Given("Iam in the BNI home page, and click Admin, Region")
     public void step_1(DataTable loginDetails) throws Exception {
         List<List<String>> login = loginDetails.raw();
         loginSubList = login.subList(1, login.size());
     }
 
-    @When("I click Manage Roles and click view/allocate roles, and select Assign Role image under options against National Admin. Click Add person to role and enter EmailID, select user and click Assign Role button. Click save button")
-    public void step_2(DataTable countryRoles) throws Exception {
+    @When("I click Manage Roles and click view/allocate roles, and against Region wide access, click Assign role image under options. Click Add person to role and enter Email ID, select user and click Assign. Click save button")
+    public void step_2(DataTable regionRoles) throws Exception {
         Integer i = 2;
-        for (Map<String, String> data : countryRoles.asMaps(String.class, String.class)) {
+        for (Map<String, String> data : regionRoles.asMaps(String.class, String.class)) {
             String[] splitCredentials = loginSubList.get(i - 2).toString().replace("[", "").replace("]", "").split(",");
             driver = launchBrowser.getDriver();
             launchBrowser.invokeBrowser();
@@ -68,7 +67,7 @@ public class AssignRolesAtCountryLevel {
             selectCountryRegionChapter.selectCountryRegChap(splitCredentials[2].trim(), splitCredentials[3].trim(), splitCredentials[4].trim());
             bniConnect = new BNIConnect(driver);
             TimeUnit.SECONDS.sleep(3);
-            bniConnect.navigateMenu("Admin,Country");
+            bniConnect.navigateMenu("Admin,Region");
             TimeUnit.SECONDS.sleep(8);
             String language[] = readWritePropertyFile.loadAndReadPropertyFile("language", "properties/config.properties").split(",");
             int colNumber = Integer.parseInt(language[1]);
@@ -79,38 +78,38 @@ public class AssignRolesAtCountryLevel {
             TimeUnit.SECONDS.sleep(5);
             bniConnect.selectItemFromSubListMenu(transSubMenu);
             TimeUnit.SECONDS.sleep(8);
-            countryManageRoles = new CountryManageRoles(driver);
-            countryManageRoles.enterSearchString(data.get("role"));
+            regionManageRoles = new RegionManageRoles(driver);
+            regionManageRoles.enterSearchString(data.get("role"));
             TimeUnit.SECONDS.sleep(2);
-            countryManageRoles.clickAssignRolesButton();
+            regionManageRoles.clickAssignRolesButton();
             TimeUnit.SECONDS.sleep(8);
-            nationalAdmin = new NationalAdmin(driver);
-            nationalAdmin.clickAddPersonToRoleButton();
+            regionWideAccess = new RegionWideAccess(driver);
+            regionWideAccess.clickAddPersonToRoleButton();
             TimeUnit.SECONDS.sleep(3);
-            nationalAdmin.enterEmailId(data.get("emailId"));
+            regionWideAccess.enterEmailId(data.get("emailId"));
             TimeUnit.SECONDS.sleep(1);
-            nationalAdmin.clickSearchButton();
+            regionWideAccess.clickSearchButton();
             TimeUnit.SECONDS.sleep(3);
-            nationalAdmin.clickAssignRoleButton();
+            regionWideAccess.clickAssignRoleButton();
             TimeUnit.SECONDS.sleep(3);
-            nationalAdmin.clickSaveButton();
+            regionWideAccess.clickSaveButton();
             TimeUnit.SECONDS.sleep(10);
-            countryManageRoles = new CountryManageRoles(driver);
-            countryManageRoles.enterSearchString(data.get("role"));
+            regionManageRoles = new RegionManageRoles(driver);
+            regionManageRoles.enterSearchString(data.get("role"));
             TimeUnit.SECONDS.sleep(2);
-            countryManageRoles.clickAssignRolesButton();
+            regionManageRoles.clickAssignRolesButton();
             TimeUnit.SECONDS.sleep(8);
-            nationalAdmin = new NationalAdmin(driver);
-            String result = nationalAdmin.checkRoleAssigned(data.get("firstName") + " " + data.get("lastName"));
+            regionWideAccess = new RegionWideAccess(driver);
+            String result = regionWideAccess.checkRoleAssigned(data.get("firstName") + " " + data.get("lastName"));
             System.out.println(result);
             TimeUnit.SECONDS.sleep(2);
             signOut.signOutBni();
         }
     }
 
-    @Then("Role is assigned and confirmation email is received")
+    @Then("Role is assigned at region level and confirmation email is received")
     public void step_3() {
-        System.out.println("National level role assigned script executed.");
+        System.out.println("Region level role assigned script executed...");
     }
 
 }
