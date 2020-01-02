@@ -5,8 +5,8 @@ import bni.regression.libraries.ui.Login;
 import bni.regression.libraries.ui.SelectCountryRegionChapter;
 import bni.regression.libraries.ui.SignOut;
 import bni.regression.pageFactory.BNIConnect;
-import bni.regression.pageFactory.CountryManageRoles;
-import bni.regression.pageFactory.NationalAdmin;
+import bni.regression.pageFactory.ComposeEmail;
+import bni.regression.pageFactory.RegionEmailMembers;
 import cucumber.api.DataTable;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class AssignRolesAtCountryLevel {
+public class verifyMassEmails {
 
     public static WebDriver driver;
     private Login login = new Login();
@@ -32,8 +32,8 @@ public class AssignRolesAtCountryLevel {
     private ReadWritePropertyFile readWritePropertyFile = new ReadWritePropertyFile();
     ReadWriteExcel readWriteExcel = new ReadWriteExcel();
     private CurrentDateTime currentDateTime = new CurrentDateTime();
-    private CountryManageRoles countryManageRoles;
-    private NationalAdmin nationalAdmin;
+    private RegionEmailMembers regionEmailMembers;
+    private ComposeEmail composeEmail;
 
     @Before
     public void setup() throws Exception {
@@ -45,17 +45,16 @@ public class AssignRolesAtCountryLevel {
 
     }
 
-    // Scenario: Navigate to Add a Visitor page
-    @Given("Iam in the BNI home page, and click Admin, Country")
+    @Given("User logged in as admin login and select Operations, Region. Navigate to Create Email, Email Members")
     public void step_1(DataTable loginDetails) throws Exception {
         List<List<String>> login = loginDetails.raw();
         loginSubList = login.subList(1, login.size());
     }
 
-    @When("I click Manage Roles and click view/allocate roles, and select Assign Role image under options against National Admin. Click Add person to role and enter EmailID, select user and click Assign Role button. Click save button")
-    public void step_2(DataTable countryRoles) throws Exception {
+    @When("Enter the below details and click Find button. Select Region Email Members and click Next button. Enter Subject, select attachment and click Send button")
+    public void step_2(DataTable massEmails) throws Exception {
         Integer i = 2;
-        for (Map<String, String> data : countryRoles.asMaps(String.class, String.class)) {
+        for (Map<String, String> data : massEmails.asMaps(String.class, String.class)) {
             String[] splitCredentials = loginSubList.get(i - 2).toString().replace("[", "").replace("]", "").split(",");
             driver = launchBrowser.getDriver();
             launchBrowser.invokeBrowser();
@@ -68,50 +67,51 @@ public class AssignRolesAtCountryLevel {
             selectCountryRegionChapter.selectCountryRegChap(splitCredentials[2].trim(), splitCredentials[3].trim(), splitCredentials[4].trim());
             bniConnect = new BNIConnect(driver);
             TimeUnit.SECONDS.sleep(3);
-            bniConnect.navigateMenu("Admin,Country");
+            bniConnect.navigateMenu("Operations,Region");
             TimeUnit.SECONDS.sleep(8);
             String language[] = readWritePropertyFile.loadAndReadPropertyFile("language", "properties/config.properties").split(",");
             int colNumber = Integer.parseInt(language[1]);
             readWriteExcel.setExcelFile("src/test/resources/inputFiles/translation.xlsx");
-            String transMainMenu = readWriteExcel.getCellData("translation", colNumber, 13);
-            String transSubMenu = readWriteExcel.getCellData("translation", colNumber, 14);
+            String transMainMenu = readWriteExcel.getCellData("translation", colNumber, 15);
+            String transSubMenu = readWriteExcel.getCellData("translation", colNumber, 16);
             bniConnect.selectItemFromSubListMenu(transMainMenu);
             TimeUnit.SECONDS.sleep(5);
             bniConnect.selectItemFromSubListMenu(transSubMenu);
-            TimeUnit.SECONDS.sleep(8);
-            countryManageRoles = new CountryManageRoles(driver);
-            countryManageRoles.enterSearchString(data.get("role"));
-            TimeUnit.SECONDS.sleep(2);
-            countryManageRoles.clickAssignRolesButton();
-            TimeUnit.SECONDS.sleep(8);
-            nationalAdmin = new NationalAdmin(driver);
-            nationalAdmin.clickAddPersonToRoleButton();
-            TimeUnit.SECONDS.sleep(3);
-            nationalAdmin.enterEmailId(data.get("emailId"));
-            TimeUnit.SECONDS.sleep(1);
-            nationalAdmin.clickSearchButton();
-            TimeUnit.SECONDS.sleep(3);
-            nationalAdmin.clickAssignRoleButton();
-            TimeUnit.SECONDS.sleep(3);
-            nationalAdmin.clickSaveButton();
             TimeUnit.SECONDS.sleep(10);
-            countryManageRoles = new CountryManageRoles(driver);
-            countryManageRoles.enterSearchString(data.get("role"));
+            regionEmailMembers = new RegionEmailMembers(driver);
+            regionEmailMembers.selectRegion(data.get("listOfRegions"));
+            TimeUnit.SECONDS.sleep(3);
+            regionEmailMembers.selectChapter(data.get("membersInOneOrMoreChapters"));
+            TimeUnit.SECONDS.sleep(1);
+            regionEmailMembers.selectAssistantDirector(data.get("membersUnderThisAssistantDirector"));
+            TimeUnit.SECONDS.sleep(1);
+            regionEmailMembers.selectPosition(data.get("membersWhoHoldThisPosition"));
+            TimeUnit.SECONDS.sleep(1);
+            regionEmailMembers.selectAreaDirector(data.get("membersWhoAreUnderThisAreaDirector"));
+            TimeUnit.SECONDS.sleep(1);
+            regionEmailMembers.selectGeoArea(data.get("membersWhoAreInThisGeoArea"));
+            TimeUnit.SECONDS.sleep(1);
+            regionEmailMembers.selectStatus(data.get("membersWhoHaveThisStatus"));
             TimeUnit.SECONDS.sleep(2);
-            countryManageRoles.clickAssignRolesButton();
+            regionEmailMembers.clickFindButton();
             TimeUnit.SECONDS.sleep(8);
-            nationalAdmin = new NationalAdmin(driver);
-            String result = nationalAdmin.checkRoleAssigned(data.get("firstName") + " " + data.get("lastName"));
-            System.out.println(result);
+            regionEmailMembers.selectMembersForEmail(data.get("emailIds"));
+            TimeUnit.SECONDS.sleep(1);
+            regionEmailMembers.clickNextButton();
+            TimeUnit.SECONDS.sleep(8);
+            composeEmail = new ComposeEmail(driver);
+            composeEmail.enterSubject(data.get("subject"));
             TimeUnit.SECONDS.sleep(2);
-            // add email verification code
+            composeEmail.clickSendButton();
+            TimeUnit.SECONDS.sleep(12);
             signOut.signOutBni();
+            // add email verification code
         }
     }
 
-    @Then("Role is assigned and confirmation email is received")
+    @Then("Verify selected members only receive the Email")
     public void step_3() {
-        System.out.println("National level role assigned script executed.");
+        System.out.println("verify mass email script executed.");
     }
 
 }

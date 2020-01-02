@@ -103,6 +103,7 @@ public class AssignRolesAtRegionLevel {
             String result = regionWideAccess.checkRoleAssigned(data.get("firstName") + " " + data.get("lastName"));
             System.out.println(result);
             TimeUnit.SECONDS.sleep(2);
+            // add email verification code
             signOut.signOutBni();
         }
     }
