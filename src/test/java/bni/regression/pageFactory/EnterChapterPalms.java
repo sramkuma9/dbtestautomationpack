@@ -115,7 +115,6 @@ public class EnterChapterPalms {
         TimeUnit.SECONDS.sleep(1);
         //String js = "arguments[0].setAttribute('value','1')";
         //((JavascriptExecutor) driver).executeScript(js, meetingTextBox);
-        System.out.println(meetingTextBox.isEnabled());
         //meetingTextBox.clear();
         meetingTextBox.sendKeys(Keys.valueOf("1"));
         meetingTextBox.sendKeys("1");

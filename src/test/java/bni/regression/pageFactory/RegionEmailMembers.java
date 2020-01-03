@@ -42,6 +42,9 @@ public class RegionEmailMembers {
     @FindBy(css = "#searchEmailBTN")
     WebElement findButton;
 
+    @FindBy(css = "#selectAll")
+    WebElement selectAllButton;
+
     @FindBy(css = "#datalist_filter > input[type=text]")
     //@FindBy(css = "#datalist_filter > input:nth-child(1)")
     WebElement searchTextBox;
@@ -179,6 +182,10 @@ public class RegionEmailMembers {
 
     public void clickFindButton() {
         findButton.click();
+    }
+
+    public void clickSelectAllButton() {
+        selectAllButton.click();
     }
 
     public void selectMembersForEmail(String searchString) throws InterruptedException {

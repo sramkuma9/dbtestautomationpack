@@ -1,11 +1,14 @@
 package bni.regression.pageFactory;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.concurrent.TimeUnit;
 
 public class ComposeEmail {
     public static WebDriver driver;
@@ -25,8 +28,11 @@ public class ComposeEmail {
         wait = new WebDriverWait(driver, 5);
     }
 
-    public void enterSubject(String subject){
-        subjectTextBox.sendKeys(subject);
+    public void enterSubject(String subject) throws InterruptedException {
+        subjectTextBox.click();
+        TimeUnit.SECONDS.sleep(2);
+        String js = "arguments[0].setAttribute('value','Test Automation Email')";
+        ((JavascriptExecutor) driver).executeScript(js, subjectTextBox);
     }
 
     public void clickSendButton(){

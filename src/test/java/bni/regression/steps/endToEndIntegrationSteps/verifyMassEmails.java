@@ -95,10 +95,12 @@ public class verifyMassEmails {
             TimeUnit.SECONDS.sleep(2);
             regionEmailMembers.clickFindButton();
             TimeUnit.SECONDS.sleep(8);
-            regionEmailMembers.selectMembersForEmail(data.get("emailIds"));
-            TimeUnit.SECONDS.sleep(1);
+            //regionEmailMembers.enterSearchString("test");
+            //regionEmailMembers.selectMembersForEmail(data.get("emailIds"));
+            regionEmailMembers.clickSelectAllButton();
+            TimeUnit.SECONDS.sleep(3);
             regionEmailMembers.clickNextButton();
-            TimeUnit.SECONDS.sleep(8);
+            TimeUnit.SECONDS.sleep(10);
             composeEmail = new ComposeEmail(driver);
             composeEmail.enterSubject(data.get("subject"));
             TimeUnit.SECONDS.sleep(2);
