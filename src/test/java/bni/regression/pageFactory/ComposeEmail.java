@@ -31,7 +31,7 @@ public class ComposeEmail {
     public void enterSubject(String subject) throws InterruptedException {
         subjectTextBox.click();
         TimeUnit.SECONDS.sleep(2);
-        String js = "arguments[0].setAttribute('value','Test Automation Email')";
+        String js = "arguments[0].setAttribute('value','" + subject + "')";
         ((JavascriptExecutor) driver).executeScript(js, subjectTextBox);
     }
 
