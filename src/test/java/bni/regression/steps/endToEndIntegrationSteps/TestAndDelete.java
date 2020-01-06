@@ -1,5 +1,6 @@
 package bni.regression.steps.endToEndIntegrationSteps;
 
+import bni.regression.libraries.api.RestApiClient;
 import bni.regression.libraries.common.*;
 import bni.regression.libraries.common.email.GmailClient;
 import bni.regression.libraries.db.DbConnect;
@@ -13,6 +14,7 @@ public class TestAndDelete {
     SearchAndReturnFileName searchAndReturnFileName = new SearchAndReturnFileName();
     SearchAndDeleteFile searchAndDeleteFile = new SearchAndDeleteFile();
     GmailClient gmailClient = new GmailClient();
+    RestApiClient restApiClient = new RestApiClient();
 
     @Given("test and delete")
     public void test_and_delete() throws Exception {
@@ -32,5 +34,6 @@ public class TestAndDelete {
        //gmailClient.checkEmail("shanthibni@gmail.com","BNI- Your registration is successful for TestAutomation20191204134548","shanthibni+32@gmail.com");
        // gmailClient.checkEmail("shanthibni@gmail.com","email verification","shanthibni+45@gmail.com");
         //gmailClient.checkEmail("dbselenium@gmail.com","Automation","dbselenium@gmail.com");
+        restApiClient.apiGetClient("testApi");
     }
 }
