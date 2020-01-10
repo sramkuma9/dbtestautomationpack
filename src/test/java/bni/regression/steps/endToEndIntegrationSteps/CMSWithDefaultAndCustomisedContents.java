@@ -11,6 +11,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
 import java.util.ArrayList;
@@ -80,13 +81,19 @@ public class CMSWithDefaultAndCustomisedContents {
             countryWebsiteList.enterPagesSearch("Find A Chapter");
             TimeUnit.SECONDS.sleep(3);
             countryWebsiteList.clickPreviewButton();
-            TimeUnit.SECONDS.sleep(12);
+            TimeUnit.SECONDS.sleep(15);
             ArrayList<String> tabs1 = new ArrayList<String>(driver.getWindowHandles());
             driver.switchTo().window(tabs1.get(2));
             findAChapter = new FindAChapter(driver);
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            js.executeScript("window.scrollBy(0, 1300)", "");
+            TimeUnit.SECONDS.sleep(2);
             findAChapter.clickAdvanceSearchButton();
             TimeUnit.SECONDS.sleep(8);
             advanceChapterSearch = new AdvanceChapterSearch(driver);
+            JavascriptExecutor js1 = (JavascriptExecutor) driver;
+            js1.executeScript("window.scrollBy(0, 500)", "");
+            TimeUnit.SECONDS.sleep(2);
             advanceChapterSearch.selectRegion(data.get("region"));
             TimeUnit.SECONDS.sleep(1);
             advanceChapterSearch.clickFindButton();
