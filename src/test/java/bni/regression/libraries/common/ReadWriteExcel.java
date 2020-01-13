@@ -1,12 +1,11 @@
 package bni.regression.libraries.common;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class ReadWriteExcel {
     public FileInputStream fis = null;
@@ -84,13 +83,14 @@ public class ReadWriteExcel {
         return true;
     }
 
-    public boolean deleteCellData(String fileName, String sheetName, int colNumber) {
+    public boolean deleteRow(String fileName, String sheetName, int colNumber) {
         try {
             sheet = workbook.getSheet(sheetName);
             int rowNum = sheet.getLastRowNum();
             for (int i = 1; i <= rowNum; i++) {
                 Row row = sheet.getRow(i);
-                row.removeCell(row.getCell(colNumber));
+                sheet.removeRow(row);
+               // row.removeCell(row.getCell(colNumber));
                 fos = new FileOutputStream(fileName);
                 workbook.write(fos);
                 fos.close();

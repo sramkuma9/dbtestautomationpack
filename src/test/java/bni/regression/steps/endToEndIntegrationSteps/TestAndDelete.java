@@ -19,7 +19,7 @@ public class TestAndDelete {
     @Given("test and delete")
     public void test_and_delete() throws Exception {
         //readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
-        //boolean setFlag = readWriteExcel.deleteCellData("src/test/resources/inputFiles/testInput.xlsx", "addVisitor", 0);
+        //boolean setFlag = readWriteExcel.deleteRow("src/test/resources/inputFiles/testInput.xlsx", "addBrandNewVisitor", 0);
 //        String[][] sqlResult = dbConnect.queryAndRetrieveRecords(readWritePropertyFile.loadAndReadPropertyFile("addAVisitor1", "properties/sql.properties"));
 //        readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
 //        String rowCount = readWriteExcel.getCellData("sqlCount",0,1);
@@ -34,6 +34,6 @@ public class TestAndDelete {
        //gmailClient.checkEmail("shanthibni@gmail.com","BNI- Your registration is successful for TestAutomation20191204134548","shanthibni+32@gmail.com");
        // gmailClient.checkEmail("shanthibni@gmail.com","email verification","shanthibni+45@gmail.com");
         //gmailClient.checkEmail("dbselenium@gmail.com","Automation","dbselenium@gmail.com");
-        restApiClient.apiGetClient("testApi");
+        //restApiClient.apiGetClient("testApi");
     }
 }
