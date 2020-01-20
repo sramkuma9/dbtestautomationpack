@@ -90,7 +90,7 @@ public class ReadWriteExcel {
             for (int i = 1; i <= rowNum; i++) {
                 Row row = sheet.getRow(i);
                 sheet.removeRow(row);
-               // row.removeCell(row.getCell(colNumber));
+                // row.removeCell(row.getCell(colNumber));
                 fos = new FileOutputStream(fileName);
                 workbook.write(fos);
                 fos.close();
@@ -100,5 +100,33 @@ public class ReadWriteExcel {
             return false;
         }
         return true;
+    }
+
+    public String[][] returnDataForDbXlsComparatorClass(String sheetName) {
+        String[][] xlsData = new String[999][99999];
+        int i, j;
+        Row r;
+        Cell d;
+        sheet = workbook.getSheet(sheetName);
+        int rowNums = sheet.getLastRowNum();
+        int colNums = sheet.getRow(0).getLastCellNum();
+        for (i = 1; i <= colNums; i++){
+            for (j = 1; j <= rowNums; j++) {
+                sheet = workbook.getSheet(sheetName);
+                r = sheet.getRow(j);
+                d = r.getCell(i-1);
+                try {
+                    xlsData[i-1][j-1] = d.getStringCellValue();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return xlsData;
+    }
+
+    public Integer getRowCount(String sheetName){
+        sheet = workbook.getSheet(sheetName);
+        return sheet.getLastRowNum();
     }
 }
