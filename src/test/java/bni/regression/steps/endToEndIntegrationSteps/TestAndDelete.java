@@ -22,7 +22,7 @@ public class TestAndDelete {
     public void test_and_delete() throws Exception {
         //readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
         //boolean setFlag = readWriteExcel.deleteRow("src/test/resources/inputFiles/testInput.xlsx", "addBrandNewVisitor", 0);
-        String[][] sqlResult = dbConnect.queryAndRetrieveRecords(readWritePropertyFile.loadAndReadPropertyFile("test", "properties/sql.properties"));
+        String[][] sqlResult = dbConnect.queryAndRetrieveRecords(readWritePropertyFile.loadAndReadPropertyFile("addAVisitor1", "properties/sql.properties"));
         readWriteExcel.setExcelFile("src/test/resources/inputFiles/testAndDelete.xlsx");
         Integer xlsRowCount = readWriteExcel.getRowCount("addBrandNewVisitor");
         String[][] xlsData = readWriteExcel.returnDataForDbXlsComparatorClass("addBrandNewVisitor");

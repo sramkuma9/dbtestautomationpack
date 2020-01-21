@@ -16,7 +16,7 @@ public class DbXlsComparator {
 
         for (int i = 0; i < dbRowCount; i++) {
             for (int j = 0; j <= dbColCount; j++) {
-                assertEquals("The value '" + xlsData[j][i] + "' in XLS file & DB does not match", sqlResult[i][j], xlsData[j][i]);
+                assertEquals("row - " + (i+2) + " column - " + (j+1) + "' in XLS file & DB does not match", sqlResult[i][j], xlsData[j][i]);
             }
         }
     }
