@@ -108,10 +108,10 @@ public class ReadWriteExcel {
         Row r;
         Cell d;
         sheet = workbook.getSheet(sheetName);
-        int rowNums = sheet.getLastRowNum();
-        int colNums = sheet.getRow(0).getLastCellNum();
-        for (i = 1; i <= colNums; i++){
-            for (j = 1; j <= rowNums; j++) {
+        int rowCount = sheet.getLastRowNum();
+        int colCount = sheet.getRow(0).getLastCellNum();
+        for (i = 1; i <= colCount; i++){
+            for (j = 1; j <= rowCount; j++) {
                 sheet = workbook.getSheet(sheetName);
                 r = sheet.getRow(j);
                 d = r.getCell(i-1);

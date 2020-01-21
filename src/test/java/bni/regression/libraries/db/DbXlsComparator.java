@@ -9,14 +9,14 @@ public class DbXlsComparator {
 
     public void resultComparator(String[][] sqlResult, String[][] xlsData, Integer xlsRowCount) throws Exception {
         readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
-        String dbRowCount = readWriteExcel.getCellData("sqlCount", 0, 1);
-        String dbColCount = readWriteExcel.getCellData("sqlCount", 1, 1);
+        Integer dbRowCount = Integer.parseInt(readWriteExcel.getCellData("sqlCount", 0, 1));
+        Integer dbColCount = Integer.parseInt(readWriteExcel.getCellData("sqlCount", 1, 1));
 
         assertEquals("Total records in DB and generated xls report does not match", dbRowCount, xlsRowCount);
 
-        for (int i = 0; i < Integer.parseInt(dbRowCount); i++) {
-            for (int j = 0; j <= Integer.parseInt(dbColCount); j++) {
-                assertEquals("The value '" + xlsData[i][j] + "' in XLS file & DB does not match", sqlResult[i][j], xlsData[i][j]);
+        for (int i = 0; i < dbRowCount; i++) {
+            for (int j = 0; j <= dbColCount; j++) {
+                assertEquals("The value '" + xlsData[j][i] + "' in XLS file & DB does not match", sqlResult[i][j], xlsData[j][i]);
             }
         }
     }
