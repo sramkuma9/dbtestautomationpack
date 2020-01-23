@@ -39,6 +39,10 @@ public class BNIConnect {
     @FindBy(css = "#nav > a.help")
     WebElement helpButton;
 
+    @FindBy (css=".searchpeople")
+    WebElement searchPeople;
+
+
     @FindBy(css = "#showDroppedMembersRegionalPALMSReportDisplay")
     WebElement showDroppedMemberCheckBox;
 
@@ -72,6 +76,11 @@ public class BNIConnect {
     @FindBy(css = "#help")
     List<WebElement> mainListMenu;
 
+
+
+    @FindBy(css="#datalist1 > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > a:nth-child(1)")
+    WebElement membershipLink;
+
     @FindBy(css = "#help")
     List<WebElement> reportsViewActionsByMenu;
 
@@ -84,6 +93,9 @@ public class BNIConnect {
     //@FindBy(css = "#convertToMemberHref")
     @FindBy(css = "#convertToMemberHrefCofC")
     WebElement addButton;
+
+    @FindBy(css = "#convertToMemberHref")
+    WebElement addProspectButton;
 
     @FindBy(css = "#columnlinks > a:nth-child(5)")
     WebElement renewNowLink;
@@ -151,6 +163,9 @@ public class BNIConnect {
     @FindBy(css = "#regionsRegionalPALMSReport")
     List<WebElement> regionList;
 
+    @FindBy(css="#tabs-3-5 > table:nth-child(2) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(2) > a:nth-child(1)")
+    WebElement manageProspectLink;
+
     public BNIConnect(WebDriver driver) {
         BNIConnect.driver = driver;
         AjaxElementLocatorFactory factory = new AjaxElementLocatorFactory(driver, 100);
@@ -179,6 +194,7 @@ public class BNIConnect {
         tButton.click();
     }
 
+
     public void clickHelpIcon(){
         helpButton.click();
     }
@@ -206,6 +222,15 @@ public class BNIConnect {
     public void clickTrackingPalmsCheckBox(){
         trackingPalmsCheckBox.click();
     }
+
+    public void clickMagnifyingGlass(){
+        searchPeople.click();
+    }
+
+    public void clickMembershipLink(){
+        membershipLink.click();
+    }
+
 
     public void clickStartDateTextBox(){
         startDateTextBox.click();
@@ -405,8 +430,9 @@ public class BNIConnect {
         }
     }
 
-    public void enterEmailId(String emailId){
+    public void enterEmailId(String emailId) {
         emailTextBox.sendKeys(emailId);
+
     }
 
     public void clickSearchButton(){
@@ -415,6 +441,10 @@ public class BNIConnect {
 
     public  void clickAddButton(){
         addButton.click();
+    }
+
+    public  void clickAddProspectButton(){
+        addProspectButton.click();
     }
 
     public  void clickEffectiveDateTextBox(){
@@ -434,6 +464,10 @@ public class BNIConnect {
         TimeUnit.SECONDS.sleep(5);
     }
 
+    public void clickManageProspect() throws InterruptedException{
+        manageProspectLink.click();
+        TimeUnit.SECONDS.sleep(2);
+    }
     public void clickSignOutFooter() throws Exception {
         signOutFooter.click();
         TimeUnit.SECONDS.sleep(5);
