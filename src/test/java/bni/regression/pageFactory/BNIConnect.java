@@ -151,6 +151,9 @@ public class BNIConnect {
     @FindBy(css = "#regionsRegionalPALMSReport")
     List<WebElement> regionList;
 
+    @FindBy (css=".searchpeople")
+    WebElement searchPeople;
+
     public BNIConnect(WebDriver driver) {
         BNIConnect.driver = driver;
         AjaxElementLocatorFactory factory = new AjaxElementLocatorFactory(driver, 100);
@@ -162,6 +165,10 @@ public class BNIConnect {
     public void checkPrivacyPolicyTranslation(String expPrivacyPolicy){
         String actualPrivacyPolicy = privacyPolicyLink.getText();
         assertEquals("Privacy Policy translation is not correct", expPrivacyPolicy, actualPrivacyPolicy);
+    }
+
+    public void clickMagnifyingGlass(){
+        searchPeople.click();
     }
 
     public void checkBrowserPolicyTranslation(String expBrowserPolicy){
