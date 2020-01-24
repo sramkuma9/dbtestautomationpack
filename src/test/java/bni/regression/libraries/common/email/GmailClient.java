@@ -3,8 +3,7 @@ package bni.regression.libraries.common.email;
 import bni.regression.libraries.common.ReadWritePropertyFile;
 import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.imap.IMAPStore;
-import org.junit.platform.commons.util.StringUtils;
-
+import org.apache.commons.lang3.StringUtils;
 import javax.mail.*;
 import javax.mail.internet.ContentType;
 import javax.mail.internet.InternetAddress;

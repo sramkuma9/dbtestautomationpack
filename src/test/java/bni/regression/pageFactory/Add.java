@@ -1,6 +1,5 @@
 package bni.regression.pageFactory;
 
-import bni.regression.libraries.common.ReadWritePropertyFile;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -72,6 +71,9 @@ public class Add {
 
     @FindBy(css = "#datalist1 > tbody > tr")
     List<WebElement> searchResults;
+
+    @FindBy (css="#memberFax")
+    WebElement faxTextBox;
 
     public Add(WebDriver driver) {
         Add.driver = driver;
@@ -198,5 +200,9 @@ public class Add {
     public void selectVisitYear(String year) {
         Select visitYearSelect = new Select(applicationYear);
         visitYearSelect.selectByVisibleText(year);
+    }
+
+    public void enterFax(String fax) {
+        faxTextBox.sendKeys(fax);
     }
 }
