@@ -46,9 +46,8 @@ public class PowerSearchFindAnInvoice {
     @Before
     public void setup() throws Exception {
         fixedDateTime = currentDateTime.dateTime();
-        searchAndDeleteFile.searchFileAndDelete(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"),"find_invoice",".xls");
-     //  readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
-       // boolean setFlag = readWriteExcel.deleteCellData("src/test/resources/inputFiles/testInput.xlsx", "addVisitor", 0);
+        //  readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
+        // boolean setFlag = readWriteExcel.deleteCellData("src/test/resources/inputFiles/testInput.xlsx", "addVisitor", 0);
     }
 
     @After
@@ -62,11 +61,13 @@ public class PowerSearchFindAnInvoice {
         List<List<String>> login = searchDetails.raw();
         loginSubList = login.subList(1, login.size());
     }
+
     @When("^I  select “Find an Invoice” and enter the below details and click search button$")
     public void i_select_Find_an_Invoice_and_enter_the_below_details_and_click_search_button(DataTable search) throws Exception {
         // public void I_select_Find_an_Invoice_and_enter_the_below_details_and_click_search_button(DataTable search) throws Exception {
         Integer i = 2;
         for (Map<String, String> data : search.asMaps(String.class, String.class)) {
+            searchAndDeleteFile.searchFileAndDelete(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"), "find_invoice", ".xls");
             String[] splitCredentials = loginSubList.get(i - 2).toString().replace("[", "").replace("]", "").split(",");
             driver = launchBrowser.getDriver();
             launchBrowser.invokeBrowser();
@@ -172,7 +173,7 @@ public class PowerSearchFindAnInvoice {
             captureScreenShot.takeSnapShot(driver, "powersearchFindAnInvoice");
             searchResults.clickExportIndiaButton();
             TimeUnit.SECONDS.sleep(20);
-            String findAnInvoiceReportName = searchAndReturnFileName.searchFile(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"),"find-invoice",".xls");
+            String findAnInvoiceReportName = searchAndReturnFileName.searchFile(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"), "find-invoice", ".xls");
             driver.switchTo().window(tabs.get(0));
             // add database verification code
             signOut.signOutBni();

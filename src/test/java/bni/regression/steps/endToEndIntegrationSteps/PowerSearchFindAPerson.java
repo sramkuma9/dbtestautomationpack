@@ -4,31 +4,21 @@ import bni.regression.libraries.common.*;
 import bni.regression.libraries.ui.Login;
 import bni.regression.libraries.ui.SelectCountryRegionChapter;
 import bni.regression.libraries.ui.SignOut;
-import bni.regression.pageFactory.AddAVisitor;
 import bni.regression.pageFactory.BNIConnect;
 import bni.regression.pageFactory.FindAPerson;
 import bni.regression.pageFactory.SearchResults;
 import cucumber.api.DataTable;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
-import static junit.framework.TestCase.assertEquals;
 
 public class PowerSearchFindAPerson {
 
@@ -54,7 +44,6 @@ public class PowerSearchFindAPerson {
     @Before
     public void setup() throws Exception {
         fixedDateTime = currentDateTime.dateTime();
-        searchAndDeleteFile.searchFileAndDelete(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"),"find-person-report",".xls");
         //readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
         //boolean setFlag = readWriteExcel.deleteCellData("src/test/resources/inputFiles/testInput.xlsx", "addVisitor", 0);
     }
@@ -75,6 +64,7 @@ public class PowerSearchFindAPerson {
     public void I_click_Find_a_Person_and_enter_the_below_details_and_click_search_button(DataTable search) throws Exception {
         Integer i = 2;
         for (Map<String, String> data : search.asMaps(String.class, String.class)) {
+            searchAndDeleteFile.searchFileAndDelete(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"), "find-person-report", ".xls");
             String[] splitCredentials = loginSubList.get(i - 2).toString().replace("[", "").replace("]", "").split(",");
             driver = launchBrowser.getDriver();
             launchBrowser.invokeBrowser();
@@ -158,7 +148,7 @@ public class PowerSearchFindAPerson {
             //String searchResultsExportxls = searchResults.getDateTime();
             //System.out.println(searchResultsExportxls);
             TimeUnit.SECONDS.sleep(10);
-            String findAPersonReportName = searchAndReturnFileName.searchFile(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"),"find-person-report",".xls");
+            String findAPersonReportName = searchAndReturnFileName.searchFile(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"), "find-person-report", ".xls");
             driver.switchTo().window(tabs.get(0));
             // add database verification code
             signOut.signOutBni();
