@@ -64,7 +64,6 @@ public class PowerSearchFindAnInvoice {
 
     @When("^I  select “Find an Invoice” and enter the below details and click search button$")
     public void i_select_Find_an_Invoice_and_enter_the_below_details_and_click_search_button(DataTable search) throws Exception {
-        // public void I_select_Find_an_Invoice_and_enter_the_below_details_and_click_search_button(DataTable search) throws Exception {
         Integer i = 2;
         for (Map<String, String> data : search.asMaps(String.class, String.class)) {
             searchAndDeleteFile.searchFileAndDelete(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"), "find_invoice", ".xls");
