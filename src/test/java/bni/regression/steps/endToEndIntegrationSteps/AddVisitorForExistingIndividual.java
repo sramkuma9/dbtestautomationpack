@@ -43,14 +43,12 @@ public class AddVisitorForExistingIndividual {
 
     @Before
     public void setup() throws Exception {
-//        driver=launchBrowser.getDriver();
-//        launchBrowser.invokeBrowser();
-//        login.loginToBni();
-        //fixedDateTime =  currentDateTime.dateTime();
+        readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
+        boolean setFlag = readWriteExcel.deleteRow("src/test/resources/inputFiles/testInput.xlsx", "addVisitorForExistingIndividual", 0);
     }
 
     @After
-    public void tearDown() throws Exception{
+    public void tearDown() throws Exception {
         //signOut.signOutBni();
     }
 
@@ -62,14 +60,14 @@ public class AddVisitorForExistingIndividual {
     }
 
     @When("I enter a valid existing email id and click search and Add button and I enter the below details and click the save button")
-    public void I_enter_a_valid_existing_email_id_and_click_search_and_Add_button_and_I_enter_the_below_details_and_click_the_save_button(DataTable addPVVisitor) throws Exception{
+    public void I_enter_a_valid_existing_email_id_and_click_search_and_Add_button_and_I_enter_the_below_details_and_click_the_save_button(DataTable addPVVisitor) throws Exception {
         Integer i = 2;
         for (Map<String, String> data : addPVVisitor.asMaps(String.class, String.class)) {
             String[] splitCredentials = loginSubList.get(i - 2).toString().replace("[", "").replace("]", "").split(",");
             driver = launchBrowser.getDriver();
             launchBrowser.invokeBrowser();
             TimeUnit.SECONDS.sleep(2);
-            login.loginToBni(splitCredentials[0].replaceAll(" ", ""), splitCredentials[1].replaceAll(" ",""));
+            login.loginToBni(splitCredentials[0].replaceAll(" ", ""), splitCredentials[1].replaceAll(" ", ""));
             TimeUnit.SECONDS.sleep(12);
             driver = launchBrowser.getDriver();
             bniConnect = new BNIConnect(driver);
@@ -82,8 +80,8 @@ public class AddVisitorForExistingIndividual {
             String language[] = readWritePropertyFile.loadAndReadPropertyFile("language", "properties/config.properties").split(",");
             int colNumber = Integer.parseInt(language[1]);
             readWriteExcel.setExcelFile("src/test/resources/inputFiles/translation.xlsx");
-            String transMainMenu = readWriteExcel.getCellData("translation",colNumber,3);
-            String transSubMenu = readWriteExcel.getCellData("translation",colNumber,5);
+            String transMainMenu = readWriteExcel.getCellData("translation", colNumber, 3);
+            String transSubMenu = readWriteExcel.getCellData("translation", colNumber, 5);
             bniConnect.selectItemFromMainListMenu(transMainMenu);
             TimeUnit.SECONDS.sleep(2);
             bniConnect.selectItemFromSubListMenu(transSubMenu);
@@ -95,7 +93,7 @@ public class AddVisitorForExistingIndividual {
             try {
                 Alert alert = driver.switchTo().alert();
                 alert.dismiss();
-            }catch(Exception e) {
+            } catch (Exception e) {
                 System.out.println("CofC popup is not displayed");
             }
             TimeUnit.SECONDS.sleep(8);
@@ -143,27 +141,27 @@ public class AddVisitorForExistingIndividual {
             bniConnect = new BNIConnect(driver);
             TimeUnit.SECONDS.sleep(2);
             readWriteExcel.setExcelFile("src/test/resources/inputFiles/translation.xlsx");
-            String MainMenu = readWriteExcel.getCellData("translation",colNumber,3);
-            String SubMenu = readWriteExcel.getCellData("translation",colNumber,6);
+            String MainMenu = readWriteExcel.getCellData("translation", colNumber, 3);
+            String SubMenu = readWriteExcel.getCellData("translation", colNumber, 6);
             bniConnect.selectItemFromMainListMenu(MainMenu);
             TimeUnit.SECONDS.sleep(2);
             bniConnect.selectItemFromSubListMenu(SubMenu);
             TimeUnit.SECONDS.sleep(6);
             System.out.println(lastName);
-            reconcile.reconcileApp(data.get("firstName"),lastName);
+            reconcile.reconcileApp(data.get("firstName"), lastName);
             i++;
             signOut.signOutBni();
         }
     }
 
     @Then("visitor details saved successfully")
-    public void visitor_details_saved_successfully() throws Exception{
+    public void visitor_details_saved_successfully() throws Exception {
         System.out.println("Visitor details added sucessfully.");
     }
 
     @And("I successfully sign out from BNI")
-    public void I_successfully_sign_out_from_BNI() throws Exception{
+    public void I_successfully_sign_out_from_BNI() throws Exception {
         TimeUnit.SECONDS.sleep(2);
-       // signOut.signOutBni();
+        // signOut.signOutBni();
     }
 }

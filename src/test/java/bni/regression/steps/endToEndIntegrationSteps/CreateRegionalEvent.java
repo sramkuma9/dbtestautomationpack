@@ -37,7 +37,8 @@ public class CreateRegionalEvent {
 
     @Before
     public void setup() throws Exception {
-
+        readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
+        boolean setFlag = readWriteExcel.deleteRow("src/test/resources/inputFiles/testInput.xlsx", "createRegionalEvent", 0);
     }
 
     @After

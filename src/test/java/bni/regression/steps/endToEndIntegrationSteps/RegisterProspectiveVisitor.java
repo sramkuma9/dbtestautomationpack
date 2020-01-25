@@ -43,8 +43,9 @@ public class RegisterProspectiveVisitor {
     @Before
     public void setup() throws Exception {
         fixedDateTime = currentDateTime.dateTime();
-     //   readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
-      //  boolean setFlag = readWriteExcel.deleteCellData("src/test/resources/inputFiles/testInput.xlsx", "registerAProspectiveVisitor", 0);
+        readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
+        boolean setFlag = readWriteExcel.deleteRow("src/test/resources/inputFiles/testInput.xlsx", "registerAProspectiveVisitor", 0);
+        boolean setFlag1 = readWriteExcel.deleteRow("src/test/resources/inputFiles/testInput.xlsx", "registerAProspectiveVisitor", 1);
     }
 
     @After

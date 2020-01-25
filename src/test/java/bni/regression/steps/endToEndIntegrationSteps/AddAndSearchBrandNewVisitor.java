@@ -51,8 +51,9 @@ public class AddAndSearchBrandNewVisitor {
     @Before
     public void setup() throws Exception {
         fixedDateTime = currentDateTime.dateTime();
-        //readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
-        //boolean setFlag = readWriteExcel.deleteCellData("src/test/resources/inputFiles/testInput.xlsx", "addVisitor", 0);
+        readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
+        boolean setFlag = readWriteExcel.deleteRow("src/test/resources/inputFiles/testInput.xlsx", "addBrandNewVisitor", 0);
+        boolean Flag = readWriteExcel.deleteRow("src/test/resources/inputFiles/testInput.xlsx", "addBrandNewVisitor", 1);
     }
 
     @After

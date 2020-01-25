@@ -41,7 +41,8 @@ public class AmendStatusOfNonMemberViaDueDate {
 
     @Before
     public void setup() throws Exception {
-
+        readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
+        boolean setFlag = readWriteExcel.deleteRow("src/test/resources/inputFiles/testInput.xlsx", "amendStatusOfNonMemberViaDueDate", 0);
     }
 
     @After
