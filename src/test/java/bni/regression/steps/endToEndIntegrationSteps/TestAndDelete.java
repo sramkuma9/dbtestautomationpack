@@ -23,11 +23,11 @@ public class TestAndDelete {
         //readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
         //boolean setFlag = readWriteExcel.deleteRow("src/test/resources/inputFiles/testInput.xlsx", "addBrandNewVisitor", 0);
         //boolean setFlag1 = readWriteExcel.deleteRow("src/test/resources/inputFiles/testInput.xlsx", "addBrandNewVisitor", 1);
-//        String[][] sqlResult = dbConnect.queryAndRetrieveRecords(readWritePropertyFile.loadAndReadPropertyFile("addAVisitor1", "properties/sql.properties"));
-//        readWriteExcel.setExcelFile("src/test/resources/inputFiles/testAndDelete.xlsx");
-//        Integer xlsRowCount = readWriteExcel.getRowCount("addBrandNewVisitor");
-//        String[][] xlsData = readWriteExcel.returnDataForDbXlsComparatorClass("addBrandNewVisitor");
-//        dbXlsComparator.resultComparator(sqlResult, xlsData,xlsRowCount);
+        String[][] sqlResult = dbConnect.queryAndRetrieveRecords(readWritePropertyFile.loadAndReadPropertyFile("addAVisitor1", "properties/sql.properties"));
+        readWriteExcel.setExcelFile("src/test/resources/inputFiles/testAndDelete.xlsx");
+        Integer xlsRowCount = readWriteExcel.getRowCount("addBrandNewVisitor");
+        String[][] xlsData = readWriteExcel.returnDataForDbXlsComparatorClass("addBrandNewVisitor");
+        dbXlsComparator.resultComparator(sqlResult, xlsData,xlsRowCount);
         //searchAndRenameFile.searchFileAndRename("/home/ajay/Downloads/test","del",".xls");
         //searchAndDeleteFile.searchFileAndDelete("/home/ajay/Downloads/","FindAPersonReport",".xls");
        //gmailClient.checkEmail("shanthibni@gmail.com","BNI- Your registration is successful for TestAutomation20191204134548","shanthibni+32@gmail.com");
