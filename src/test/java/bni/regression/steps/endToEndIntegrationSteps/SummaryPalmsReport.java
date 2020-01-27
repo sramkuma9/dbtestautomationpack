@@ -41,7 +41,6 @@ public class SummaryPalmsReport {
     @Before
     public void setup() throws Exception {
         fixedDateTime = currentDateTime.dateTime();
-        searchAndDeleteFile.searchFileAndDelete(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"), "Multi_Region_Palms_Report", ".xls");
     }
 
     @After
@@ -60,6 +59,7 @@ public class SummaryPalmsReport {
     public void step_2(DataTable report) throws Exception {
         Integer i = 2;
         for (Map<String, String> data : report.asMaps(String.class, String.class)) {
+            searchAndDeleteFile.searchFileAndDelete(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"), "Multi_Region_Palms_Report", ".xls");
             String[] splitCredentials = loginSubList.get(i - 2).toString().replace("[", "").replace("]", "").split(",");
             driver = launchBrowser.getDriver();
             launchBrowser.invokeBrowser();

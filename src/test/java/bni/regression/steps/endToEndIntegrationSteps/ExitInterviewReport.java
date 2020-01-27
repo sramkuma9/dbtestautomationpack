@@ -39,7 +39,6 @@ public class ExitInterviewReport {
     @Before
     public void setup() throws Exception {
         fixedDateTime = currentDateTime.dateTime();
-        searchAndDeleteFile.searchFileAndDelete(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"), "hq-exit-interview-report", ".xls");
     }
 
     @After
@@ -58,6 +57,7 @@ public class ExitInterviewReport {
     public void step_2(DataTable report) throws Exception {
         Integer i = 2;
         for (Map<String, String> data : report.asMaps(String.class, String.class)) {
+            searchAndDeleteFile.searchFileAndDelete(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"), "hq-exit-interview-report", ".xls");
             String[] splitCredentials = loginSubList.get(i - 2).toString().replace("[", "").replace("]", "").split(",");
             driver = launchBrowser.getDriver();
             launchBrowser.invokeBrowser();
@@ -90,7 +90,7 @@ public class ExitInterviewReport {
             TimeUnit.SECONDS.sleep(1);
             bniConnect.selectDateFromDatePicker(data.get("endDay"));
             TimeUnit.SECONDS.sleep(2);
-            if (!(data.get("exportWithoutHeaders")).equals("No")){
+            if (!(data.get("exportWithoutHeaders")).equals("No")) {
                 bniConnect.clickExportWithoutHeadersCheckBox();
             }
             TimeUnit.SECONDS.sleep(1);
