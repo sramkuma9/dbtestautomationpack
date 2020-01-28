@@ -51,7 +51,7 @@ public class GmailClient {
                     String receiver = tos == null ? null : ((InternetAddress) tos[0]).getAddress();
                     if (message.getSubject().contains(subject) && receiver.equals(toEmailId)) {
                         String emailBody = this.getTextFromMessage(message);
-                        System.out.println("Mail Content:- " + emailBody);
+//                        System.out.println("Mail Content:- " + emailBody);
                         switch (type) {
                             case "term":
                                 int termStartIndex = emailBody.indexOf("https");

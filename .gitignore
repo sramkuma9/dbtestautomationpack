@@ -161,7 +161,7 @@
 /target/test-classes/executionReports/screenShots/2019/11/20/searchAndAddBrandNewVisitor17:32:18.jpg
 /src/test/resources/executionReports/screenShots/2019/11/21/searchAndAddBrandNewVisitor19:11:40.jpg
 /target/test-classes/executionReports/screenShots/2019/11/21/searchAndAddBrandNewVisitor19:11:40.jpg
-/target/surefire-reports/TEST-bni.regression.runners.SmokeTest.xml
+/target/surefire-reports/TEST-bni.regression.runners.DailyJob.xml
 /target/test-classes/features/viewEditMemberDetails.feature
 /src/test/resources/executionReports/screenShots/2019/11/21/viewEditMemberDetails11:17:02.jpg
 /target/test-classes/executionReports/screenShots/2019/11/21/viewEditMemberDetails11:17:02.jpg
@@ -222,7 +222,7 @@
 /src/test/resources/executionReports/screenShots/2019/11/21/convertVisitorToMember19:24:12.jpg
 /target/test-classes/executionReports/screenShots/2019/11/21/convertVisitorToMember19:24:12.jpg
 /target/test-classes/bni/regression/pageFactory/AdvanceChapterSearch.class
-/target/surefire-reports/bni.regression.runners.SmokeTest.txt
+/target/surefire-reports/bni.regression.runners.DailyJob.txt
 /target/test-classes/bni/regression/steps/endToEndIntegrationSteps/CMSWithAbilityToViewEditRegionalWebsites.class
 /target/test-classes/features/cmsWithAbilityToViewEditRegionalWebsites.feature
 /target/test-classes/features/cmsWithDefaultAndCustomisedContents.feature

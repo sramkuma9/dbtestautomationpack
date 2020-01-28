@@ -9,6 +9,6 @@ import org.junit.runner.RunWith;
         features = {"src/test/resources/features"},
         glue = {"bni.regression.steps.endToEndIntegrationSteps"})
         //,tags = {"@smoke"})
-public class SmokeTest {
+public class DailyJob {
 
 }

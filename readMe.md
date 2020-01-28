@@ -10,11 +10,16 @@ Do the following steps to set up the code to run locally:
 4) Enter the translation data in translation excel file(resources/inputFiles)
 
 ### Execution:
-1) Install Java 11 locally
-2) Install maven
+1) Install Ubuntu 18.04.3 LTS
+2) Install Java (JRE & JDK) 11.0.6
+3) Install Apache Maven 3.6.0
 3) Clone the below gitlab repository:
 https://gitlab.com/sramkuma/dbtestautomationpack.git
-4) Run a mvn clean install for the above cloned repo in turn. This will install them into your local maven repository and execute the tests.
+4) Run a mvn clean install for the above cloned repo in turn. This will install them into your local maven repository.
+5) To run the daily job execute the below from command line
+mvn surefire:test -Dtest=DailyJob
+6) To run the Weekend job execute the below from command line
+   mvn surefire:test -Dtest=WeekendJob
 
 
 
