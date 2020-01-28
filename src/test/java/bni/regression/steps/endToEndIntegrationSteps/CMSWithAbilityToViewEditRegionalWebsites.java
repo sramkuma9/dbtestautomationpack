@@ -109,6 +109,7 @@ public class CMSWithAbilityToViewEditRegionalWebsites {
             TimeUnit.SECONDS.sleep(2);
             driver.switchTo().window(tabs.get(0));
             signOut.signOutBni();
+            i++;
         }
     }
 

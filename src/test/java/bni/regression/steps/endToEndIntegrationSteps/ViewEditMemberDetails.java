@@ -4,7 +4,10 @@ import bni.regression.libraries.common.*;
 import bni.regression.libraries.ui.Login;
 import bni.regression.libraries.ui.SelectCountryRegionChapter;
 import bni.regression.libraries.ui.SignOut;
-import bni.regression.pageFactory.*;
+import bni.regression.pageFactory.BNIConnect;
+import bni.regression.pageFactory.Edit;
+import bni.regression.pageFactory.EditProfile;
+import bni.regression.pageFactory.ManageMembers;
 import cucumber.api.DataTable;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -13,7 +16,6 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.openqa.selenium.WebDriver;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -137,6 +139,7 @@ public class ViewEditMemberDetails {
             TimeUnit.SECONDS.sleep(5);
             manageMembers.checkCompanyNameAndStatus(data.get("companyName"),data.get("status"));
             signOut.signOutBni();
+            i++;
         }
     }
 

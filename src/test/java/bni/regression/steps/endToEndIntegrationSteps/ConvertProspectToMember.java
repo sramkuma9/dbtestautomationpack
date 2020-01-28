@@ -147,6 +147,7 @@ public class ConvertProspectToMember {
             add.clickSubmitButton();
             TimeUnit.SECONDS.sleep(15);
             signOut.signOutBni();
+            i++;
         }
     }
 
@@ -155,7 +156,4 @@ public class ConvertProspectToMember {
         // Write code here that turns the phrase above into concrete actions
         System.out.println("Prospect has been converted to Member successfully");
     }
-
-
 }
-

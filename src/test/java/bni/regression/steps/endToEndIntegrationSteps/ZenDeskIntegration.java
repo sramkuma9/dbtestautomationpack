@@ -78,6 +78,7 @@ public class ZenDeskIntegration {
             bniConnectSupport.checkBniSupportLink();
             TimeUnit.SECONDS.sleep(2);
             bniConnectSupport.signOutBniSupport();
+            i++;
         }
     }
 

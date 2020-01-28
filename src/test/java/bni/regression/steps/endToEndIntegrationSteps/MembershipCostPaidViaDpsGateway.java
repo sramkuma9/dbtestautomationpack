@@ -113,6 +113,7 @@ public class MembershipCostPaidViaDpsGateway {
             paymentCheckOut.checkTransactionStatus();
             TimeUnit.SECONDS.sleep(1);
             driver.close();
+            i++;
         }
     }
 

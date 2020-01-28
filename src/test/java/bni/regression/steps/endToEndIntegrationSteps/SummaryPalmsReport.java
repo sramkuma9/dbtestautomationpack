@@ -111,6 +111,7 @@ public class SummaryPalmsReport {
             String reportName = searchAndReturnFileName.searchFile(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"), "Multi_Region_Palms_Report", ".xls");
             // add database verification code
             signOut.signOutBni();
+            i++;
         }
     }
 

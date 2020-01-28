@@ -98,6 +98,7 @@ public class EventRegistrationForAMember {
             TimeUnit.SECONDS.sleep(12);
             excelRow++;
             signOut.signOutBni();
+            i++;
             //gmailClient.checkEmail("shanthibni@gmail.com","BNI- Your registration is successful for " + eventName,"shanthibni+32@gmail.com");
         }
     }

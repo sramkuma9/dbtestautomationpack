@@ -29,10 +29,8 @@ public class DbConnect {
 
             // getting total rowcount
             ResultSet rs = totalRowCount.executeQuery(sqlCountQuery);
-            //ResultSetMetaData rsmd = rs.getMetaData();
             rs.next();
             rowCount = rs.getInt(1);
-            //count[1] = rsmd.getColumnCount() - 1;
 
             // closing the result set.
             rs.close();

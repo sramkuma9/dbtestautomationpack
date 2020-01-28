@@ -103,6 +103,7 @@ public class CMSWithDefaultAndCustomisedContents {
             assertEquals("Chapter count is not correct", expChapterCount, actualChapterCount);
             driver.switchTo().window(tabs1.get(0));
             signOut.signOutBni();
+            i++;
         }
     }
 

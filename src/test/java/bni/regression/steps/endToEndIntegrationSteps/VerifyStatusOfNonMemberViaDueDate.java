@@ -96,6 +96,7 @@ public class VerifyStatusOfNonMemberViaDueDate {
             TimeUnit.SECONDS.sleep(2);
             editProfile.checkLateStatus(data.get("status"));
             signOut.signOutBni();
+            i++;
         }
     }
 

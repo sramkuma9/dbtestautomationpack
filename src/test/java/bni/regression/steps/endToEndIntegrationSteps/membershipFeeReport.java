@@ -94,6 +94,7 @@ public class membershipFeeReport {
             String reportName = searchAndReturnFileName.searchFile(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"), "country-membership-fee-report", ".xls");
             // add database verification code
             signOut.signOutBni();
+            i++;
         }
     }
 

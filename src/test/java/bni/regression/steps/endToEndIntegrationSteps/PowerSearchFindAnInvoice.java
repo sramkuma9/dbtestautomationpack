@@ -176,6 +176,7 @@ public class PowerSearchFindAnInvoice {
             driver.switchTo().window(tabs.get(0));
             // add database verification code
             signOut.signOutBni();
+            i++;
         }
     }
 

@@ -103,12 +103,12 @@ public class AddSlipsViaMemberModule {
             TimeUnit.SECONDS.sleep(12);
             signOut.signOutBni();
         }
-
+        i++;
         // Add database verification code.
     }
 
     @Then("a database entry is made")
-    public void step_3(){
+    public void step_3() {
         System.out.println("View palms summary script executed.");
     }
 

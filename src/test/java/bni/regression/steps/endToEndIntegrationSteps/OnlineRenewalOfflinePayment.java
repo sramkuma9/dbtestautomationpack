@@ -138,6 +138,7 @@ public class OnlineRenewalOfflinePayment {
             reconcileOnlineRenewals = new ReconcileOnlineRenewals();
             reconcileOnlineRenewals.reconcileApp(data.get("firstName"), data.get("lastName"),splitCredentials[2],splitCredentials[3],splitCredentials[4]);
             signOut.signOutBni();
+            i++;
         }
     }
 

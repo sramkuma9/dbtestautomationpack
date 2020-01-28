@@ -116,6 +116,7 @@ public class ManuallyDropAmemberToTriggerAnInstantDrop {
             editProfile.checkDroppedStatus();
             TimeUnit.SECONDS.sleep(1);
             signOut.signOutBni();
+            i++;
         }
     }
 

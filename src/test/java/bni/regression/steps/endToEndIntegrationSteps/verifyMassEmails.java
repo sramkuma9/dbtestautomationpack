@@ -107,6 +107,7 @@ public class verifyMassEmails {
             composeEmail.clickSendButton();
             TimeUnit.SECONDS.sleep(12);
             signOut.signOutBni();
+            i++;
             // add email verification code
         }
     }

@@ -88,6 +88,7 @@ public class EditTranslationsAndEnsureThatTheyAppear {
             bniConnect.checkPrivacyPolicyTranslation(data.get("privacyPolicy"));
             TimeUnit.SECONDS.sleep(1);
             signOut.signOutBni();
+            i++;
         }
     }
 

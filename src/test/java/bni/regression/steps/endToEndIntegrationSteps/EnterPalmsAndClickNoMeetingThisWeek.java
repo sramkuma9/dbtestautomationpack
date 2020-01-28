@@ -114,6 +114,7 @@ public class EnterPalmsAndClickNoMeetingThisWeek {
             viewChapterPalmsSummary.checkStatusLink("Holiday");
             TimeUnit.SECONDS.sleep(2);
             signOut.signOutBni();
+            i++;
         }
     }
 

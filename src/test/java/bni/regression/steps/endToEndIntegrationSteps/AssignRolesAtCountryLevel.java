@@ -106,6 +106,7 @@ public class AssignRolesAtCountryLevel {
             TimeUnit.SECONDS.sleep(2);
             // add email verification code
             signOut.signOutBni();
+            i++;
         }
     }
 

@@ -99,6 +99,7 @@ public class ExitInterviewReport {
             String reportName = searchAndReturnFileName.searchFile(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"), "hq-exit-interview-report", ".xls");
             // add database verification code
             signOut.signOutBni();
+            i++;
         }
     }
 

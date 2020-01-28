@@ -166,12 +166,24 @@ public class BNIConnect {
     @FindBy(css="#tabs-3-5 > table:nth-child(2) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(2) > a:nth-child(1)")
     WebElement manageProspectLink;
 
+    @FindBy(css="#footer > div.copyright > p:nth-child(1)")
+    WebElement copyRightArea;
+
     public BNIConnect(WebDriver driver) {
         BNIConnect.driver = driver;
         AjaxElementLocatorFactory factory = new AjaxElementLocatorFactory(driver, 100);
         //This initElements method will create all WebElements
         PageFactory.initElements(factory, this);
         wait = new WebDriverWait(driver, 5);
+    }
+
+    public void checkTextInFooter(String concept){
+        String[] splitFooter = copyRightArea.getText().split("\n");
+        if (concept.equals("CC")){
+            assertEquals("Branding text is not correct for CC type.", "Copyright 2018 CorporateConnections™. All Rights Reserved.", splitFooter[0]);
+        }else{
+            assertEquals("Branding text is not correct for BNI type.", "Copyright 2018 BNI. All Rights Reserved.", splitFooter[0]);
+        }
     }
 
     public void checkPrivacyPolicyTranslation(String expPrivacyPolicy){

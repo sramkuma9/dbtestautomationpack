@@ -40,6 +40,7 @@ public class PowerSearchFindASystemEvent {
     SearchAndDeleteFile searchAndDeleteFile = new SearchAndDeleteFile();
     SearchAndReturnFileName searchAndReturnFileName = new SearchAndReturnFileName();
     private SelectCountryRegionChapter selectCountryRegionChapter = new SelectCountryRegionChapter();
+
     @Before
     public void setup() throws Exception {
         fixedDateTime = currentDateTime.dateTime();
@@ -64,7 +65,7 @@ public class PowerSearchFindASystemEvent {
 
         Integer i = 2;
         for (Map<String, String> data : search.asMaps(String.class, String.class)) {
-            searchAndDeleteFile.searchFileAndDelete(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"),"find-event-report",".xls");
+            searchAndDeleteFile.searchFileAndDelete(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"), "find-event-report", ".xls");
             String[] splitCredentials = loginSubList.get(i - 2).toString().replace("[", "").replace("]", "").split(",");
             driver = launchBrowser.getDriver();
             launchBrowser.invokeBrowser();
@@ -138,10 +139,11 @@ public class PowerSearchFindASystemEvent {
             captureScreenShot.takeSnapShot(driver, "PowerSearchFindASystemEvent");
             searchResults.clickExportIndiaButton();
             TimeUnit.SECONDS.sleep(10);
-            String findASystemEventReportName = searchAndReturnFileName.searchFile(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"),"find-event-report",".xls");
+            String findASystemEventReportName = searchAndReturnFileName.searchFile(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"), "find-event-report", ".xls");
             driver.switchTo().window(tabs.get(0));
             // add database verification code
             signOut.signOutBni();
+            i++;
         }
 
     }

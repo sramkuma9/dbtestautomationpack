@@ -125,6 +125,7 @@ public class AmendStatusOfNonMemberViaDueDate {
             amendDueDate.clickSubmitButton();
             TimeUnit.SECONDS.sleep(12);
             signOut.signOutBni();
+            i++;
         }
     }
 

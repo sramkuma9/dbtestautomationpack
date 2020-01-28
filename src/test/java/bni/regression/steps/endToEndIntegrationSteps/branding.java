@@ -1,21 +1,16 @@
 package bni.regression.steps.endToEndIntegrationSteps;
 
-import bni.regression.libraries.common.CaptureScreenShot;
-import bni.regression.libraries.common.LaunchBrowser;
-import bni.regression.libraries.common.ReadWriteExcel;
-import bni.regression.libraries.common.ReadWritePropertyFile;
+
+import bni.regression.libraries.common.*;
 import bni.regression.libraries.ui.Login;
 import bni.regression.libraries.ui.SelectCountryRegionChapter;
 import bni.regression.libraries.ui.SignOut;
 import bni.regression.pageFactory.BNIConnect;
-import bni.regression.pageFactory.EnterChapterPalms;
-import bni.regression.pageFactory.ReviewVisitor;
-import bni.regression.pageFactory.ViewChapterPalms;
+import bni.regression.pageFactory.ViewEditVisitorsList;
 import cucumber.api.DataTable;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.openqa.selenium.WebDriver;
 
@@ -23,21 +18,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class BuildNumberVerification {
+public class branding {
 
     public static WebDriver driver;
+    private ReadWritePropertyFile readWritePropertyFile = new ReadWritePropertyFile();
+    private CurrentDateTime currentDateTime = new CurrentDateTime();
+    private LaunchBrowser launchBrowser = new LaunchBrowser();
     private Login login = new Login();
     private SignOut signOut = new SignOut();
     private BNIConnect bniConnect;
+    private ViewEditVisitorsList viewEditVisitorsList;
     private SelectCountryRegionChapter selectCountryRegionChapter = new SelectCountryRegionChapter();
     public List<List<String>> loginSubList;
     private CaptureScreenShot captureScreenShot;
-    private LaunchBrowser launchBrowser = new LaunchBrowser();
-    private ReadWritePropertyFile readWritePropertyFile = new ReadWritePropertyFile();
+    private branding convertProspectToMember;
     ReadWriteExcel readWriteExcel = new ReadWriteExcel();
-    private ReviewVisitor reviewVisitor;
-    private EnterChapterPalms enterChapterPalms;
-    private ViewChapterPalms viewChapterPalms;
 
     @Before
     public void setup() throws Exception {
@@ -49,16 +44,19 @@ public class BuildNumberVerification {
 
     }
 
-    @Given("I log in as admin in bniTest2 environment")
+    //  Scenario: Branding
+
+
+    @Given("Below user navigates to BNI homepage")
     public void step_1(DataTable loginDetails) throws Exception {
         List<List<String>> login = loginDetails.raw();
         loginSubList = login.subList(1, login.size());
     }
 
-    @When("I verify Build Number is displayed as mentioned below")
-    public void step_2(DataTable buildNumber) throws Exception {
+    @When("the header text should be displayed correctly")
+    public void step_2(DataTable branding) throws Exception {
         Integer i = 2;
-        for (Map<String, String> data : buildNumber.asMaps(String.class, String.class)) {
+        for (Map<String, String> data : branding.asMaps(String.class, String.class)) {
             String[] splitCredentials = loginSubList.get(i - 2).toString().replace("[", "").replace("]", "").split(",");
             driver = launchBrowser.getDriver();
             launchBrowser.invokeBrowser();
@@ -67,16 +65,11 @@ public class BuildNumberVerification {
             TimeUnit.SECONDS.sleep(12);
             driver = launchBrowser.getDriver();
             bniConnect = new BNIConnect(driver);
-            captureScreenShot = new CaptureScreenShot(driver);
-            bniConnect.checkBuildNumber(data.get("buildNumber"));
-            TimeUnit.SECONDS.sleep(1);
+            TimeUnit.SECONDS.sleep(3);
+            bniConnect.checkTextInFooter(data.get("concept"));
             signOut.signOutBni();
             i++;
         }
     }
-
-    @Then("Build Release Number is correct")
-    public void step_3() throws Exception {
-        System.out.println("Build Number Verification script executed.");
-    }
 }
+

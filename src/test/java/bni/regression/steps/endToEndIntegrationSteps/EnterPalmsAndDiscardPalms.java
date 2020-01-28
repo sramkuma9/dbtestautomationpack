@@ -117,6 +117,7 @@ public class EnterPalmsAndDiscardPalms {
             viewChapterPalmsSummary.checkStatusLink("Draft");
             TimeUnit.SECONDS.sleep(2);
             signOut.signOutBni();
+            i++;
         }
     }
 

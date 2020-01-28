@@ -38,6 +38,7 @@ public class PowerSearchFindAnOpening {
     private SearchResults searchResults;
     SearchAndDeleteFile searchAndDeleteFile = new SearchAndDeleteFile();
     SearchAndReturnFileName searchAndReturnFileName = new SearchAndReturnFileName();
+
     @Before
     public void setup() throws Exception {
         fixedDateTime = currentDateTime.dateTime();
@@ -49,6 +50,7 @@ public class PowerSearchFindAnOpening {
     public void tearDown() throws Exception {
 
     }
+
     @Given("^I’m in the BNI home page, and click Tools, Power search , Find an Opening$")
     // Scenario: Navigate to Tools page
     public void i_m_in_the_BNI_home_page_click_Tools_Power_search_Find_an_Opening(DataTable searchDetails) throws Throwable {
@@ -60,7 +62,7 @@ public class PowerSearchFindAnOpening {
     public void i_select_the_search_criteria_as_Profession_and_click_search_button(DataTable search) throws Exception {
         Integer i = 2;
         for (Map<String, String> data : search.asMaps(String.class, String.class)) {
-            searchAndDeleteFile.searchFileAndDelete(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"),"findopeningreport",".xls");
+            searchAndDeleteFile.searchFileAndDelete(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"), "findopeningreport", ".xls");
             String[] splitCredentials = loginSubList.get(i - 2).toString().replace("[", "").replace("]", "").split(",");
             driver = launchBrowser.getDriver();
             launchBrowser.invokeBrowser();
@@ -108,11 +110,11 @@ public class PowerSearchFindAnOpening {
             captureScreenShot.takeSnapShot(driver, "powersearchfindanopening");
             searchResults.clickExportIndiaButton();
             TimeUnit.SECONDS.sleep(10);
-            String findOpeningName = searchAndReturnFileName.searchFile(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"),"findopeningreport",".xls");
+            String findOpeningName = searchAndReturnFileName.searchFile(readWritePropertyFile.loadAndReadPropertyFile("downloadFilePath", "properties/config.properties"), "findopeningreport", ".xls");
             driver.switchTo().window(tabs.get(0));
             // add database verification code
             signOut.signOutBni();
-
+            i++;
 
         }
     }
@@ -121,7 +123,6 @@ public class PowerSearchFindAnOpening {
     public void opening_for_the_specified_speciality_displayed_successfully() throws Exception {
 
         System.out.println("Openings for the given speciality displayed successfully.");
-
 
 
     }

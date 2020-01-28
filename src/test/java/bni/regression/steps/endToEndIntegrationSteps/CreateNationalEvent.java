@@ -141,6 +141,7 @@ public class CreateNationalEvent {
             nationalManageEvents.checkEventName(data.get("eventName") + eventNameDateTime);
             TimeUnit.SECONDS.sleep(2);
             signOut.signOutBni();
+            i++;
         }
     }
 
