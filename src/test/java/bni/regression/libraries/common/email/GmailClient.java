@@ -1,9 +1,11 @@
 package bni.regression.libraries.common.email;
 
+import bni.regression.libraries.common.ReadWriteExcel;
 import bni.regression.libraries.common.ReadWritePropertyFile;
 import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.imap.IMAPStore;
 import org.apache.commons.lang3.StringUtils;
+
 import javax.mail.*;
 import javax.mail.internet.ContentType;
 import javax.mail.internet.InternetAddress;
@@ -16,9 +18,10 @@ import java.util.Properties;
 
 public class GmailClient {
 
+    ReadWriteExcel readWriteExcel = new ReadWriteExcel();
     private ReadWritePropertyFile readWritePropertyFile = new ReadWritePropertyFile();
 
-    public void checkEmail(String userName, String subject, String toEmailId) {
+    public void checkEmail(String userName, String subject, String toEmailId, String type) {
         Properties properties = new Properties();
         properties.put("mail.store.protocol", readWritePropertyFile.loadAndReadPropertyFile("emailProtocol", "properties/config.properties"));
         properties.put("mail.imaps.host", readWritePropertyFile.loadAndReadPropertyFile("emailHostName", "properties/config.properties"));
@@ -48,7 +51,21 @@ public class GmailClient {
                     String receiver = tos == null ? null : ((InternetAddress) tos[0]).getAddress();
                     if (message.getSubject().contains(subject) && receiver.equals(toEmailId)) {
                         String emailBody = this.getTextFromMessage(message);
-                        //System.out.println("Mail Content:- " + emailBody);
+                        System.out.println("Mail Content:- " + emailBody);
+                        switch (type) {
+                            case "term":
+                                int termStartIndex = emailBody.indexOf("https");
+                                int termEndIndex = emailBody.indexOf("term");
+                                readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
+                                readWriteExcel.setCellData("src/test/resources/inputFiles/testInput.xlsx", "payment", 0, 1, emailBody.substring(termStartIndex, termEndIndex+4));
+                                break;
+                            case "applicant":
+                                int applicantStartIndex = emailBody.indexOf("https");
+                                int applicantEndIndex = emailBody.indexOf("applicant");
+                                readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
+                                readWriteExcel.setCellData("src/test/resources/inputFiles/testInput.xlsx", "applicant", 0, 1, emailBody.substring(applicantStartIndex, applicantEndIndex+9));
+                                break;
+                        }
                         Address[] froms = message.getFrom();
                         String Sender = froms == null ? null : ((InternetAddress) froms[0]).getAddress();
                         //System.out.println("Mail Sender:- " + Sender);
