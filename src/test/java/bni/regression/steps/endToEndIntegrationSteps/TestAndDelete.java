@@ -23,7 +23,7 @@ public class TestAndDelete {
         //readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
         //boolean setFlag = readWriteExcel.deleteRow("src/test/resources/inputFiles/testInput.xlsx", "addBrandNewVisitor", 0);
         //boolean setFlag1 = readWriteExcel.deleteRow("src/test/resources/inputFiles/testInput.xlsx", "addBrandNewVisitor", 1);
-        String[][] sqlResult = dbConnect.queryAndRetrieveRecords(readWritePropertyFile.loadAndReadPropertyFile("addAVisitor1", "properties/sql.properties"));
+//        String[][] sqlResult = dbConnect.queryAndRetrieveRecords(readWritePropertyFile.loadAndReadPropertyFile("addAVisitor1", "properties/sql.properties"));
 //        readWriteExcel.setExcelFile("src/test/resources/inputFiles/testAndDelete.xlsx");
 //        Integer xlsRowCount = readWriteExcel.getRowCount("addBrandNewVisitor");
 //        String[][] xlsData = readWriteExcel.returnDataForDbXlsComparatorClass("addBrandNewVisitor");
@@ -33,7 +33,7 @@ public class TestAndDelete {
        //gmailClient.checkEmail("shanthibni@gmail.com","BNI- Your registration is successful for TestAutomation20191204134548","shanthibni+32@gmail.com");
        // gmailClient.checkEmail("shanthibni@gmail.com","email verification","shanthibni+45@gmail.com");
         //gmailClient.checkEmail("dbselenium@gmail.com","Fwd: You've visited.....would you now like to join us?","dbselenium@gmail.com","applicant");
-        //restApiClient.apiGetClient("testApi");
+        restApiClient.apiGetClient("testApi");
         //readWriteExcel.setExcelFile("src/test/resources/inputFiles/testAndDelete.xlsx");
         //String[][] xlsData = readWriteExcel.returnDataForDbXlsComparatorClass("addBrandNewVisitor");
     }
