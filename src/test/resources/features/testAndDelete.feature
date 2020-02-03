@@ -1,4 +1,4 @@
-@smoke @regression
+@smoke
 Feature: Test and Delete
 
   Scenario: test

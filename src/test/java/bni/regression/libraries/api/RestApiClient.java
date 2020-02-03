@@ -83,7 +83,7 @@ public class RestApiClient {
 
                     String[] dateSplit = currentDateTime.dateTime().split("/");
                     String timeSplit[] = dateSplit[2].split(" ");
-                    String path = "src/test/resources/executionReports/apiOutput/" + dateSplit[0] + "/" + dateSplit[1] + "/" + timeSplit[0] + "/" + featureName + timeSplit[1] + ".json";
+                    String path = readWritePropertyFile.loadAndReadPropertyFile("apiDownloadFilePath", "properties/config.properties")+ dateSplit[0] + "/" + dateSplit[1] + "/" + timeSplit[0] + "/" + featureName + timeSplit[1] + ".json";
                     FileUtils.writeStringToFile(new File(path), output, StandardCharsets.UTF_8);
 
                 } catch (IOException e) {

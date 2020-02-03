@@ -17,6 +17,7 @@ public class TestAndDelete {
     GmailClient gmailClient = new GmailClient();
     RestApiClient restApiClient = new RestApiClient();
     DbXlsComparator dbXlsComparator = new DbXlsComparator();
+    DeleteAndCopyConfigFile deleteAndCopyConfigFile = new DeleteAndCopyConfigFile();
 
     @Given("test and delete")
     public void test_and_delete() throws Exception {
@@ -24,7 +25,7 @@ public class TestAndDelete {
         //boolean setFlag = readWriteExcel.deleteRow("src/test/resources/inputFiles/testInput.xlsx", "addBrandNewVisitor", 0);
         //boolean setFlag1 = readWriteExcel.deleteRow("src/test/resources/inputFiles/testInput.xlsx", "addBrandNewVisitor", 1);
 //        String[][] sqlResult = dbConnect.queryAndRetrieveRecords(readWritePropertyFile.loadAndReadPropertyFile("addAVisitor1", "properties/sql.properties"));
-//        readWriteExcel.setExcelFile("src/test/resources/inputFiles/testAndDelete.xlsx");
+//        rtestInputFilePatheadWriteExcel.setExcelFile("src/test/resources/inputFiles/testAndDelete.xlsx");
 //        Integer xlsRowCount = readWriteExcel.getRowCount("addBrandNewVisitor");
 //        String[][] xlsData = readWriteExcel.returnDataForDbXlsComparatorClass("addBrandNewVisitor");
 //        dbXlsComparator.resultComparator(sqlResult, xlsData,xlsRowCount);
@@ -33,8 +34,9 @@ public class TestAndDelete {
        //gmailClient.checkEmail("shanthibni@gmail.com","BNI- Your registration is successful for TestAutomation20191204134548","shanthibni+32@gmail.com");
        // gmailClient.checkEmail("shanthibni@gmail.com","email verification","shanthibni+45@gmail.com");
         //gmailClient.checkEmail("dbselenium@gmail.com","Fwd: You've visited.....would you now like to join us?","dbselenium@gmail.com","applicant");
-        restApiClient.apiGetClient("testApi");
+//        restApiClient.apiGetClient("testApi");
         //readWriteExcel.setExcelFile("src/test/resources/inputFiles/testAndDelete.xlsx");
         //String[][] xlsData = readWriteExcel.returnDataForDbXlsComparatorClass("addBrandNewVisitor");
+        System.out.println("success");
     }
 }
