@@ -5,7 +5,7 @@ Do the following steps to set up the code to run locally:
 
 ### Input Data:
 1) Enter the input data for each feature in the feature file(resources/inputFiles) 
-2) Enter the config data in the config.properties(resources/properties)
+2) Enter the config data in the test2Config.properties / trackConfig.properties(resources/properties)
 3) Enter the sql in the sql.properties(resources/properties)
 4) Enter the translation data in translation excel file(resources/inputFiles)
 
@@ -21,6 +21,8 @@ mvn surefire:test -Dtest=DailyJob
 6) To run the Weekend job execute the below from command line
    mvn surefire:test -Dtest=WeekendJob
 
+At the beginning of the execution the config file will be deleted and a new config file will be copied based on the env.
+Also the features will be executed on the alphabetical order from the features folder. 
 
 
 
