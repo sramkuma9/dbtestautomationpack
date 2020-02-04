@@ -33,10 +33,10 @@ public class TestAndDelete {
         //searchAndDeleteFile.searchFileAndDelete("/home/ajay/Downloads/","FindAPersonReport",".xls");
        //gmailClient.checkEmail("shanthibni@gmail.com","BNI- Your registration is successful for TestAutomation20191204134548","shanthibni+32@gmail.com");
        // gmailClient.checkEmail("shanthibni@gmail.com","email verification","shanthibni+45@gmail.com");
-        //gmailClient.checkEmail("dbselenium@gmail.com","Fwd: You've visited.....would you now like to join us?","dbselenium@gmail.com","applicant");
-//        restApiClient.apiGetClient("testApi");
+//        gmailClient.checkEmail("dbselenium@gmail.com","Fwd: You've visited.....would you now like to join us?","dbselenium@gmail.com","applicant");
+        //restApiClient.apiGetClient("testApi");
         //readWriteExcel.setExcelFile("src/test/resources/inputFiles/testAndDelete.xlsx");
         //String[][] xlsData = readWriteExcel.returnDataForDbXlsComparatorClass("addBrandNewVisitor");
-        System.out.println("success");
+        //System.out.println("success");
     }
 }

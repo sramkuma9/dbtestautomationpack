@@ -1,3 +1,4 @@
+#@smoke @regression
 #Feature: Add Slips via the Member Module
 #
 #  Scenario: Add Slips via the Member Module and check it appears in PALMS

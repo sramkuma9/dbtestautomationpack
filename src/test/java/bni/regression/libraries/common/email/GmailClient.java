@@ -21,7 +21,7 @@ public class GmailClient {
     ReadWriteExcel readWriteExcel = new ReadWriteExcel();
     private ReadWritePropertyFile readWritePropertyFile = new ReadWritePropertyFile();
 
-    public void checkEmail(String userName, String subject, String toEmailId, String type) {
+    public void checkEmail(String userName, String subject, String toEmailId, String type, int i) {
         Properties properties = new Properties();
         properties.put("mail.store.protocol", readWritePropertyFile.loadAndReadPropertyFile("emailProtocol", "properties/config.properties"));
         properties.put("mail.imaps.host", readWritePropertyFile.loadAndReadPropertyFile("emailHostName", "properties/config.properties"));
@@ -57,13 +57,13 @@ public class GmailClient {
                                 int termStartIndex = emailBody.indexOf("https");
                                 int termEndIndex = emailBody.indexOf("term");
                                 readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
-                                readWriteExcel.setCellData("src/test/resources/inputFiles/testInput.xlsx", "payment", 0, 1, emailBody.substring(termStartIndex, termEndIndex+4));
+                                readWriteExcel.setCellData("src/test/resources/inputFiles/testInput.xlsx", "payment", 0, i, emailBody.substring(termStartIndex, termEndIndex+4));
                                 break;
                             case "applicant":
                                 int applicantStartIndex = emailBody.indexOf("https");
                                 int applicantEndIndex = emailBody.indexOf("applicant");
                                 readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
-                                readWriteExcel.setCellData("src/test/resources/inputFiles/testInput.xlsx", "applicant", 0, 1, emailBody.substring(applicantStartIndex, applicantEndIndex+9));
+                                readWriteExcel.setCellData("src/test/resources/inputFiles/testInput.xlsx", "applicant", 0, i, emailBody.substring(applicantStartIndex, applicantEndIndex+9));
                                 break;
                         }
                         Address[] froms = message.getFrom();

@@ -1,6 +1,7 @@
 package bni.regression.steps.endToEndIntegrationSteps;
 
 import bni.regression.libraries.common.*;
+import bni.regression.libraries.common.email.GmailClient;
 import bni.regression.libraries.ui.SelectCountryRegionChapter;
 import bni.regression.pageFactory.AddAVisitor;
 import bni.regression.pageFactory.BNIConnect;
@@ -47,6 +48,7 @@ public class AddAndSearchBrandNewVisitor {
     public List<List<String>> loginSubList;
     private CaptureScreenShot captureScreenShot;
     ReadWriteExcel readWriteExcel = new ReadWriteExcel();
+    GmailClient gmailClient = new GmailClient();
 
     @Before
     public void setup() throws Exception {
@@ -102,7 +104,7 @@ public class AddAndSearchBrandNewVisitor {
             addAVisitor.clickSearchButton();
             readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
             boolean setEmailFlag = readWriteExcel.setCellData("src/test/resources/inputFiles/testInput.xlsx", "addBrandNewVisitor", 0, i, data.get("firstName") + data.get("lastName") + visitorDateTime + "@gmail.com");
-            boolean setLastNameFlag = readWriteExcel.setCellData("src/test/resources/inputFiles/testInput.xlsx", "addBrandNewVisitor", 1, i-j, lastName);
+            boolean setLastNameFlag = readWriteExcel.setCellData("src/test/resources/inputFiles/testInput.xlsx", "addBrandNewVisitor", 1, i - j, lastName);
             TimeUnit.SECONDS.sleep(2);
             addAVisitor.clickSearchByNameButton();
             TimeUnit.SECONDS.sleep(2);
@@ -177,9 +179,11 @@ public class AddAndSearchBrandNewVisitor {
             TimeUnit.SECONDS.sleep(2);
             Alert alert = driver.switchTo().alert();
             alert.accept();
+            signOut.signOutBni();
+            TimeUnit.SECONDS.sleep(5);
+            gmailClient.checkEmail("dbselenium@gmail.com", "Thank you for viisting BNIAnt - Two - Stage 2-" + data.get("firstName") + " "  + data.get("lastName") + visitorDateTime, data.get("firstName") + data.get("lastName") + visitorDateTime + "@gmail.com", "applicant", i);
             i++;
             j++;
-            signOut.signOutBni();
         }
     }
 
