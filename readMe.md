@@ -22,7 +22,8 @@ mvn surefire:test -Dtest=DailyJob
    mvn surefire:test -Dtest=WeekendJob
 
 At the beginning of the execution the config file will be deleted and a new config file will be copied based on the env.
-Also the features will be executed on the alphabetical order from the features folder. 
+Also the features will be executed on the alphabetical order from the features folder.
+The feature execution is controlled by tags in the runner classes. 
 
 
 
