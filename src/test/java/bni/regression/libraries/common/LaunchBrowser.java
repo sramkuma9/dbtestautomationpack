@@ -1,12 +1,12 @@
 package bni.regression.libraries.common;
 
-import java.util.concurrent.TimeUnit;
-
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+
+import java.util.concurrent.TimeUnit;
 
 public class LaunchBrowser {
 
@@ -42,16 +42,11 @@ public class LaunchBrowser {
         String envName = readWritePropertyFile.loadAndReadPropertyFile("bniUrl", "properties/config.properties");
         System.out.println("Executing the tests in " + envName + " environment");
         System.out.println("Launching google chrome with new profile..");
-        System.setProperty("webdriver.chrome.driver", ("src/test/resources/drivers/chromedriver.exe"));
-        //WebDriverManager.getInstance(DriverManagerType.CHROME).setup();
-        ChromeOptions chromeOptions = new ChromeOptions();
-        //chromeOptions.setHeadless(true);
-        //chromeOptions.addArguments("disable-infobars");
-        //chromeOptions.addArguments("--start-maximized");
-        chromeOptions.setExperimentalOption("useAutomationExtension", false);
-        WebDriver driver = new ChromeDriver(chromeOptions);
+        WebDriverManager.chromedriver().clearPreferences();
+        WebDriverManager.chromedriver().version("79.0.3945.36").setup();
+        WebDriver driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(15000, TimeUnit.SECONDS);
-        driver.navigate().to(appURL);
+        driver.get(appURL);
         TimeUnit.SECONDS.sleep(5);
         return driver;
     }
