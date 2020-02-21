@@ -42,8 +42,7 @@ public class LaunchBrowser {
         String envName = readWritePropertyFile.loadAndReadPropertyFile("bniUrl", "properties/config.properties");
         System.out.println("Executing the tests in " + envName + " environment");
         System.out.println("Launching google chrome with new profile..");
-        WebDriverManager.chromedriver().clearPreferences();
-        WebDriverManager.chromedriver().version("79.0.3945.36").setup();
+        WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(15000, TimeUnit.SECONDS);
         driver.get(appURL);
