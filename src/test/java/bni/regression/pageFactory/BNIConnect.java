@@ -85,6 +85,9 @@ public class BNIConnect {
     @FindBy(css = "#convertToMemberHrefCofC")
     WebElement addButton;
 
+    @FindBy(css = "#convertToMemberHref")
+    WebElement addProspectButton;
+
     @FindBy(css = "#columnlinks > a:nth-child(5)")
     WebElement renewNowLink;
 
@@ -121,6 +124,18 @@ public class BNIConnect {
     @FindBy(css = "#footer > div.copyright > p:nth-child(3) > a:nth-child(3)")
     WebElement browserPolicyLink;
 
+    @FindBy(css = ".linksList > table:nth-child(8) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(2) > a:nth-child(1)")
+    WebElement reviewSlipsLink;
+
+    @FindBy(css = "#memberModuleOneToOneStartDateDisplay")
+    WebElement oneToOneStartDate;
+
+    @FindBy(css = "#memberModuleOneToOneEndDateDisplay")
+    WebElement oneToOneEndDate;
+
+    @FindBy(css="#button")
+    WebElement goButton;
+
     @FindBy(css = "#ui-datepicker-div > table > tbody > tr")
     List<WebElement> datePicker;
 
@@ -129,6 +144,8 @@ public class BNIConnect {
 
     @FindBy(css = "#ui-datepicker-div > div > div > select.ui-datepicker-year")
     WebElement Year;
+    @FindBy(css="#footer > div.copyright > p:nth-child(1)")
+    WebElement copyRightArea;
 
     @FindBy(css = "#startHQDateExitInterviewDisplay")
     WebElement startDateTextBox;
@@ -181,7 +198,9 @@ public class BNIConnect {
         action.moveToElement(options);
         action.build().perform();
     }
-
+    public  void clickAddProspectButton(){
+        addProspectButton.click();
+    }
     public void clickTIcon(){
         tButton.click();
     }
@@ -439,6 +458,34 @@ public class BNIConnect {
     public void clickSignOut() throws Exception {
         signOut.click();
         TimeUnit.SECONDS.sleep(5);
+    }
+    public void clickOnetoOneRecord()
+    {
+        reviewSlipsLink.click();
+    }
+
+    public void clickOneToOneStartDate(){
+        oneToOneStartDate.click();
+    }
+    public void clickOneToOneEndDate()
+    {
+        oneToOneEndDate.click();
+    }
+
+    public void clickGoButton()
+    {
+        goButton.click();
+    }
+
+
+    public void checkTextInFooter(String concept){
+        String[] splitFooter = copyRightArea.getText().split("\n");
+        if (concept.equals("CC")){
+            assertEquals("Branding text is not correct for CC type.", "Copyright 2018 CorporateConnections™. All Rights Reserved.", splitFooter[0]);
+        }else{
+
+            assertEquals("Branding text is not correct for BNI type.", "Copyright 2019 BNI. All Rights Reserved.", splitFooter[0]);
+        }
     }
 
     public void clickSignOutFooter() throws Exception {
