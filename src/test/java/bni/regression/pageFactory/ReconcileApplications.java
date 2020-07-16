@@ -1,17 +1,12 @@
 package bni.regression.pageFactory;
 
 import org.junit.Assert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -22,7 +17,7 @@ public class ReconcileApplications {
     @FindBy(css = "#datalist_filter > input[type=text]")
     WebElement searchTextBox;
 
-    @FindBy(css = "#datalist > tbody > tr:nth-child(1) > td.center_align > input[type=checkbox]")
+    @FindBy(xpath = "/html/body/div[2]/div/div[1]/div[4]/div/form/div/div/table/tbody/tr/td[8]/input")
     WebElement paymentReceivedCheckBox;
 
     @FindBy(css="tr> td:nth-child(8) > input")
@@ -47,7 +42,14 @@ public class ReconcileApplications {
     @FindBy(css="#tr> td:nth-child(3) > a")
     WebElement appType;
 
-    @FindBy(css=".fa-plus")
+    @FindBy(xpath="//*[@id='show_core_groups']")
+    WebElement showCGCheckBox;
+
+    @FindBy(xpath="//*[@id='show_suspended_chapters']")
+    WebElement showSuspendedChaptersCheckBox;
+
+    //@FindBy(xpath="/html/body/div[2]/div/div[1]/div[4]/div/form/div/div/table/tbody/tr/td[7]/a")
+    @FindBy(xpath="//*[@id='datalist']/tbody/tr/td[7]/a")
     WebElement paymentType;
 
     @FindBy(css=".odd > td:nth-child(7) > a")
@@ -58,6 +60,9 @@ public class ReconcileApplications {
 
     @FindBy(css="#changepaymenttype")
     WebElement changepaymenttype;
+
+    @FindBy(css="#show_unsubmitted")
+    WebElement unSubmittedApplicationCheckbox;
 
     public ReconcileApplications(WebDriver driver) {
         ReconcileApplications.driver = driver;
@@ -76,13 +81,15 @@ public class ReconcileApplications {
         searchTextBox.sendKeys(firstName + " " + lastName);
     }
 
-    public void enterSearchText( String lastName)
+    public void enterSearchText(String firstName, String lastName)
     {
-        searchTextBox.sendKeys(lastName);
+        searchTextBox.sendKeys(firstName + " " + lastName);
     }
 
     public void clickPaymentReceivedCheckBox()
     {
+
+        paymentReceivedCheckBox.isSelected();
         paymentReceivedCheckBox.click();
     }
 
@@ -117,6 +124,21 @@ public class ReconcileApplications {
     public void checkAppType(String expAppType){
         String actualAppType = appType.getText();
         Assert.assertEquals("App Type is not correct", expAppType, actualAppType);
+    }
+
+    public void clickUnsubmittedApplicationCheckbox()
+    {
+        unSubmittedApplicationCheckbox.click();
+    }
+
+    public void clickCGCheckBox()
+    {
+        showCGCheckBox.click();
+    }
+
+    public void clickSuspendedChaptersCheckBox()
+    {
+        showSuspendedChaptersCheckBox.click();
     }
 
     public void clickPaymentTypeSymbol()

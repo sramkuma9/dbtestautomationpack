@@ -17,6 +17,11 @@ public class RenewalApproval {
     @FindBy(css = "#approve")
     WebElement approveButton;
 
+    @FindBy(css="#memberPdf > a:nth-child(1) > img")
+    WebElement PDFImageLink;
+
+@FindBy(xpath="//*[@id='subsubnav']/a/span")
+WebElement backButton;
 
     public RenewalApproval(WebDriver driver) {
         RenewalApproval.driver = driver;
@@ -35,5 +40,7 @@ public class RenewalApproval {
     {
         agreeCheckBox.click();
     }
+    public void clickPDFImage() { PDFImageLink.click();}
+    public void clickBackButton() {backButton.click();}
 
 }
