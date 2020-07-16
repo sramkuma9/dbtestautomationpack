@@ -18,6 +18,11 @@ public class ChangePaymentType {
     @FindBy(css = "#memberPaymentOption")
     List<WebElement> paymentOptionListBox;
 
+
+
+    @FindBy(css = "body > div.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-draggable > div.ui-dialog-buttonpane.ui-widget-content.ui-helper-clearfix > button:nth-child(1)")
+    WebElement submitButton;
+
     public ChangePaymentType(WebDriver driver) {
         ChangePaymentType.driver = driver;
         AjaxElementLocatorFactory factory = new AjaxElementLocatorFactory(driver, 100);
@@ -29,6 +34,11 @@ public class ChangePaymentType {
     public void selectPaymentOption(String paymentOption) {
         Select paymentOptionSelect = new Select((WebElement) paymentOptionListBox);
         paymentOptionSelect.selectByVisibleText(paymentOption);
+    }
+
+    public void clickSubmitButton()
+    {
+        submitButton.click();
     }
 
 

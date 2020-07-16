@@ -29,6 +29,12 @@ public class MemberRenewalApplicationPaymentProcessing {
     @FindBy(css = "body > div.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.bniStyle.ui-draggable.ui-resizable > div.ui-dialog-content.ui-widget-content")
     WebElement confirmationMessage;
 
+    @FindBy(xpath="//*[@id='membershipCostsTable']/tbody/tr[2]/td[2]")
+    WebElement membershipCost;
+
+    @FindBy(xpath="//*[@id='membershipCostsTable']/tbody/tr[2]/td[3]")
+    WebElement membershipTax;
+
     public MemberRenewalApplicationPaymentProcessing(WebDriver driver) {
         MemberRenewalApplicationPaymentProcessing.driver = driver;
         AjaxElementLocatorFactory factory = new AjaxElementLocatorFactory(driver, 100);
@@ -63,6 +69,22 @@ public class MemberRenewalApplicationPaymentProcessing {
         String actualmessage = confirmationMessage.getText();
         String expMessage = "Thank you for applying to renew your BNI membership. Your Membership Committee have been notified and will contact you when a decision has been made.";
         assertEquals("Confirmation message is not correct", expMessage, actualmessage);
+    }
+
+    public String getMembershipTermFee()
+    {
+        String feeForMem = membershipCost.getText();
+        System.out.println("Membership Cost from UI MemberRenewalApplicationPaymentProcessing is " +feeForMem);
+        return  feeForMem;
+
+    }
+
+    public String getTaxForMembershipTerm()
+    {
+        String taxFetchForMem = membershipTax.getText();
+        System.out.println("Tax for the  membership term  from UI MemberRenewalApplicationPaymentProcessing is " +taxFetchForMem);
+        return  taxFetchForMem;
+
     }
 
 }
