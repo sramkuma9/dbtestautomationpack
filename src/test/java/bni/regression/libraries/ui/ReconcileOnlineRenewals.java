@@ -24,9 +24,9 @@ public class ReconcileOnlineRenewals {
 
     public void reconcileApp(String firstName, String lastName, String cred2, String cred3, String cred4) throws Exception {
         LaunchBrowser.driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        //WebDriver driver = launchBrowser.getDriver();
+        WebDriver driver = launchBrowser.getDriver();
         bniConnect = new BNIConnect(launchBrowser.driver);
-        bniConnect.navigateMenu("Operations,Region");
+        bniConnect.navigateMenu("OPERATIONS,Region");
         TimeUnit.SECONDS.sleep(3);
         selectCountryRegionChapter.selectCountryRegChap(cred2.trim(), cred3.trim(), cred4.trim());
         bniConnect = new BNIConnect(launchBrowser.driver);

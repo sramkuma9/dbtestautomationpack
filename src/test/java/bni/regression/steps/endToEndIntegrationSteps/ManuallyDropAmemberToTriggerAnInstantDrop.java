@@ -40,18 +40,15 @@ public class ManuallyDropAmemberToTriggerAnInstantDrop {
 
     @Before
     public void setup() throws Exception {
-//        driver=launchBrowser.getDriver();
-//        launchBrowser.invokeBrowser();
-//        login.loginToBni();
-        //fixedDateTime =  currentDateTime.dateTime();
+
     }
 
     @After
     public void tearDown() throws Exception {
-        //signOut.signOutBni();
+
     }
 
-    // Scenario: Navigate to Add a Visitor page
+
     @Given("I login using below credentials and select country, chapter and region")
     public void step_1(DataTable loginDetails) throws Exception {
         List<List<String>> login = loginDetails.raw();
@@ -71,7 +68,7 @@ public class ManuallyDropAmemberToTriggerAnInstantDrop {
             driver = launchBrowser.getDriver();
             bniConnect = new BNIConnect(driver);
             captureScreenShot = new CaptureScreenShot(driver);
-            bniConnect.navigateMenu("Operations,Chapter");
+            bniConnect.navigateMenu("OPERATIONS,Chapter");
             TimeUnit.SECONDS.sleep(2);
             selectCountryRegionChapter.selectCountryRegChap(splitCredentials[2].trim(), splitCredentials[3].trim(), splitCredentials[4].trim());
             bniConnect = new BNIConnect(driver);
@@ -99,10 +96,10 @@ public class ManuallyDropAmemberToTriggerAnInstantDrop {
             TimeUnit.SECONDS.sleep(6);
             dropMember = new DropMember(driver);
             dropMember.clickDropDateField();
-//            TimeUnit.SECONDS.sleep(1);
-//            dropMember.selectDropYear(data.get("dropYear"));
-//            TimeUnit.SECONDS.sleep(1);
-           // dropMember.selectDropMonth("dropMonth");
+            TimeUnit.SECONDS.sleep(1);
+            dropMember.selectDropYear(data.get("dropYear"));
+            TimeUnit.SECONDS.sleep(1);
+            dropMember.selectDropMonth(data.get("dropMonth"));
             TimeUnit.SECONDS.sleep(1);
             dropMember.selectDateFromDatePicker(data.get("dropDay"));
             TimeUnit.SECONDS.sleep(1);
@@ -110,6 +107,8 @@ public class ManuallyDropAmemberToTriggerAnInstantDrop {
             TimeUnit.SECONDS.sleep(1);
             dropMember.selectDropReason(data.get("dropReason"));
             TimeUnit.SECONDS.sleep(1);
+            captureScreenShot = new CaptureScreenShot(driver);
+            captureScreenShot.takeSnapShot(driver, "manuallyDropAMemberToTriggerAnInstantDrop");
             dropMember.clickSubmitButton();
             TimeUnit.SECONDS.sleep(12);
             editProfile = new EditProfile(driver);
