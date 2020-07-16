@@ -19,7 +19,7 @@ public class AddPaymentTypeForOnlineApplication {
     @FindBy(css = "body > div.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-draggable > div.ui-dialog-buttonpane.ui-widget-content.ui-helper-clearfix > button:nth-child(1)")
     WebElement submitButton;
 
-    @FindBy(css="#paymentOption")
+    @FindBy(xpath="//*[@id='paymentOption']")
     WebElement paymentOption;
 
     public AddPaymentTypeForOnlineApplication(WebDriver driver){
@@ -31,10 +31,10 @@ public class AddPaymentTypeForOnlineApplication {
         wait = new WebDriverWait(driver, 5);
     }
 
-    public void selectPaymentOption(String payment) throws InterruptedException{
+    public void selectPaymentOption(String paymentMethod) throws InterruptedException{
 
         Select paymentSelect = new Select(paymentOption);
-        paymentSelect.selectByVisibleText(payment);
+        paymentSelect.selectByVisibleText(paymentMethod);
     }
 
     public void clickSubmitButton()
