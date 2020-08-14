@@ -19,10 +19,9 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.text.DecimalFormat;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertEquals;
@@ -76,12 +75,12 @@ public class NewMemberApplicationV {
 
     @When("I login  BNI and add a  Member using NMA process  and enter the below details click Proceed to payment button following new pricing")
     public void i_login_BNI_and_add_a_Member_using_NMA_process_and_enter_the_below_details_click_Proceed_to_payment_button_following_new_pricing(DataTable addNMA) throws Throwable {
-        //To add a visitor
+
         Integer i = 2;
         Integer j = 1;
         for (Map<String, String> data : addNMA.asMaps(String.class, String.class)) {
-            String[] splitCredentials = loginSubList.get(i - 2).toString().replace("[", "").replace("]", "").split(",");
 
+            String[] splitCredentials = loginSubList.get(i - 2).toString().replace("[", "").replace("]", "").split(",");
             driver = launchBrowser.getDriver();
             launchBrowser.invokeBrowser();
             TimeUnit.SECONDS.sleep(2);
@@ -90,31 +89,29 @@ public class NewMemberApplicationV {
             driver = launchBrowser.getDriver();
             bniConnect = new BNIConnect(driver);
             TimeUnit.SECONDS.sleep(2);
-
-
             readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
             String visitorEmailId = readWriteExcel.getCellData("addBrandNewVisitor", 0, 1);
             System.out.println("EmailID" + visitorEmailId);
             String emailIdUserName = readWritePropertyFile.loadAndReadPropertyFile("emailUserName", "properties/config.properties");
             System.out.println("EmailID user name is" + emailIdUserName);
-            String[][] queryResult = dbConnect.queryAndRetrieveRecords(readWritePropertyFile.loadAndReadPropertyFile("NMARegistrationLinkTest2", "properties/sql.properties"));
-            // String[][] queryResult = dbConnect.queryAndRetrieveRecords(readWritePropertyFile.loadAndReadPropertyFile("NMARegistrationLinkTrain", "properties/sql.properties"));
-            // String subject1 = (dbConnect.queryAndRetrieveRecords(readWritePropertyFile.loadAndReadPropertyFile("NMARegistrationLink", "properties/sql.properties")).toString());
-            // global
-            //  String[][] queryResult = dbConnect.queryAndRetrieveRecords(readWritePropertyFile.loadAndReadPropertyFile("AddAndSearchBrandNewVisitorGlobal", "properties/sql.properties"));
-
-            String subject = queryResult[0][0];
-            System.out.println("Subject retrieved from sql query is " + subject);
-            //   String emailSubject = "Thank you for visting BNI";
+            String country = data.get("country");
+            String region = data.get("region");
+            String registrationSubject = "select subject from bni_mailer.message_template b1  join " +
+                    " bni_mailer.mail_event_template_org b2 on b1.id_message_template =b2.message_template_id_message_template " +
+                    " join bni.org b3 on b2.id_org = b3.id_org " +
+                    "where b3.org_name in ('HQ', '" + country + "', '" + region + "') " +
+                    " and b2.mail_event_id_mail_event ='1' order by  id_org_type desc limit 1 ; ";
+            String[][] registrationSubjectResult = dbConnect.queryAndRetrieveRecords(registrationSubject);
+            String subject = registrationSubjectResult[0][0];
             gmailClient.checkEmail(emailIdUserName, subject, visitorEmailId, "applicant", 1);
             readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
             String url = readWriteExcel.getCellData("applicant", 0, 0);
             System.out.println("URL is " + url);
+            TimeUnit.SECONDS.sleep(2);
             driver.manage().window().maximize();
             driver.navigate().to(url);
             TimeUnit.SECONDS.sleep(2);
-
-            Registration registration = new Registration(driver);
+        Registration registration = new Registration(driver);
             registration.enterNewPassword(data.get("NewPassword"));
             registration.enterConfirmPassword(data.get("ConfirmPassword"));
             TimeUnit.SECONDS.sleep(5);
@@ -124,24 +121,15 @@ public class NewMemberApplicationV {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+           String baseEnvURl = readWritePropertyFile.loadAndReadPropertyFile("baseUrl", "properties/config.properties");
             //NMA Form
             BniConnectApplicationPortal = new BNIConnectApplicationPortal(driver);
             TimeUnit.SECONDS.sleep(8);
-//            BniConnectApplicationPortal.clickApplicationFormButton();
-//            BniConnectApplicationPortal.selectLanguage(data.get("language"));
-            BniConnectApplicationPortal.clickApplicationFormButton();
+//            if (baseEnvURl.equals("https://www.trackbniconnect.com/")) {
+//                BniConnectApplicationPortal.clickApplicationFormButton();
+//                BniConnectApplicationPortal.selectLanguage(data.get("language"));
+//            }
+         BniConnectApplicationPortal.clickApplicationFormButton();
             TimeUnit.SECONDS.sleep(3);
             JavascriptExecutor js = (JavascriptExecutor) driver;
             js.executeScript("window.scrollBy(0, 250)", "");
@@ -149,33 +137,31 @@ public class NewMemberApplicationV {
             BniConnectApplicationPortal.clickApplicationFormNextButton();
             TimeUnit.SECONDS.sleep(3);
             BniConnectApplicationPortal.selectMembershipTerm(data.get("membershipTerm"));
-            TimeUnit.SECONDS.sleep(18);
-            //Membership Fee calculation   '695' is CountryID
-//            String expectedMembershipFeeFromUI = BniConnectApplicationPortal.getFeeForMembershipTerm();
-//            System.out.println("Membership fee from Application widget is" + expectedMembershipFeeFromUI);
-            TimeUnit.SECONDS.sleep(3);
-            String country = data.get("country");
-            System.out.println("Country is" + country);
-            String region = data.get("region");
-            System.out.println("Region is" + region);
+            TimeUnit.SECONDS.sleep(10);
             String chapter = data.get("chapter");
             String memTerm = data.get("membershipTerm");
             HashMap<String, String> memOption = new HashMap<String, String>();
             memOption.put("12 Month", "2");
             memOption.put("24 Month", "3");
+            memOption.put("12 Months", "2");
+            memOption.put("24 Months", "3");
+            memOption.put("18 Months", "8");
+            memOption.put("18 Month", "8");
             memOption.put("12 Month BNI#", "2");
             memOption.put("24 Month BNI#", "3");
             memOption.put("12 Month S", "2");
             memOption.put("24 Month S", "3");
-            memOption.put("12 Months GB path1#מי","2");
+            memOption.put("12 Months", "2");
+            memOption.put("24 Month Sgb", "3");
+            memOption.put("12 Months GB path1#מי", "2");
             String templateType = data.get("templateType");
             HashMap<String, String> tempType = new HashMap<>();
             tempType.put("Organization", "1");
             tempType.put("Individual Type", "2");
             tempType.put("Chapter Status Type", "3");
             tempType.put("Individual and Chapter Status Type", "4");
-            String individualOption =data.get("option");
-            String chapterOption =data.get("option2");
+            String individualOption = data.get("option");
+            String chapterOption = data.get("option2");
             HashMap<String, String> option = new HashMap<String, String>();
             option.put("MEMBER", "1");
             option.put("ALUMNI", "2");
@@ -184,119 +170,107 @@ public class NewMemberApplicationV {
             option2.put("ACTIVE", "4");
             option2.put("COREGROUP", "5");
             option2.put("SUSPENDED", "6");
-            String taxFlagForMemFee ="  select taxable_flag from pricing.scheme s1 join " +
-                " pricing.org s2 on s2.id = s1.id_org where s2.name in ('" + country + "', '" + region + "', '" + chapter + "') " +
-                    "  and id_template ='"+tempType.get(templateType)+"' "  +
-                    "  and id_sku ='" + memOption.get(memTerm) + "'  order by s2.org_type desc limit 1;";
-            TimeUnit.SECONDS.sleep(5);
-            String[][] taxFlagResultForMemFee = dbConnect.queryAndRetrieveRecords(taxFlagForMemFee);
-            String FlagTaxForMemFee = taxFlagResultForMemFee[0][0];
-            System.out.println("Taxable flag for Membership fee from sql query is" +FlagTaxForMemFee);
-
-
-
-
-                String taxPercentage = "select b1.percent from bni.tax_code_sub_elements b1 " +
-                        " join  bni.org_tax_code b2 on b2.inbound_id_tax_code = b1.id_tax_code " +
-                        " join bni.Org b3 on b3.id_org_tax_code = b2.id_org_tax_code where b3.org_name ='" + region + "' and b1.percent_effective_to is null;  ";
-                TimeUnit.SECONDS.sleep(5);
-
-//            String[][] taxCalculatedPercent = dbConnect.queryAndRetrieveRecords(taxPercentage);
-//            String taxPercent = taxCalculatedPercent[0][0];
-                String[][] taxCalculatedPercent = dbConnect.queryAndRetrieveRecords(taxPercentage);
-                String taxPercent1 = taxCalculatedPercent[0][0];
-                System.out.println("Tax percentage from SQL query is " + taxPercent1);
-
-            if (FlagTaxForMemFee.equals("N"))
-            {
-                taxPercent1="null";
-            }
-
-
-
-
-            String membershipFeeFromSqlQuery =" select s1.value , (Round(s1.value *'" + taxPercent1 + "' )/ 100) from pricing.scheme_line s1 " +
-                    " join pricing.scheme s2 on s2.id = s1.id_scheme " +
-            " join pricing.org s3 on s3.id =s2.id_org " +
-           " join    pricing.variable_option s5   where id_template='"+tempType.get(templateType)+"' " +
-           " and id_sku ='" + memOption.get(memTerm) + "' and  s3.name in ('" + country + "', '" + region + "', '" + chapter + "')"+
-           " and  effective_to is null  order by s3.org_type desc limit 1 ;";
-
-            String[][] actualMembershipFeeFromDB1 = dbConnect.queryAndRetrieveRecords(membershipFeeFromSqlQuery);
-            String actualMembershipFeeFromDB = actualMembershipFeeFromDB1[0][0];
-            String actualTaxForMembershipFeeFromDB = actualMembershipFeeFromDB1[0][1];
-
-            System.out.println("Actual Membership Fee from DB is " + actualMembershipFeeFromDB);
-            System.out.println("Actual Tax for Membership Fee from DB is " + actualTaxForMembershipFeeFromDB);
-            // assertEquals("MembershipFee is not correct", expectedMembershipFeeFromUI,actualMembershipFeeFromDB);
-            //Tax for Membership Fee
+            String taxFlag_query = "select s2.id,s2.name,s1.taxable_flag " +
+                    "from pricing.scheme s1 " +
+                    "JOIN pricing.org s2 ON s1.id_org = s2.id " +
+                    "where curdate() between s1.effective_from and IFNULL(s1.effective_to,curdate()) " +
+                    "and s1.id_sku = '" + memOption.get(memTerm) + "' " +
+                    "and s2.name in ('" + country + "', '" + region + "', '" + chapter + "')" +
+                    "order by s2.org_type desc limit 1";
+            String[][] taxFlag_result = dbConnect.queryAndRetrieveRecords(taxFlag_query);
+            String qval_taxflag_orgid = taxFlag_result[0][0];
+            String qval_taxflag_orgname = taxFlag_result[0][1];
+            String memFeeTaxableFlag = taxFlag_result[0][2];
+            System.out.println("Taxable Flag from DB is " + memFeeTaxableFlag);
+            String taxPercentage_query = "select b1.id_org,b1.org_name,b3.percent,CASE WHEN '" + memFeeTaxableFlag + "'='N' THEN 0 ELSE b3.percent END cal_tax_per from bni.Org b1 " +
+                    "JOIN bni.org_tax_code b2 ON b1.id_org_tax_code = b2.id_org_tax_code " +
+                    "JOIN bni.tax_code_sub_elements b3 ON b2.inbound_id_tax_code = b3.id_tax_code " +
+                    "where b1.org_name in ('" + region + "') and b1.id_org_type= '3' and b3.percent_effective_to is null;  ";
+            String[][] taxPercentage_result = dbConnect.queryAndRetrieveRecords(taxPercentage_query);
+            String qval_tax_orgid = taxPercentage_result[0][0];
+            String qval_tax_orgname = taxPercentage_result[0][1];
+            String taxPercentage = taxPercentage_result[0][2];
+            String qval_tax_cal_percent = taxPercentage_result[0][3];
+            System.out.println(" Percentage of Tax is" + taxPercentage);
+            System.out.println("Tax calculated percent" + qval_tax_cal_percent);
+            String taxCalculation_query = "select s2.id,s2.name,ifnull(s5.option,'DEFAULT') variable_option,s3.value,(Round(s3.value*('" + qval_tax_cal_percent + "')/100,2)) cal_tax_value " +
+                    "from pricing.scheme s1 " +
+                    "JOIN pricing.org s2 ON s1.id_org = s2.id " +
+                    "JOIN pricing.scheme_line s3 ON s1.id = s3.id_scheme " +
+                    "LEFT JOIN pricing.scheme_line_option s4 ON s3.id = s4.id_scheme_line " +
+                    "LEFT JOIN pricing.variable_option s5 ON s4.id_variable_option = s5.id " +
+                    "where curdate() between s1.effective_from and IFNULL(s1.effective_to,curdate()) " +
+                    "and s1.id_sku = '" + memOption.get(memTerm) + "' " +
+                    //   "and s2.id="+qval_taxflag_orgid+" " +
+                    "  and id_template ='" + tempType.get(templateType) + "' " +
+                    "and s2.name in ('" + country + "', '" + region + "', '" + chapter + "')" +
+                    "and ifnull(s5.option,'DEFAULT') in ('" + individualOption + "','" + chapterOption + "') " +
+                    "order by s2.org_type desc limit 1; ";
+            String[][] taxCalculation_result = dbConnect.queryAndRetrieveRecords(taxCalculation_query);
+            String memFeeVarOption = taxCalculation_result[0][2];
+            String memFeeFromDBValue = taxCalculation_result[0][3];
+            String memFeeTaxValueFromDB = taxCalculation_result[0][4];
+            System.out.println("Membership fee from DB   is " + memFeeFromDBValue);
+            System.out.println("Membership Tax value from DB   is " + memFeeTaxValueFromDB);
             String expectedMembershipFeeFromUI = BniConnectApplicationPortal.getFeeForMembershipTerm();
             String expectedTaxForMembershipTermFromUI = BniConnectApplicationPortal.getTaxForMembershipTerm();
             TimeUnit.SECONDS.sleep(3);
-
-
-
-
-
-
-            //  assertEquals("Actual Tax for MembershipFee is not correct", expectedTaxForMembershipTermFromUI,actualTaxFromMembershipTerm);
-
-
-            //Registration Fee calculation
-
-
-//            String expectedRegistrationFeeFromUI = BniConnectApplicationPortal.registrationFeeFetched();
-//            System.out.println("Registration fee from application widget" + expectedRegistrationFeeFromUI);
-            TimeUnit.SECONDS.sleep(3);
-            /*String registrationFeeFromSqlQuery = " select  sl.value, (Round(sl.value *'" + taxPercent1 + "'  )/ 100) from pricing.scheme_line sl " +
-                    " join pricing.scheme s on s.id = sl.id_scheme " +
-                    " join pricing.org o on o.id = s.id_org " +
-                    " where o.name in ('" + country + "', '" + region + "', '" + chapter + "') and id_sku='1'  "+
-                    " and effective_to is null order by o.org_type desc limit 1; ";
-
-             */
-
-            String taxFlagForRegFee = " select taxable_flag from pricing.scheme_line sl "+
-              "join pricing.scheme s on s.id = sl.id_scheme join " +
-                      "pricing.org o on o.id = s.id_org where id_sku='1' " +
-                      " and o.name in ('" + country + "', '" + region + "', '" + chapter + "')  and id_template ='"+tempType.get(templateType)+"' "   +
-                    "  and id_sku ='1' order by o.org_type desc limit 1 ;"  ;
-                    // id_sku =1 for registration fee always
+//                  assertEquals("Actual Tax for MembershipFee is not correct", expectedTaxForMembershipTermFromUI,memFeeTaxValueFromDB);
+            assertEquals("Actual  MembershipFee is not correct", expectedMembershipFeeFromUI, memFeeFromDBValue);
+            String taxFlagForRegFee = " select IFNULL(taxable_flag,'null') from pricing.scheme s1 " +
+                    " join  pricing.org s2 on s2.id = s1.id_org  " +
+                    " where s2.name in ('" + country + "', '" + region + "', '" + chapter + "') " +
+                    "  and id_sku ='1' " +
+                    " and id_template ='" + tempType.get(templateType) + "' " +
+                    " and curdate() between  effective_from   and IFNULL(effective_to,curdate()) order by s2.org_type desc limit 1;";
             TimeUnit.SECONDS.sleep(5);
-            String[][] taxFlagResultForRegFee = dbConnect.queryAndRetrieveRecords(taxFlagForMemFee);
+            String[][] taxFlagResultForRegFee = dbConnect.queryAndRetrieveRecords(taxFlagForRegFee);
             String FlagTaxForRegFee = taxFlagResultForRegFee[0][0];
-            System.out.println("Taxable flag for Registration fee from sql query is" +FlagTaxForRegFee);
+            String taxPercentageRegFee_query = "select b1.id_org,b1.org_name,b3.percent,CASE WHEN '" + FlagTaxForRegFee + "'='N' THEN 0 ELSE b3.percent END cal_tax_per from bni.Org b1 " +
+                    "JOIN bni.org_tax_code b2 ON b1.id_org_tax_code = b2.id_org_tax_code " +
+                    "JOIN bni.tax_code_sub_elements b3 ON b2.inbound_id_tax_code = b3.id_tax_code " +
+                    "where b1.org_name in ('" + region + "') and b1.id_org_type= '3' and b3.percent_effective_to is null;  ";
 
-            String[][] taxCalculatedPercentForRegFee = dbConnect.queryAndRetrieveRecords(taxPercentage);
-            String taxPercent2 = taxCalculatedPercentForRegFee[0][0];
-            System.out.println("Tax percentage from SQL query is " + taxPercent2);
+            String[][] taxPercentageReg_result = dbConnect.queryAndRetrieveRecords(taxPercentageRegFee_query);
 
-            if (FlagTaxForMemFee.equals("N"))
-            {
-                taxPercent2="null";
-            }
+            String qval_taxReg_orgid = taxPercentageReg_result[0][0];
+            String qval_taxReg_orgname = taxPercentageReg_result[0][1];
+            String qval_taxReg_percent = taxPercentageReg_result[0][2];
+            String qval_tax_calReg_percent = taxPercentageReg_result[0][3];
+            System.out.println(" Percentage of Tax is" + qval_taxReg_percent);
+            System.out.println("Tax calculated percent" + qval_tax_calReg_percent);
 
-            String registrationFeeFromSqlQuery = " select  sl.value, (Round(sl.value *'" + taxPercent2 + "'  )/ 100) from pricing.scheme_line sl " +
+
+            // id_sku =1 for registration fee always
+            String registrationFeeFromSqlQuery = " select  sl.value from pricing.scheme_line sl " +
                     " join pricing.scheme s on s.id = sl.id_scheme " +
                     " join pricing.org o on o.id = s.id_org " +
-                    " where o.name in ('" + country + "', '" + region + "', '" + chapter + "') and id_sku='1'  "+
-                    "  and  curdate() >= effective_from  and effective_to is null order by o.org_type desc limit 1; ";
-
-
-
-                //select  sl.value, (Round(sl.value *'20.000'  )/ 100) from pricing.scheme_line sl  join pricing.scheme s on s.id = sl.id_scheme join pricing.org o on o.id = s.id_org where id_sku='1' and o.name in ('Bulgaria', 'Bankso', 'Chapter One');
+                    " where o.name in ('" + country + "', '" + region + "', '" + chapter + "') and id_sku='1'  " +
+                    "  and  curdate() between  effective_from   and IFNULL(effective_to,curdate()) order by o.org_type desc limit 1; ";
             String[][] actualRegistrationFeeFromDB1 = dbConnect.queryAndRetrieveRecords(registrationFeeFromSqlQuery);
-            String actualRegistrationFeeFromDB = actualRegistrationFeeFromDB1[0][0];
-            String actualTaxForRegistrationFeeFromDB = actualRegistrationFeeFromDB1[0][1];
-            System.out.println("Actual Registration Fee from DB is " + actualRegistrationFeeFromDB);
-            System.out.println("Actual Tax for Registration Fee from DB is " + actualTaxForRegistrationFeeFromDB);
-            //   assertEquals("MembershipFee is not correct", expectedRegistrationFeeFromUI,actualRegistrationFeeFromDB);
-
+            double feevalue = Double.parseDouble(actualRegistrationFeeFromDB1[0][0]);
+            double taxcal = feevalue * Double.parseDouble(qval_tax_calReg_percent) / 100;
+            taxcal = Util.numberRound(taxcal, 2);
+            System.out.println(Util.numberFormat(taxcal, 2));
+            System.out.println("Actual Tax for Registration Fee from DB is " + (Util.numberFormat(taxcal, 2)));
+            readWriteExcel.setExcelFile("src/test/resources/executionReports/PricingResults/NMA.xlsx");
+            boolean setMemOptionFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "NMA", 0, i, memTerm);
+            boolean setMemTaxFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "NMA", 1, i - j, memFeeTaxableFlag);
+            boolean setMemPercentDBTax = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "NMA", 2, i - j, memFeeTaxValueFromDB);
+            boolean setMemPercentUITax = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "NMA", 3, i - j, expectedTaxForMembershipTermFromUI);
+            boolean setMemFeeDBFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "NMA", 4, i - j, memFeeFromDBValue);
+            boolean setMemFeeUIFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "NMA", 5, i - j, expectedMembershipFeeFromUI);
+            boolean setRegTaxFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "NMA", 6, i - j, FlagTaxForRegFee);
             //Tax for Registration Fee
             String expectedRegistrationFeeFromUI = BniConnectApplicationPortal.registrationFeeFetched();
             String expectedTaxForRegistrationFeeFromUI = BniConnectApplicationPortal.getTaxForRegistrationFee();
             TimeUnit.SECONDS.sleep(3);
-            //  assertEquals("Actual Tax for Registration Fee is not correct", expectedTaxForRegistrationFeeFromUI,actualTaxForRegistrationFeeFromDB);
+            // assertEquals("Actual Tax for Registration Fee is not correct", expectedTaxForRegistrationFeeFromUI, (Util.numberFormat(taxcal, 2)));
+            readWriteExcel.setExcelFile("src/test/resources/executionReports/PricingResults/NMA.xlsx");//
+            boolean setRegPercentDBTax = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "NMA", 7, i - j, (Util.numberFormat(taxcal, 2)));
+            boolean setRegPercentUITax = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "NMA", 8, i - j, expectedTaxForRegistrationFeeFromUI);
+            boolean setRegFeeDBFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "NMA", 9, i - j, Double.toString(feevalue));
+            boolean setRegFeeUIFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "NMA", 10, i - j, expectedRegistrationFeeFromUI);
             JavascriptExecutor js2 = (JavascriptExecutor) driver;
             js2.executeScript("window.scrollBy(0, 250)", "");
             BniConnectApplicationPortal.clickCompanyPaidMembership();
@@ -305,47 +279,10 @@ public class NewMemberApplicationV {
             captureScreenShot = new CaptureScreenShot(driver);
             captureScreenShot.takeSnapShot(driver, "NMAMembershipTerm");
             TimeUnit.SECONDS.sleep(1);
-
             BniConnectApplicationPortal.clickCOCButton();
             TimeUnit.SECONDS.sleep(1);
-
-            //////////////////////////////////
-          /*
-            BniConnectApplicationPortal.clickApplicationFormNextButton();
-            TimeUnit.SECONDS.sleep(1);
-            BniConnectApplicationPortal.enterExperienceProfessionalClassification(data.get("professionalExp"));
-            TimeUnit.SECONDS.sleep(1);
-            //  BniConnectApplicationPortal.clickCalendarIcon();
-            TimeUnit.SECONDS.sleep(1);
-            BniConnectApplicationPortal.getDate(data.get("date"));
-            TimeUnit.SECONDS.sleep(1);
-            BniConnectApplicationPortal.selectLicenceStatus(data.get("licenceOption"));
-            TimeUnit.SECONDS.sleep(1);
-            JavascriptExecutor js3 = (JavascriptExecutor) driver;
-            js3.executeScript("window.scrollBy(0, 250)", "");
-            BniConnectApplicationPortal.clickApplicationFormNextButton();
-            TimeUnit.SECONDS.sleep(5);
-            BniConnectApplicationPortal.enterCommitment(data.get("commitmentOption"));
-            TimeUnit.SECONDS.sleep(1);
-            BniConnectApplicationPortal.enterSubstitute(data.get("substituteOption"));
-            TimeUnit.SECONDS.sleep(1);
-            JavascriptExecutor js4 = (JavascriptExecutor) driver;
-            js4.executeScript("window.scrollBy(0, 250)", "");
-            BniConnectApplicationPortal.clickMembershipTermNextButton();
-            TimeUnit.SECONDS.sleep(1);
-            JavascriptExecutor js5 = (JavascriptExecutor) driver;
-            js5.executeScript("window.scrollBy(0, 250)", "");
-            BniConnectApplicationPortal.clickAcceptCheckBox();
-            TimeUnit.SECONDS.sleep(3);
-
-
-
-            //////////////////////////////////
-            */
-
             BniConnectApplicationPortal.clickReviewApplicationButton();
             TimeUnit.SECONDS.sleep(12);
-            System.out.println(("Review button clicked"));
             BniConnectApplicationPortal.clickEditGB();
             TimeUnit.SECONDS.sleep(5);
             BniConnectApplicationPortal.editPersonalInfo("Test");
@@ -357,7 +294,6 @@ public class NewMemberApplicationV {
             js6.executeScript("window.scrollBy(0, 250)", "");
             TimeUnit.SECONDS.sleep(8);
             BniConnectApplicationPortal.clickSubmitApplicationbutton();
-            System.out.println(("submit button clicked"));
             TimeUnit.SECONDS.sleep(17);
             captureScreenShot = new CaptureScreenShot(driver);
             captureScreenShot.takeSnapShot(driver, "NewMemberApplication");
@@ -368,9 +304,7 @@ public class NewMemberApplicationV {
 
 
 
-
-
-
+           // String[] splitCredentials = loginSubList.get(i - 2).toString().replace("[", "").replace("]", "").split(",");
 
             //Reconcile the application
             driver = launchBrowser.getDriver();
@@ -389,6 +323,8 @@ public class NewMemberApplicationV {
             TimeUnit.SECONDS.sleep(3);
             bniConnect.navigateMenu("OPERATIONS,Region");
             TimeUnit.SECONDS.sleep(3);
+            selectCountryRegionChapter.selectCountryRegChap(splitCredentials[2].trim(), splitCredentials[3].trim(), splitCredentials[4].trim());
+            bniConnect = new BNIConnect(driver);
             readWriteExcel.setExcelFile("src/test/resources/inputFiles/translation.xlsx");
             String language3[] = readWritePropertyFile.loadAndReadPropertyFile("language", "properties/config.properties").split(",");
             int colNumber3 = Integer.parseInt(language3[1]);
@@ -404,8 +340,6 @@ public class NewMemberApplicationV {
             System.out.println("LAst name is " + lastName);
             reconcileApplications = new ReconcileApplications(LaunchBrowser.driver);
             reconcileApplications.enterSearchText((data.get("firstName")), lastName);
-
-
             reconcileApplications.clickCGCheckBox();
             TimeUnit.SECONDS.sleep(1);
             reconcileApplications.clickUnsubmittedApplicationCheckbox();
@@ -439,7 +373,6 @@ public class NewMemberApplicationV {
             TimeUnit.SECONDS.sleep(6);
             reconcileApplications = new ReconcileApplications(driver);
             readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
-            //   String lastName=data.get("lastName");
             reconcileApplications.enterSearchText((data.get("firstName")), lastName);
             TimeUnit.SECONDS.sleep(2);
             reconcileApplications.clickCGCheckBox();
@@ -455,8 +388,6 @@ public class NewMemberApplicationV {
             TimeUnit.SECONDS.sleep(10);
             reconcileApplications = new ReconcileApplications(LaunchBrowser.driver);
             readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
-            // String lastName = readWriteExcel.getCellData("addBrandNewVisitor",1,1);
-            // reconcileApplications.enterSearchText((data.get("firstName")), lastName);
             captureScreenShot = new CaptureScreenShot(driver);
             captureScreenShot.takeSnapShot(driver, "NewMemberApplication");
             reconcileApplications.clickPaymentTypeSymbol();
@@ -467,24 +398,18 @@ public class NewMemberApplicationV {
             TimeUnit.SECONDS.sleep(2);
             addPaymentTypeForOnlineApplication.clickSubmitButton();
             TimeUnit.SECONDS.sleep(2);
-            readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
-
-
-
-              //String lastName=data.get("lastName");
-
-
+            reconcileApplications = new ReconcileApplications(LaunchBrowser.driver);
+            reconcileApplications.enterSearchText((data.get("firstName")), lastName);
+            TimeUnit.SECONDS.sleep(2);
+            //String lastName=data.get("lastName");
             reconcileApplications = new ReconcileApplications(driver);
             TimeUnit.SECONDS.sleep(1);
-
-
             reconcileApplications.clickCGCheckBox();
             TimeUnit.SECONDS.sleep(1);
             reconcileApplications.clickUnsubmittedApplicationCheckbox();
             TimeUnit.SECONDS.sleep(1);
             reconcileApplications.clickSuspendedChaptersCheckBox();
             TimeUnit.SECONDS.sleep(2);
-
             reconcileApplications.enterSearchText((data.get("firstName")), lastName);
             TimeUnit.SECONDS.sleep(2);
             reconcileApplications.clickPaymentReceivedCheckBox();
@@ -492,78 +417,17 @@ public class NewMemberApplicationV {
             Alert alert7 = driver.switchTo().alert();
             alert7.accept();
             TimeUnit.SECONDS.sleep(10);
-
-
-/*
-
-            String country = data.get("country");
-            System.out.println("Country is" + country);
-            String region = data.get("region");
-            System.out.println("Region is" + region);
-            String chapter = data.get("chapter");
-            String memTerm = data.get("membershipTerm");
-            HashMap<String, String> memOption = new HashMap<String, String>();
-            memOption.put("12 Month", "2");
-            memOption.put("24 Month", "3");
-            memOption.put("12 Month BNI#", "2");
-            memOption.put("24 Month BNI#", "3");
-            memOption.put("12 Month S", "2");
-            HashMap<String, String> templateType = new HashMap<>();
-            templateType.put("Organization", "1");
-            templateType.put("Individual Type", "2");
-            templateType.put("Chapter Status Type", "3");
-            templateType.put("Individual and Chapter Status Type", "4");
-            String individualOption =data.get("option");
-            String chapterOption =data.get("option2");
-            HashMap<String, String> option = new HashMap<String, String>();
-            option.put("MEMBER", "1");
-            option.put("ALUMNI", "2");
-            option.put("VISITOR", "3");
-            HashMap<String, String> option2 = new HashMap<String, String>();
-            option2.put("ACTIVE", "4");
-            option2.put("COREGROUP", "5");
-            option2.put("SUSPENDED", "6");
-
-
-            String taxPercentage = "select b1.percent from bni.tax_code_sub_elements b1 " +
-                    " join  bni.org_tax_code b2 on b2.inbound_id_tax_code = b1.id_tax_code " +
-                    " join bni.Org b3 on b3.id_org_tax_code = b2.id_org_tax_code where b3.org_name ='" + region + "' ; ";
-            TimeUnit.SECONDS.sleep(5);
-//            String[][] taxCalculatedPercent = dbConnect.queryAndRetrieveRecords(taxPercentage);
-//            String taxPercent = taxCalculatedPercent[0][0];
-            String[][] taxCalculatedPercent = dbConnect.queryAndRetrieveRecords(taxPercentage);
-            String taxPercent1 = taxCalculatedPercent[0][0];
-            System.out.println("Tax percentage from SQL query is " + taxPercent1);
-
-            String membershipFeeFromSqlQuery = "select  sl.value , (Round(sl.value *'" + taxPercent1 + "' )/ 100) from pricing.scheme_line sl " +
-                    " join pricing.scheme s on s.id = sl.id_scheme " +
-                    " join pricing.org o on o.id = s.id_org " +
-                    " join pricing.sku s2 on s2.id = s.id_sku " +
-                    " join pricing.scheme_line_option s4 on s4.id_scheme_line =sl.id " +
-                    " join pricing.variable_option s5 on s5.id = s4.id_variable_option" +
-                    " where o.name in ('" + country + "', '" + region + "', '" + chapter + "') and id_sku='" + memOption.get(memTerm) + "' " +
-                    "and s5.option in ('" +individualOption + "', '" + chapterOption + "') and effective_to is null order by o.org_type desc limit 1; ";
-            String[][] actualMembershipFeeFromDB1 = dbConnect.queryAndRetrieveRecords(membershipFeeFromSqlQuery);
-            String actualMembershipFeeFromDB = actualMembershipFeeFromDB1[0][0];
-            String actualTaxForMembershipFeeFromDB = actualMembershipFeeFromDB1[0][1];
-
-
-
- */
-            String name1 =data.get("firstName")+" "+ data.get("lastName");
+            String name1 = data.get("firstName") + " " + data.get("lastName");
             String invoiceAmountSqlQuery = " select invoice_reference, total_amount  from bni.invoice where to_person_name = '" + name1 + "' ;";
             String[][] invoiceAmountFromDB1 = dbConnect.queryAndRetrieveRecords(invoiceAmountSqlQuery);
             String invoiceAmountFromDB = invoiceAmountFromDB1[0][0];
-            String invoiceAmountFromDB2 =invoiceAmountFromDB1[0][1];
+            String invoiceAmountFromDB2 = invoiceAmountFromDB1[0][1];
             System.out.println("Invoice Reference number from DB is " + invoiceAmountFromDB);
             System.out.println("Invoice Amount from DB is " + invoiceAmountFromDB2);
-
-          //  String totalAmount = actualMembershipFeeFromDB +actualRegistrationFeeFromDB;
-          //  int totalAmount= Integer.parseInt(actualMembershipFeeFromDB) + Integer.parseInt(actualRegistrationFeeFromDB);
-            //System.out.println("Actual Membership Fee Total from DB is " + totalAmount);
-           // assertEquals("MembershipFee From Application widget and invoice  is not correct", actualMembershipFeeFromDB, invoiceAmountFromDB);
-            reconcileApplications.enterSearchText((data.get("firstName")), lastName);
-            TimeUnit.SECONDS.sleep(2);
+            readWriteExcel.setExcelFile("src/test/resources/executionReports/PricingResults/NMA.xlsx");
+            boolean setMemFeeInvoiceNumberFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "NMA", 11, i - j, invoiceAmountFromDB);
+            boolean setMemFeeInvoiceFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "NMA", 12, i - j, invoiceAmountFromDB2);
+            TimeUnit.SECONDS.sleep(4);
             reconcileApplications.clickRecncileButton();
             TimeUnit.SECONDS.sleep(5);
             reconcile = new Reconcile(driver);
@@ -572,9 +436,31 @@ public class NewMemberApplicationV {
             TimeUnit.SECONDS.sleep(5);
             Alert alert6 = driver.switchTo().alert();
             alert6.accept();
-
-
+            String reconcileApplicationStatus = "Pass";
+            String firstName = data.get("firstName");
+            //  String lastName = data.get("lastName");
+            String renewalDateQuery = "select CONVERT(renewal_due_date, char) from bni.membership b1 join " +
+                    " bni.user b2 on b1.id_membership = b2.id_membership where first_name ='" + firstName + "' and  last_name = '" + lastName + "' ; ";
+            String[][] renewalDateStatusResult = dbConnect.queryAndRetrieveRecords(renewalDateQuery);
+            String renewalDate = renewalDateStatusResult[0][0];
+            System.out.println("Renewal Date is " + renewalDate);
+            String[] date1 = renewalDate.split(" ");
+            String exactRenewalDate = date1[0];
+            System.out.println("date for renewal is " + exactRenewalDate);
+            String idMembershipQuery = " select b1.id_membership from bni.membership b1 join  bni.user b2 on b1.id_membership = b2.id_membership where last_name ='" + lastName + "' ; ";
+            String idMembershipApplication = "select id_membership_application from bni.membership_application b1 join  bni.user b2 on b1.id_membership = b2.id_membership where first_name ='" + firstName + "'  and last_name ='" + lastName + "'  order by id_membership_application desc ;";
+            String[][] MembershipIDFromDB = dbConnect.queryAndRetrieveRecords(idMembershipQuery);
+            String actualMembershipIDFromDB = MembershipIDFromDB[0][0];
+            String[][] MembershipApplicationIDFromDB = dbConnect.queryAndRetrieveRecords(idMembershipApplication);
+            String actualMembershipApplicationIDFromDB = MembershipApplicationIDFromDB[0][0];
+            readWriteExcel.setExcelFile("src/test/resources/executionReports/PricingResults/NMA.xlsx");
+            boolean setMemRenewalDateFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "NMA", 13, i - j, exactRenewalDate);
+            boolean setReconcileAppliFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "NMA", 14, i - j, reconcileApplicationStatus);
+            boolean setLastNameFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "NMA", 15, i - j, lastName);
+            boolean setIDMembershipFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "NMA", 16, i - j, actualMembershipIDFromDB);
+            boolean setIdMembershipApplication = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "NMA", 17, i - j, actualMembershipApplicationIDFromDB);
             TimeUnit.SECONDS.sleep(10);
+            driver.close();
 
 
         }
@@ -597,210 +483,15 @@ public class NewMemberApplicationV {
 
 
 
-         /*  BniConnectApplicationPortal.clickSelectDifferentChapter();
-                    TimeUnit.SECONDS.sleep(2);
-                    BniConnectApplicationPortal.enterChapterName(data.get("chapter"));
-                    TimeUnit.SECONDS.sleep(1);
-                    BniConnectApplicationPortal.enterCityName(data.get("city"));
-                    TimeUnit.SECONDS.sleep(1);
-                    BniConnectApplicationPortal.selectMeetingDay(data.get("meetingDay"));
-                    TimeUnit.SECONDS.sleep(1);
-                    BniConnectApplicationPortal.clickSearchButton();
-                    TimeUnit.SECONDS.sleep(1);
-
-                   */
 
 
 
-           /*  //Not necessary
-           BniConnectApplicationPortal.clickMembershipTermNextButton();
-            TimeUnit.SECONDS.sleep(1);
-            BniConnectApplicationPortal.enterExperienceProfessionalClassification(data.get("professionalExp"));
-            TimeUnit.SECONDS.sleep(1);
-            BniConnectApplicationPortal.enterLengthProfessionalClassification(data.get("lengthProfExp"));
-            TimeUnit.SECONDS.sleep(1);
-            BniConnectApplicationPortal.selectLicenceStatus();
-            TimeUnit.SECONDS.sleep(1);
-            JavascriptExecutor js3 = (JavascriptExecutor) driver;
-            js3.executeScript("window.scrollBy(0, 250)", "");
-            BniConnectApplicationPortal.enterBackground(data.get("background"));
-            TimeUnit.SECONDS.sleep(1);
-            BniConnectApplicationPortal.clickApplicationFormNextButton();
-            TimeUnit.SECONDS.sleep(5);
-            BniConnectApplicationPortal.enterCommitment();
-            TimeUnit.SECONDS.sleep(1);
-            BniConnectApplicationPortal.enterSubstitute();
-            TimeUnit.SECONDS.sleep(1);
-            JavascriptExecutor js4 = (JavascriptExecutor) driver;
-            js4.executeScript("window.scrollBy(0, 250)", "");
-            BniConnectApplicationPortal.enterAlreadyMember();
-            TimeUnit.SECONDS.sleep(1);
-            BniConnectApplicationPortal.clickMembershipTermNextButton();
-            TimeUnit.SECONDS.sleep(1);
-            JavascriptExecutor js5 = (JavascriptExecutor) driver;
-            js5.executeScript("window.scrollBy(0, 250)", "");
-            BniConnectApplicationPortal.clickAcceptCheckBox();
-            TimeUnit.SECONDS.sleep(3);
 
 
 
-             */
 
 
-           /*
-            readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
-             String visitorEmailId = readWriteExcel.getCellData("addBrandNewVisitor",0,1);
-              System.out.println("EmailID" +visitorEmailId);
-            String emailIdUserName = readWritePropertyFile.loadAndReadPropertyFile("emailUserName", "properties/config.properties");
-             System.out.println("EmailID user name is" +emailIdUserName);
-            TimeUnit.SECONDS.sleep(10);
-            String[][] queryResult2 = dbConnect.queryAndRetrieveRecords(readWritePropertyFile.loadAndReadPropertyFile("PaymentLink", "properties/sql.properties"));
-            String subject2 = queryResult2[0][0];
-            System.out.println("Subject retrieved from sql query is " + subject2);   //   String emailSubject = "Welcome to Stage2";
-            TimeUnit.SECONDS.sleep(10);
-            gmailClient.checkEmail(emailIdUserName, subject2, visitorEmailId, "term", 1);
-            readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
-            String hyperlinkTwo = readWriteExcel.getCellData("payment", 0, 0);
-            System.out.println("URL is " + hyperlinkTwo);
-            System.setProperty("webdriver.chrome.driver", "src/test/resources/drivers/chromedriver.exe");
-                    driver.manage().window().maximize();
-            driver.navigate().to(hyperlinkTwo);
-            TimeUnit.SECONDS.sleep(2);
-          BniConnectApplicationPortal = new BNIConnectApplicationPortal(driver);
-            TimeUnit.SECONDS.sleep(8);
-           BniConnectApplicationPortal.selectMembTerm(data.get("membershipTerm"));
-            TimeUnit.SECONDS.sleep(18);
-            JavascriptExecutor js72 = (JavascriptExecutor) driver;
-            js72.executeScript("window.scrollBy(0, 250)", "");
-              BniConnectApplicationPortal.clickPayNow2();
-              TimeUnit.SECONDS.sleep(5);
-            BniConnectApplicationPortal.selectPaymentOption2(data.get("paymentMethod"));
-            TimeUnit.SECONDS.sleep(5);
-            BniConnectApplicationPortal.clickSubmitButton2();
-            TimeUnit.SECONDS.sleep(5);
-            */
-
-            /*
-
-            driver = launchBrowser.getDriver();
-            launchBrowser.invokeBrowser();
-            TimeUnit.SECONDS.sleep(2);
-            login.loginToBni(splitCredentials[0].replaceAll(" ", ""), splitCredentials[1].replaceAll(" ", ""));
-            TimeUnit.SECONDS.sleep(12);
-            driver = launchBrowser.getDriver();
-            bniConnect = new BNIConnect(driver);
-            TimeUnit.SECONDS.sleep(2);
-            bniConnect.navigateMenu("OPERATIONS,Region");
-            TimeUnit.SECONDS.sleep(3);
-            selectCountryRegionChapter.selectCountryRegChap(splitCredentials[2].trim(), splitCredentials[3].trim(), splitCredentials[4].trim());
-            bniConnect = new BNIConnect(driver);
-            TimeUnit.SECONDS.sleep(3);
-            bniConnect.navigateMenu("OPERATIONS,Region");
-            TimeUnit.SECONDS.sleep(3);
-            readWriteExcel.setExcelFile("src/test/resources/inputFiles/translation.xlsx");
-            String language31[] = readWritePropertyFile.loadAndReadPropertyFile("language", "properties/config.properties").split(",");
-            int colNumber31 = Integer.parseInt(language31[1]);
-            String transMainMenu31 = readWriteExcel.getCellData("translation", colNumber31, 3);
-            String transSubMenu31 = readWriteExcel.getCellData("translation", colNumber31, 6);
-            bniConnect.selectItemFromMainListMenu(transMainMenu31);
-            TimeUnit.SECONDS.sleep(2);
-            bniConnect.selectItemFromSubListMenu(transSubMenu31);
-            TimeUnit.SECONDS.sleep(6);
-
-         */
-
-             /*       //not necessary
-     driver = launchBrowser.getDriver();
-            launchBrowser.invokeBrowser();
-            TimeUnit.SECONDS.sleep(2);
-            login.loginToBni(splitCredentials[0].replaceAll(" ", ""), splitCredentials[1].replaceAll(" ", ""));
-            TimeUnit.SECONDS.sleep(12);
-            driver = launchBrowser.getDriver();
-            bniConnect = new BNIConnect(driver);
-            TimeUnit.SECONDS.sleep(2);
-            bniConnect.navigateMenu("OPERATIONS,Region");
-            TimeUnit.SECONDS.sleep(3);
-            selectCountryRegionChapter.selectCountryRegChap(splitCredentials[2].trim(), splitCredentials[3].trim(), splitCredentials[4].trim());
-            bniConnect = new BNIConnect(driver);
-            TimeUnit.SECONDS.sleep(3);
-            readWriteExcel.setExcelFile("src/test/resources/inputFiles/translation.xlsx");
-            String language31[] = readWritePropertyFile.loadAndReadPropertyFile("language", "properties/config.properties").split(",");
-            int colNumber31 = Integer.parseInt(language31[1]);
-            String transMainMenu31 = readWriteExcel.getCellData("translation", colNumber31, 3);
-            String transSubMenu31 = readWriteExcel.getCellData("translation", colNumber31, 6);
-            bniConnect.selectItemFromMainListMenu(transMainMenu31);
-            TimeUnit.SECONDS.sleep(2);
-            bniConnect.selectItemFromSubListMenu(transSubMenu31);
-            TimeUnit.SECONDS.sleep(6);
-            reconcileApplications = new ReconcileApplications(LaunchBrowser.driver);
-
-    */
 
 
-//            //Tax for Membership Fee
-//            String expectedTaxForMembershipTermFromUI = BniConnectApplicationPortal.getTaxForMembershipTerm();
-//            TimeUnit.SECONDS.sleep(3);
-//            // select (sl.value *8 ) / 100 from pricing.scheme_line sl  join pricing.scheme s on s.id = sl.id_scheme  join pricing.org o on o.id = s.id_org where  sl.id like'3338'  and o.id like'695';
-//          /*  String sqlQueryForTaxFromMembershipTerm ="select (Round(sl.value *8 )/ 100) " +
-//                    "from pricing.scheme_line sl  join pricing.scheme s on s.id = sl.id_scheme " +
-//                    "join pricing.org o on o.id = s.id_org where  sl.id like'3338'  and o.id like'695';";
-//
-//           */
-//
-//            String sqlQueryForTaxFromMembershipTerm ="select  (Round(sl.value *8 )/ 100)   from pricing.scheme_line sl " +
-//                    " join pricing.scheme s on s.id = sl.id_scheme " +
-//                    " join pricing.org o on o.id = s.id_org " +
-//                    " join pricing.sku s2 on s2.id = s.id_sku " +
-//                    " join pricing.scheme_line_option s4 on s4.id_scheme_line =sl.id " +
-//                    " join pricing.variable_option s5 on s5.id = s4.id_variable_option" +
-//                    " where o.name in ('CC Switzerland') and id_sku='2' and s5.option='VISITOR' and effective_to is null; " ;
 
 
-//            String[][] actualTaxFromMembershipTerm1 = dbConnect.queryAndRetrieveRecords(sqlQueryForTaxFromMembershipTerm);
-//            String actualTaxFromMembershipTerm = actualTaxFromMembershipTerm1[0][0];
-//
-//            System.out.println("Actual Tax for Membership Fee from DB is "+actualTaxFromMembershipTerm);
-//           // assertEquals("Actual Tax for MembershipFee is not correct", expectedTaxForMembershipTermFromUI,actualTaxFromMembershipTerm);
-
-
-//            String registrationFeeFromSqlQuery = "select sl.value , from pricing.scheme_line sl " +
-//                    " join pricing.scheme s on s.id = sl.id_scheme "+
-//                    " join pricing.org o on o.id = s.id_org where  sl.id like'3687' and o.id like'866'; ";
-
-
-    /* String sqlQueryForTaxFromRegistrationFee ="select (Round(sl.value *8 )/ 100) " +
-                       " from pricing.scheme_line sl " +
-                        " join pricing.scheme s on s.id = sl.id_scheme "+
-                        " join pricing.org o on o.id = s.id_org where  sl.id like'3687' and o.id like'866'; ";
-            String[][] actualTaxFromRegFeeTerm1 = dbConnect.queryAndRetrieveRecords(sqlQueryForTaxFromRegistrationFee);
-            String actualTaxFromRegFee = actualTaxFromRegFeeTerm1[0][0];
-            System.out.println("Actual Tax for Registration Fee from DB is "+actualTaxForRegistrationFeeFromDB);
-
-            */
-
-
-    /*
-            String membershipFeeFromSqlQuery = "select  sl.value , (Round(sl.value *'" + taxPercent1 + "' )/ 100) from pricing.scheme_line sl " +
-                    " join pricing.scheme s on s.id = sl.id_scheme " +
-                    " join pricing.org o on o.id = s.id_org " +
-                    " join pricing.sku s2 on s2.id = s.id_sku " +
-                    " join pricing.scheme_line_option s4 on s4.id_scheme_line =sl.id " +
-                    " join pricing.variable_option s5 on s5.id = s4.id_variable_option" +
-                    " where o.name in ('" + country + "', '" + region + "', '" + chapter + "') and id_sku='" + memOption.get(memTerm) + "' " +
-                    "and s5.option in ('" +individualOption + "', '" + chapterOption + "') and effective_to is null order by o.org_type desc limit 1; ";
-
-
- */
-
-           /*
-            String membershipFeeFromSqlQuery = "select  sl.value , (Round(sl.value *'" + taxPercent1 + "' )/ 100) from pricing.scheme_line sl " +
-                    " join pricing.scheme s on s.id = sl.id_scheme " +
-                    " join pricing.org o on o.id = s.id_org " +
-                    " join pricing.sku s2 on s2.id = s.id_sku " +
-                    " join pricing.scheme_line_option s4 on s4.id_scheme_line =sl.id " +
-                    " join pricing.variable_option s5 on s5.id = s4.id_variable_option" +
-                    " where o.name in ('" + country + "', '" + region + "', '" + chapter + "') and id_sku='" + memOption.get(memTerm) + "' " +
-                    "and s5.option in ('" +individualOption + "', '" + chapterOption + "') and  curdate() >= effective_from  and effective_to is null order by o.org_type desc limit 1; ";
-
-
-            */
