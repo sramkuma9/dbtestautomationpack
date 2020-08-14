@@ -14,9 +14,8 @@ public class SelectCountryRegionChapter {
         bniConnect = new bni.regression.pageFactory.BNIConnect(LaunchBrowser.driver);
         bniConnect.selectCountry(country);
            TimeUnit.SECONDS.sleep(2);
-        // bniConnect.selectRegion("Z_RG Test Region 6");
          bniConnect.selectRegion(region);
-       TimeUnit.SECONDS.sleep(12);
+       TimeUnit.SECONDS.sleep(2);
         bniConnect.selectChapter(chapter);
         TimeUnit.SECONDS.sleep(2);
     }

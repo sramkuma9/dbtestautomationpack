@@ -1,16 +1,21 @@
 package bni.regression.pageFactory;
 
 import bni.regression.libraries.common.ReadWritePropertyFile;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -33,6 +38,11 @@ public class BNIConnect {
     @FindBy(css = "#bniCountry")
     WebElement countryListBox;
 
+    @FindBy(xpath="//*[@id='searchCountry']")
+    WebElement searchCountryTextBox;
+
+
+
     @FindBy(css = "#translationIcon")
     WebElement tButton;
 
@@ -47,6 +57,8 @@ public class BNIConnect {
 
     @FindBy(css = "#commonFilterListCountries > div > a")
     List<WebElement> countrySelect;
+
+
 
     @FindBy(css = "#bniRegion")
     WebElement regionListBox;
@@ -78,6 +90,9 @@ public class BNIConnect {
     @FindBy(css = "#droppedMemberEmail")
     WebElement emailTextBox;
 
+    @FindBy(css="#searchRegion")
+    WebElement searchRegionTextbox;
+
     @FindBy(css = "#searchDroppedMember")
     WebElement searchButton;
 
@@ -88,8 +103,12 @@ public class BNIConnect {
     @FindBy(css = "#convertToMemberHref")
     WebElement addProspectButton;
 
-    @FindBy(css = "#columnlinks > a:nth-child(5)")
+    //@FindBy(css = "#columnlinks > a:nth-child(5)")
+
+    @FindBy(css="#linkMembershipRenewalApplication")
     WebElement renewNowLink;
+
+
 
     @FindBy(css = "#lpUlTabs > li")
     List<WebElement> leftSideMenu;
@@ -136,6 +155,9 @@ public class BNIConnect {
     @FindBy(css="#button")
     WebElement goButton;
 
+    @FindBy(css="div.formbuttonarea:nth-child(10) > input")
+    WebElement unverifiedEmailGoButton;
+
     @FindBy(css = "#ui-datepicker-div > table > tbody > tr")
     List<WebElement> datePicker;
 
@@ -171,12 +193,24 @@ public class BNIConnect {
     @FindBy (css=".searchpeople")
     WebElement searchPeople;
 
+    @FindBy(css="#memberModuleReferralTrackingStartDateDisplay")
+    WebElement startDateReferralTrack;
+
+    @FindBy(css="#memberModuleReferralTrackingEndDateDisplay")
+    WebElement endDateReferralTrack;
+
+    @FindBy(css="#unverifiedEmailIncludeRecordsAfter")
+    WebElement unverifiedEmailDateTextBox;
+
+    @FindBy(xpath="/html/body/div[6]/div[1]/a/span")
+    WebElement closeDialogBox;
+
     public BNIConnect(WebDriver driver) {
         BNIConnect.driver = driver;
         AjaxElementLocatorFactory factory = new AjaxElementLocatorFactory(driver, 100);
         //This initElements method will create all WebElements
         PageFactory.initElements(factory, this);
-        wait = new WebDriverWait(driver, 5);
+        wait = new WebDriverWait(driver, 15);
     }
 
     public void checkPrivacyPolicyTranslation(String expPrivacyPolicy){
@@ -193,6 +227,15 @@ public class BNIConnect {
         assertEquals("Browser Policy translation is not correct", expBrowserPolicy, actualBrowserPolicy);
     }
 
+    public void clickReferralStartDate()
+    {
+        startDateReferralTrack.click();
+    }
+
+    public void clickReferralEndDate()
+    {
+     endDateReferralTrack.click();
+    }
     public void hoverOnOptions() {
         Actions action = new Actions(driver);
         action.moveToElement(options);
@@ -249,18 +292,32 @@ public class BNIConnect {
         endDateTextBox.click();
     }
 
-    public void selectCountry(String country) throws InterruptedException {
+
+
+
+    public void selectCountry(String country) throws InterruptedException, AWTException {
         int counter = 0;
-        Actions action = new Actions(driver);
+       Actions action = new Actions(driver);
         countryListBox.click();
         TimeUnit.SECONDS.sleep(2);
         for (WebElement divElement : countrySelect) {
-            List<WebElement> a_collection = divElement.findElements(By.tagName("span"));
+            List<WebElement> a_collection = divElement.findElements(By.tagName("span")) ;
             String countryName = a_collection.get(0).getText();
             if (country.equals(countryName)){
-                action.moveToElement(a_collection.get(0));
+             //   searchCountryTextBox.sendKeys(country);
+                Robot robot = new Robot();  // Robot class throws AWT Exception
+                Thread.sleep(2000); // Thread.sleep throws InterruptedException
+                robot.keyPress(KeyEvent.VK_DOWN);  // press arrow down key of keyboard to navigate
+                robot.mouseWheel(980);
+                EventFiringWebDriver eventFiringWebDriver = new EventFiringWebDriver(driver);
+                eventFiringWebDriver.executeScript("scroll(0,4000)",country);
+                robot.keyPress(KeyEvent.VK_DOWN);
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='commonFilterListCountries']/div/a")));
+                //wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[2]/div[1]/div[3]/div/div/div/a")));
+                robot.keyPress(KeyEvent.VK_DOWN);
                 action.build().perform();
                 a_collection.get(0).click();
+                TimeUnit.SECONDS.sleep(2);
                 counter++;
                 break;
             }if (counter == 1) {
@@ -269,17 +326,37 @@ public class BNIConnect {
         }
     }
 
-    public void selectRegion(String region) throws InterruptedException {
+
+
+
+
+
+
+
+    public void selectRegion(String region) throws InterruptedException, AWTException {
         int counter = 0;
         Actions action = new Actions(driver);
+        regionListBox.sendKeys("");
+        TimeUnit.SECONDS.sleep(2);
         regionListBox.click();
         TimeUnit.SECONDS.sleep(2);
         for (WebElement divElement : regionSelect) {
             List<WebElement> a_collection = divElement.findElements(By.tagName("span"));
             String regionName = a_collection.get(0).getText();
+        //   searchRegionTextbox.sendKeys(region);
             if (region.equals(regionName)){
+
+                Robot robot = new Robot();  // Robot class throws AWT Exception
+                Thread.sleep(2000); // Thread.sleep throws InterruptedException
+                robot.keyPress(KeyEvent.VK_DOWN);  // press arrow down key of keyboard to navigate
+                robot.mouseWheel(300);
+
+                EventFiringWebDriver eventFiringWebDriver = new EventFiringWebDriver(driver);
+                eventFiringWebDriver.executeScript("scroll(0,400)",region);
+                searchRegionTextbox.sendKeys(region);
+                regionListBox.sendKeys(Keys.ARROW_DOWN);
                 action.moveToElement(a_collection.get(0));
-                action.build().perform();
+                TimeUnit.SECONDS.sleep(8);
                 a_collection.get(0).click();
                 counter++;
                 break;
@@ -289,6 +366,15 @@ public class BNIConnect {
         }
     }
 
+    public void clickUnverifiedEmailTextBox()
+    {
+        unverifiedEmailDateTextBox.click();
+    }
+
+    public void clickUnverifiedEmailReportGoButton()
+    {
+        unverifiedEmailGoButton.click();
+    }
     public void selectChapter(String chapter) throws InterruptedException {
         int counter = 0;
         Actions action = new Actions(driver);
@@ -299,6 +385,8 @@ public class BNIConnect {
             String chapterName = a_collection.get(0).getText();
             if (chapter.equals(chapterName)){
                 action.moveToElement(a_collection.get(0));
+                EventFiringWebDriver eventFiringWebDriver = new EventFiringWebDriver(driver);
+                eventFiringWebDriver.executeScript("scroll(0,400)",chapter);
                 action.build().perform();
                 a_collection.get(0).click();
                 counter++;
@@ -324,7 +412,7 @@ public class BNIConnect {
                         td_collection.get(0).click();
                         break;
                     case 2:
-                        TimeUnit.SECONDS.sleep(3);
+                        TimeUnit.SECONDS.sleep(8);
                         action.moveToElement(td_collection.get(0));
                         action.build().perform();
                         TimeUnit.SECONDS.sleep(3);
@@ -340,7 +428,7 @@ public class BNIConnect {
                         }
                         break;
                     case 3:
-                        TimeUnit.SECONDS.sleep(3);
+                        TimeUnit.SECONDS.sleep(8);
                         action.moveToElement(td_collection.get(0));
                         action.build().perform();
                         TimeUnit.SECONDS.sleep(3);
@@ -367,7 +455,7 @@ public class BNIConnect {
     }
 
     public void selectItemFromSubListMenu(String item) throws Exception {
-        TimeUnit.SECONDS.sleep(2);
+        TimeUnit.SECONDS.sleep(8);
         for (WebElement trElement : subListMenu) {
             List<WebElement> td_collection = trElement.findElements(By.tagName("tbody"));
             String menuItem = td_collection.get(0).findElement(By.tagName("tr")).getText();
@@ -405,6 +493,10 @@ public class BNIConnect {
         }
     }
 
+    public void closeDialogBox()
+    {
+        closeDialogBox.click();
+    }
     public void selectItemFromLeftSideMenu(String item) throws Exception {
         TimeUnit.SECONDS.sleep(2);
         for (WebElement trElement : leftSideMenu) {
@@ -484,7 +576,7 @@ public class BNIConnect {
             assertEquals("Branding text is not correct for CC type.", "Copyright 2018 CorporateConnections™. All Rights Reserved.", splitFooter[0]);
         }else{
 
-            assertEquals("Branding text is not correct for BNI type.", "Copyright 2019 BNI. All Rights Reserved.", splitFooter[0]);
+            assertEquals("Branding text is not correct for BNI type.", "Copyright 2018 BNI. All Rights Reserved.", splitFooter[0]);
         }
     }
 
@@ -559,4 +651,6 @@ public class BNIConnect {
             }
         }
     }
+
+
 }
