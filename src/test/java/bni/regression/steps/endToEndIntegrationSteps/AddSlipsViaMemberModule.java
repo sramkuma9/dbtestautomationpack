@@ -83,7 +83,7 @@ public class AddSlipsViaMemberModule {
             String language[] = readWritePropertyFile.loadAndReadPropertyFile("language", "properties/config.properties").split(",");
             int colNumber = Integer.parseInt(language[1]);
             readWriteExcel.setExcelFile("src/test/resources/inputFiles/translation.xlsx");
-           String transMenu = readWriteExcel.getCellData("translation", colNumber, 27);
+           String transMenu = readWriteExcel.getCellData("translation", colNumber, 26);
             //Test2
            //  String transMenu = readWriteExcel.getCellData("translation", colNumber, 8);
             bniConnect.selectItemFromSubListMenu(transMenu);
@@ -113,6 +113,8 @@ public class AddSlipsViaMemberModule {
             TimeUnit.SECONDS.sleep(1);
             enterOneToOnes.selectDateFromDatePicker(day);
             TimeUnit.SECONDS.sleep(1);
+            captureScreenShot = new CaptureScreenShot(driver);
+            captureScreenShot.takeSnapShot(driver, "One-to-one Slips");
             enterOneToOnes.clickSaveButton();
             TimeUnit.SECONDS.sleep(20);
             //metWith

@@ -8,6 +8,8 @@ import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.List;
+
 public class SubmitReferralSlips {
     public static WebDriver driver;
     public WebDriverWait wait;
@@ -41,6 +43,9 @@ public class SubmitReferralSlips {
     @FindBy(css="#to")
     WebElement toMemberName;
 
+    @FindBy(css="#to")
+   WebElement toMemberNameList;
+
 
 
     public SubmitReferralSlips(WebDriver driver) {
@@ -68,11 +73,13 @@ public class SubmitReferralSlips {
        referralStatus.click();
     }
 
-    public String selectToMember(String memberName)
+    public void selectToMember(String memberName)
     {
-        Select memberNameSelect = new Select(toMemberName);
+
+
+        Select memberNameSelect = new Select(toMemberNameList);
         memberNameSelect.selectByVisibleText(memberName);
-        return memberName;
+
     }
     public void enterAddress(String address)
     {

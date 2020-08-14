@@ -44,9 +44,10 @@ WebElement businessTypeOptionBox;
         thankyouToSelect.selectByVisibleText(thankYouTo);
     }
 
-    public void enterReferralAmount(String referralAmount)
+    public Integer enterReferralAmount(String referralAmount)
     {
         referralAmountTextBox.sendKeys(referralAmount);
+        return Integer.valueOf(referralAmount);
     }
 
     public void selectBusinessType(String businessType)

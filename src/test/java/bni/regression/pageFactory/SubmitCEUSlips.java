@@ -13,7 +13,7 @@ public class SubmitCEUSlips {
         public static WebDriver driver;
         public WebDriverWait wait;
 
-        @FindBy(css="#editform > h1:nth-child(7) > strong")
+        @FindBy(css="#header > div > p > strong")
         WebElement memberName;
 
        // @FindBy(css="#ceuTable > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(3) >#numberAttended_1.smallField")
@@ -23,7 +23,7 @@ public class SubmitCEUSlips {
         @FindBy(css = "#ceuTable >  tbody > tr > td > input#numberAttended_2.smallField")
         WebElement podcastQty;
 
-        @FindBy(css = "body > div.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-draggable > div.ui-dialog-buttonpane.ui-widget-content.ui-helper-clearfix > button:nth-child(2)")
+        @FindBy(css = "body > div.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-draggable > div.ui-dialog-buttonpane.ui-widget-content.ui-helper-clearfix > button:nth-child(1)")
         WebElement submitButton;
 
         @FindBy(css="#ceuTable >  tbody > tr > td > input#numberAttended_3.smallField")
@@ -41,7 +41,7 @@ public class SubmitCEUSlips {
         @FindBy(css="#ceuTable >  tbody > tr > td > input#numberAttended_7.smallField")
         WebElement bookQty;
 
-        @FindBy(css="#ceuTable tfoot > tr > th.totalValue > span")
+        @FindBy(css="#ceuTable > tfoot > tr > th.totalValue > span")  //*[@id="ceuTable"]/tfoot/tr/th[3]/span
         WebElement total;
 
         @FindBy(css="#slipHeader")
@@ -56,6 +56,7 @@ public class SubmitCEUSlips {
         }
 
         public void enterBNICDQty(String CDQty) {
+            BNICDQTY.clear();
            BNICDQTY.sendKeys(CDQty);
         }
 
@@ -95,17 +96,21 @@ public class SubmitCEUSlips {
 
         public Integer getTotalCount() {
             String totalCount =total.getText();
-            System.out.println("Total count is" +totalCount);
-            return Integer.valueOf(totalCount);
+            System.out.println("total" +totalCount);
+            String[] totalCountArray = totalCount.split(" ");
+            System.out.println("Total count is" +totalCountArray);
+            return Integer.valueOf(totalCountArray[0]);
 
         }
 
         public String getMemberName()
         {
-            String memName =memberName.getText();
-            String[] memNameSplit = memName.split(" ");
-            System.out.println("member name is" +memName);
-            return  memName;
+           // String memName = "SeleniumBni18";
+           String memName =memberName.getText();
+            System.out.println("member name is " +memName);
+           // String hours = memName.substring(11, 14);
+            String hours = memName.substring(3, 6);
+           return  memName;
 
         }
          public void clickHeader()
