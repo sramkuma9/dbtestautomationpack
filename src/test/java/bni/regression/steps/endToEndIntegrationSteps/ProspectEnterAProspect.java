@@ -77,11 +77,13 @@ public class ProspectEnterAProspect {
             driver = launchBrowser.getDriver();
             bniConnect = new BNIConnect(driver);
             captureScreenShot = new CaptureScreenShot(driver);
-            bniConnect.navigateMenu("Operations,Region");
+            bniConnect.navigateMenu("OPERATIONS,Region");
             TimeUnit.SECONDS.sleep(3);
             selectCountryRegionChapter.selectCountryRegChap(splitCredentials[2].trim(), splitCredentials[3].trim(), splitCredentials[4].trim());
             TimeUnit.SECONDS.sleep(3);
             bniConnect = new BNIConnect(driver);
+            TimeUnit.SECONDS.sleep(3);
+            bniConnect.navigateMenu("OPERATIONS,Region");
             TimeUnit.SECONDS.sleep(3);
             String language[] = readWritePropertyFile.loadAndReadPropertyFile("language", "properties/config.properties").split(",");
             int colNumber = Integer.parseInt(language[1]);
