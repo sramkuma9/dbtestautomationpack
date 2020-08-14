@@ -32,16 +32,12 @@ public class RenewalApplication {
     @FindBy(xpath = "//*[@id='member-header']/div/span")
     WebElement textToGet;
 
- //@FindBy(xpath="/html/body/div[1]/div/main/div[1]/div[2]/div[3]/div[2]/div/div/button/span")
 
-    //@FindBy(xpath="//*[@id='usage-navigation-next']/div/div[1]/button")
-   // @FindBy(css="#usage-navigation-next > div > div > button > span")
-            //*[@id="usage-navigation-next"]/div/div[1]/button/span
-//@FindBy(xpath="//*[@id='usage-navigation-next']/div/div[1]/button/i")
   @FindBy(css="#usage-navigation-next > div > div.sc-kvZOFW.jTJgNu > button > span")
-
-
     WebElement appFormNextButton;
+
+  @FindBy(css="#usage-navigation-next > div > button > span")
+  WebElement applicationFormNext;
 
     @FindBy(xpath="/html/body/div[1]/div/main/div[1]/div[2]/div[3]/div[2]/div/div[1]/button")
     WebElement nextButtonSLPersoInfo;
@@ -53,6 +49,11 @@ public class RenewalApplication {
     WebElement taxForMemFeeApplicationWidget;
 
 
+    @FindBy(xpath ="//*[@id='form-builder-tab-content']/div[2]/div/main/div/div/div/div/form/div/div/div[1]/div/div/div/div[2]/div/div[2]/div/table/tbody/tr[2]/td[2]")
+    WebElement lateFeeFromApplicationWidget;
+
+    @FindBy(xpath="//*[@id='form-builder-tab-content']/div[2]/div/main/div/div/div/div/form/div/div/div[1]/div/div/div/div[2]/div/div[2]/div/table/tbody/tr[2]/td[3]")
+    WebElement lateFeeTaxFromApplicationWidget;
 
     @FindBy(css="#header-menu > div:nth-child(1) > button:nth-child(1) > span")
     WebElement copyFormLink;
@@ -83,7 +84,7 @@ public class RenewalApplication {
     @FindBy(xpath="/html/body/div[1]/div/main/div[1]/div[2]/div[2]/div/div[2]/div/div/div/div[2]/div[1]/div/div/div[2]/div/main/div/div/div/div/form/div/div/div[3]/div/div/div/div[2]/div/div/input")
     WebElement payerNameTextBox;
 
-    @FindBy(css=".sc-jbKcbu > > div:nth-child(1) > button")
+   @FindBy(css=".sc-jbKcbu > > div:nth-child(1) > button")
     WebElement reviewButton;
 
     @FindBy(xpath="/html/body/div[1]/div/main/div[1]/div[2]/div[3]/div[2]/div/div/div/button/span")
@@ -333,6 +334,10 @@ public class RenewalApplication {
     @FindBy(xpath="//*[@id='member-header']/div/span")
     WebElement headerText;
 
+
+
+
+
     public RenewalApplication(WebDriver driver) {
         RenewalApplication.driver = driver;
         AjaxElementLocatorFactory factory = new AjaxElementLocatorFactory(driver, 100);
@@ -397,10 +402,23 @@ public class RenewalApplication {
     public String getMemFeeTaxFromApplication()
     {
         String memFeeTax = taxForMemFeeApplicationWidget.getText();
-        System.out.println("Membership Fee from Application widget for renewal is" +memFeeTax);
+        System.out.println("Membership Fee Tax from Application widget for renewal is" +memFeeTax);
         return memFeeTax;
     }
 
+    public String getLateFeeFromApplication()
+    {
+        String memLateFee = lateFeeFromApplicationWidget.getText();
+        System.out.println("Member Late Fee  from Application widget for renewal is" +memLateFee);
+        return memLateFee;
+    }
+
+    public String getLateFeeTaxFromApplication()
+    {
+        String memLateFeeTax = lateFeeTaxFromApplicationWidget.getText();
+        System.out.println("Member Late Fee  Tax from Application widget for renewal is" +memLateFeeTax);
+        return memLateFeeTax;
+    }
 
     public void selectPaymentOption2(String paymentMethod) throws Exception
     {
@@ -545,9 +563,13 @@ public void getText()
     public void clickApplicationFormNextButton()
     {
 
-      String hText = driver.getTitle();
-       System.out.println("header text is" +hText);
         appFormNextButton.click();
+
+    }
+    public void clickApplicationFormButton()
+    {
+
+        applicationFormNext.click();
 
     }
 
