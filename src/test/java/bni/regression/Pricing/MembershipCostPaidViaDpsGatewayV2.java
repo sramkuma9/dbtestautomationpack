@@ -218,7 +218,9 @@ public class MembershipCostPaidViaDpsGatewayV2{
             String invoiceAmountSqlQuery = " select invoice_reference, total_amount  from bni.invoice where to_person_name = '"+name+"'  and id_membership_application is null;" ;
             String[][] invoiceAmountFromDB1 =dbConnect.queryAndRetrieveRecords(invoiceAmountSqlQuery);
             String invoiceAmountFromDB= invoiceAmountFromDB1[0][0];
-            System.out.println("Invoice amount from DB is "+invoiceAmountFromDB);
+            String invoiceAmountFromDB2 =invoiceAmountFromDB1[0][1];
+            System.out.println("Invoice Reference number from DB is " + invoiceAmountFromDB);
+            System.out.println("Invoice Amount from DB is " + invoiceAmountFromDB2);
             reconcileApplications = new ReconcileApplications(driver);
             TimeUnit.SECONDS.sleep(2);
             reconcileApplications.enterSearchText((data.get("firstName")),data.get("lastName"));

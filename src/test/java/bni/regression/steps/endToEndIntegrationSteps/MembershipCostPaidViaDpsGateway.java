@@ -100,8 +100,10 @@ public class MembershipCostPaidViaDpsGateway {
             HashMap<String , String> memOption = new HashMap<String , String>();
             memOption.put("12 Month", "5");
             memOption.put("24 Month","6");
-            memOption.put("12 Month BNI#", "2");
-            memOption.put("24 Month BNI#","3");
+            memOption.put("12 Months", "5");
+            memOption.put("24 Months","6");
+            memOption.put("12 Month BNI#", "5");
+            memOption.put("24 Month BNI#","6");
             memOption.put("12 Month S", "5");
             memOption.put("24 Month S","6");
             String templateType = data.get("templateType");
@@ -110,84 +112,66 @@ public class MembershipCostPaidViaDpsGateway {
             tempType.put("Individual Type", "2");
             tempType.put("Chapter Status Type", "3");
             tempType.put("Individual and Chapter Status Type", "4");
-
-            String taxFlagForMemFee ="  select taxable_flag from pricing.scheme s1 join " +
-                    " pricing.org s2 on s2.id = s1.id_org where s2.name in ('" + country + "', '" + region + "', '" + chapter + "')" +
-                    "     and id_template ='"+tempType.get(templateType)+"' " +
-                    "     and id_sku ='" + memOption.get(memTerm) + "'  order by s2.org_type desc limit 1;";
-            TimeUnit.SECONDS.sleep(5);
-            String[][] taxFlagResultForMemFee = dbConnect.queryAndRetrieveRecords(taxFlagForMemFee);
-            String FlagTaxForMemFee = taxFlagResultForMemFee[0][0];
-            System.out.println("Taxable flag for Membership fee from sql query is" +FlagTaxForMemFee);
+            String individualOption = data.get("option");
+            String chapterOption = data.get("option2");
 
 
 
+            String taxFlag_query = "select s2.id,s2.name,s1.taxable_flag " +
+                    "from pricing.scheme s1 " +
+                    "JOIN pricing.org s2 ON s1.id_org = s2.id " +
+                    "where curdate() between s1.effective_from and IFNULL(s1.effective_to,curdate()) " +
+                    "and s1.id_sku = '"+memOption.get(memTerm)+"' " +
+                    "and s2.name in ('" + country + "', '" + region + "', '" + chapter + "')" +
+                    "order by s2.org_type desc limit 1;";
 
-            String taxPercentage = "select b1.percent from bni.tax_code_sub_elements b1 " +
-                    " join  bni.org_tax_code b2 on b2.inbound_id_tax_code = b1.id_tax_code " +
-                    " join bni.Org b3 on b3.id_org_tax_code = b2.id_org_tax_code where b3.org_name ='" + country + "' and b1.percent_effective_to is null;  ";
-            TimeUnit.SECONDS.sleep(5);
-
-//            String[][] taxCalculatedPercent = dbConnect.queryAndRetrieveRecords(taxPercentage);
-//            String taxPercent = taxCalculatedPercent[0][0];
-            String[][] taxCalculatedPercent = dbConnect.queryAndRetrieveRecords(taxPercentage);
-            String taxPercent1 = taxCalculatedPercent[0][0];
-            System.out.println("Tax percentage from SQL query is " + taxPercent1);
-
-            if (FlagTaxForMemFee.equals("N"))
-            {
-                taxPercent1="null";
-            }
+            String[][] taxFlag_result = dbConnect.queryAndRetrieveRecords(taxFlag_query);
 
 
+            String qval_taxflag_orgid = taxFlag_result[0][0];
+            String qval_taxflag_orgname = taxFlag_result[0][1];
+            String qval_taxable_flag = taxFlag_result[0][2];
+            System.out.println("Taxable Flag from DB is " +qval_taxable_flag);
 
+            String taxPercentage_query = "select b1.id_org,b1.org_name,b3.percent,CASE WHEN '"+qval_taxable_flag+"'='N' THEN 0 ELSE b3.percent END cal_tax_per from bni.Org b1 " +
+                    "JOIN bni.org_tax_code b2 ON b1.id_org_tax_code = b2.id_org_tax_code " +
+                    "JOIN bni.tax_code_sub_elements b3 ON b2.inbound_id_tax_code = b3.id_tax_code " +
+                    "where b1.org_name in ('" + region + "') and b1.id_org_type= '3' and b3.percent_effective_to is null;  ";
 
-//            String membershipFeeFromSqlQuery =   "select value, , (Round(s1.value *'" + taxPercent1 + "' )/ 100) from pricing.scheme_line  s1 " +
-//                    " join pricing.scheme s2 on s2.id =s1.id_scheme "+
-//                    " join pricing.sku s3 on s3.id =s2.id_sku " +
-//                    " join pricing.org s4 on s4.id =s2.id_org and  s2.id_sku='"+memOption.get(memTerm)+"'  and  s4.name='"+country+"'; ";
+            String[][] taxPercentage_result = dbConnect.queryAndRetrieveRecords(taxPercentage_query);
 
+            String qval_tax_orgid = taxPercentage_result[0][0];
+            String qval_tax_orgname = taxPercentage_result[0][1];
+            String qval_tax_percent = taxPercentage_result[0][2];
+            String qval_tax_cal_percent =taxPercentage_result [0][3];
+            System.out.println(" Percentage of Tax is" +qval_tax_percent);
+            System.out.println("Tax calculated percent" +qval_tax_cal_percent);
 
-            String membershipFeeFromSqlQuery =   " select s1.value , (Round(s1.value *'" + taxPercent1 + "' )/ 100) from pricing.scheme_line s1 " +
-                    " join pricing.scheme s2 on s2.id = s1.id_scheme " +
-                    " join pricing.org s3 on s3.id =s2.id_org " +
-                    " join    pricing.variable_option s5   where id_template='"+tempType.get(templateType)+"' " +
-                    " and id_sku ='" + memOption.get(memTerm) + "' and  s3.name in ('" + country + "', '" + region + "', '" + chapter + "')"+
-                    " and  effective_to is null  order by s3.org_type desc limit 1 ;";
+            String taxCalculation_query = "select s2.id,s2.name,ifnull(s5.option,'DEFAULT') variable_option,s3.value,(Round(s3.value*("+qval_tax_cal_percent+"))/100) cal_tax_value " +
+                    "from pricing.scheme s1 " +
+                    "JOIN pricing.org s2 ON s1.id_org = s2.id " +
+                    "JOIN pricing.scheme_line s3 ON s1.id = s3.id_scheme " +
+                    "LEFT JOIN pricing.scheme_line_option s4 ON s3.id = s4.id_scheme_line " +
+                    "LEFT JOIN pricing.variable_option s5 ON s4.id_variable_option = s5.id " +
+                    "where curdate() between s1.effective_from and IFNULL(s1.effective_to,curdate()) " +
+                    "and s1.id_sku = '"+memOption.get(memTerm)+"' " +
+                    //   "and s2.id="+qval_taxflag_orgid+" " +
+                    "and s2.name in ('" + country + "', '" + region + "', '" + chapter + "')" +
+                    "and ifnull(s5.option,'DEFAULT') in ('"+individualOption+"','"+chapterOption+"') " +
+                    "order by s2.org_type desc limit 1;";
 
-            String[][] actualMembershipFeeFromDB1 =dbConnect.queryAndRetrieveRecords(membershipFeeFromSqlQuery);
-            String actualMembershipFeeFromDB= actualMembershipFeeFromDB1[0][0];
-            System.out.println("Actual Membership Fee from DB is "+actualMembershipFeeFromDB);
+            String[][] taxCalculation_result = dbConnect.queryAndRetrieveRecords(taxCalculation_query);
 
+            String qval_var_option = taxCalculation_result[0][2];
+            String qval_var_option_fee_value = taxCalculation_result[0][3];
+            String qval_var_option_cal_tax_value = taxCalculation_result[0][4];
+            System.out.println("Membership fee from DB   is " +qval_var_option_fee_value);
+            System.out.println("Tax for Membership fee from DB   is " +qval_var_option_cal_tax_value);
 
-
-
-
-
-
-
-
-
-
-
-
-
-//
-//            String membershipFeeFromSqlQuery =   "select value from pricing.scheme_line  s1 " +
-//                    " join pricing.scheme s2 on s2.id =s1.id_scheme "+
-//                    " join pricing.sku s3 on s3.id =s2.id_sku " +
-//                    " join pricing.org s4 on s4.id =s2.id_org and  s2.id_sku='"+memOption.get(memTerm)+"'  and  s4.name='"+country+"'; "  ;
-//
-//            System.out.println("Sql query is" +membershipFeeFromSqlQuery);
-//
-//            String[][] actualMembershipFeeFromDB1 =dbConnect.queryAndRetrieveRecords(membershipFeeFromSqlQuery);
-//            String actualMembershipFeeFromDB= actualMembershipFeeFromDB1[0][0];
-//
-//            System.out.println("Actual Membership Fee from DB is "+actualMembershipFeeFromDB);
-//
-//
-// */
-
+            memberRenewalApplicationTest2.getMembershipFee();
+            TimeUnit.SECONDS.sleep(1);
+            memberRenewalApplicationTest2.getTaxForMembershipTerm();
+            TimeUnit.SECONDS.sleep(1);
             memberRenewalApplicationTest2.clickNetworkingOrgCheckBox();
             System.out.println("Networking checked");
             memberRenewalApplicationTest2.clickInvitePeopleCheckBox();
