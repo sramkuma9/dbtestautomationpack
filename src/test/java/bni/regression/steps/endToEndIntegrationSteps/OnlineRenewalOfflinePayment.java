@@ -1,9 +1,6 @@
 package bni.regression.steps.endToEndIntegrationSteps;
 
-import bni.regression.libraries.common.CaptureScreenShot;
-import bni.regression.libraries.common.LaunchBrowser;
-import bni.regression.libraries.common.ReadWriteExcel;
-import bni.regression.libraries.common.ReadWritePropertyFile;
+import bni.regression.libraries.common.*;
 import bni.regression.libraries.common.email.GmailClient;
 import bni.regression.libraries.db.DbConnect;
 import bni.regression.libraries.ui.Login;
@@ -22,10 +19,8 @@ import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class OnlineRenewalOfflinePayment {
@@ -70,10 +65,10 @@ public class OnlineRenewalOfflinePayment {
     @When("I login BNI app with Member login details and accept TOS, check latest TOS version is displayed,then click Renew Now button in the home page and enter the below details click Proceed to payment button. Enter card details and Proceed to payment")
     public void step_2(DataTable onlineRenewal) throws Exception {
         Integer i = 2;
+        Integer j = 1;
         for (Map<String, String> data : onlineRenewal.asMaps(String.class, String.class)) {
-            String[] splitCredentials = loginSubList.get(i - 2).toString().replace("[", "").replace("]", "").split(",");
-
-            driver = launchBrowser.getDriver();
+       String[] splitCredentials = loginSubList.get(i - 2).toString().replace("[", "").replace("]", "").split(",");
+          driver = launchBrowser.getDriver();
             launchBrowser.invokeBrowser();
             TimeUnit.SECONDS.sleep(2);
             login.loginToBni(data.get("userName"), data.get("password"));
@@ -82,68 +77,73 @@ public class OnlineRenewalOfflinePayment {
             bniConnect = new BNIConnect(driver);
             TimeUnit.SECONDS.sleep(12);
             String country = data.get("country");
-            System.out.println("Country is" + country);
             String region = data.get("region");
-            System.out.println("Region is" + region);
-            String chapter = data.get("chapter");
+            String firstName = data.get("firstName");
+            String lastName = data.get("lastName");
             bniConnect.clickRenewNowLink();
             TimeUnit.SECONDS.sleep(5);
-//            bniConnect.closeDialogBox();
-            TimeUnit.SECONDS.sleep(2);
-
             memberRenewalApplicationTest2 = new MemberRenewalApplicationTest2(driver);
             memberRenewalApplicationTest2.clickMembershipPeriodCheckBox(data.get("membershipPeriod"));
             TimeUnit.SECONDS.sleep(2);
-            System.out.println("Membership checked");
+            String renewalDateQueryBefore = "select CONVERT(renewal_due_date, char) from bni.membership b1 join " +
+                    " bni.user b2 on b1.id_membership = b2.id_membership where first_name='" + firstName + "' and  last_name ='" + lastName + "' ; ";
+            String[][] renewalDateStatusResultBefore = dbConnect.queryAndRetrieveRecords(renewalDateQueryBefore);
+            String renewalDateBefore = renewalDateStatusResultBefore[0][0];
+            System.out.println("Renewal Date is " + renewalDateBefore);
+            String[] date1 = renewalDateBefore.split(" ");
+            String exactRenewalDateBefore = date1[0];
+            System.out.println("date for renewal is " + exactRenewalDateBefore);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date currentdate = new Date();
+            System.out.println("Query Date : " + formatter.format(formatter.parse(exactRenewalDateBefore)));
+            System.out.println("Current Date : " + formatter.format(currentdate));
+            System.out.println(formatter.parse(exactRenewalDateBefore).before(currentdate));
+            if (formatter.parse(exactRenewalDateBefore).before(currentdate)) {
+                String expectedMembershipFeeFromUI = memberRenewalApplicationTest2.getMembershipFeeIfMemIsLate();
+                String expectedTaxForMembershipTermFromUI = memberRenewalApplicationTest2.getTaxForMembershipFeeIfMemIsLate();
+                String actualLateFeeFromUI = memberRenewalApplicationTest2.getMembershipLateFee();
+                String actualTaxForLateFeeFromUI = memberRenewalApplicationTest2.getTaxForLateFee();
+                readWriteExcel.setExcelFile("src/test/resources/executionReports/PricingResults/NMA.xlsx");
+                boolean setMemPercentTax = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "OnlineRenewal", 2, i - j, expectedTaxForMembershipTermFromUI);
+                boolean setMemPercentUITax = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "OnlineRenewal", 3, i - j, expectedTaxForMembershipTermFromUI);
+                boolean setMemFeeFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "OnlineRenewal", 4, i - j, expectedMembershipFeeFromUI);
+                boolean setMemFeeUIFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "OnlineRenewal", 5, i - j, expectedMembershipFeeFromUI);
+                boolean setLatePercentDBTax = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "OnlineRenewal", 7, i - j, actualTaxForLateFeeFromUI);
+                boolean setLatePercentUITax = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "OnlineRenewal", 8, i - j, actualTaxForLateFeeFromUI);
+                boolean setLateFeeDBFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "OnlineRenewal", 9, i - j, actualLateFeeFromUI);
+                boolean setLateFeeUIFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "OnlineRenewal", 10, i - j, actualLateFeeFromUI);
 
-            memberRenewalApplicationTest2.getMembershipFee();
-            TimeUnit.SECONDS.sleep(2);
-            String memTerm = data.get("membershipPeriod");
-            HashMap<String , String> memOption = new HashMap<String , String>();
-            memOption.put("12 Month", "5");
-            memOption.put("24 Month","6");
-            memOption.put("12 Month BNI#", "2");
-            memOption.put("24 Month BNI#","3");
-//            List<String> option=new ArrayList<>();
-//            option.add("MEMBER");
-//            option.add("ALUMNI");
-//            option.add("VISITOR");
-//            List<String> option2=new ArrayList<>();
-//            option2.add("ACTIVE");
-//            option2.add("COREGROUP");
-//            option2.add("SUSPENDED");
+            } else {
 
-            String membershipFeeFromSqlQuery =   "select value from pricing.scheme_line  s1 " +
-                    " join pricing.scheme s2 on s2.id =s1.id_scheme "+
-                    " join pricing.sku s3 on s3.id =s2.id_sku " +
-                    " join pricing.org s4 on s4.id =s2.id_org and  s2.id_sku='"+memOption.get(memTerm)+"'  and  s4.name='"+country+"'; "  ;
+                String memTerm = data.get("membershipPeriod");
+                String expectedMembershipFeeFromUI = memberRenewalApplicationTest2.getMembershipFee();
+                TimeUnit.SECONDS.sleep(2);
+                String expectedTaxForMembershipTermFromUI = memberRenewalApplicationTest2.getTaxForMembershipTerm();
+                TimeUnit.SECONDS.sleep(2);
+                readWriteExcel.setExcelFile("src/test/resources/executionReports/PricingResults/NMA.xlsx");
+                boolean setMemOptionFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "OnlineRenewal", 0, i, memTerm);
+                boolean setMemPercentTax = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "OnlineRenewal", 2, i - j, expectedTaxForMembershipTermFromUI);
+                boolean setMemPercentUITax = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "OnlineRenewal", 3, i - j, expectedTaxForMembershipTermFromUI);
+                boolean setMemFeeFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "OnlineRenewal", 4, i - j, expectedMembershipFeeFromUI);
+                boolean setMemFeeUIFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "OnlineRenewal", 5, i - j, expectedMembershipFeeFromUI);
 
+            }
 
-
-            String[][] actualMembershipFeeFromDB1 =dbConnect.queryAndRetrieveRecords(membershipFeeFromSqlQuery);
-            String actualMembershipFeeFromDB= actualMembershipFeeFromDB1[0][0];
-
-            System.out.println("Actual Membership Fee from DB is "+actualMembershipFeeFromDB);
-
-
-
-
-
-
-            memberRenewalApplicationTest2.getTaxForMembershipTerm();
-            TimeUnit.SECONDS.sleep(2);
             memberRenewalApplicationTest2.clickNetworkingOrgCheckBox();
-            System.out.println("Networking checked");
             memberRenewalApplicationTest2.clickInvitePeopleCheckBox();
             memberRenewalApplicationTest2.clickReferralCheckBox();
             memberRenewalApplicationTest2.clickConvictedCheckBox();
             memberRenewalApplicationTest2.clickLeadershipPosition();
             memberRenewalApplicationTest2.clickRecommendCheckBox();
             memberRenewalApplicationTest2.clickrefferalChapterCheckBox();
+            memberRenewalApplicationTest2.clickLicenceStatus();
             TimeUnit.SECONDS.sleep(1);
-            memberRenewalApplicationTest2.enterDescribeBNI();
+           memberRenewalApplicationTest2.enterDescribeBNI();
             TimeUnit.SECONDS.sleep(1);
             memberRenewalApplicationTest2.clickTermsAndConditionsCheckBox();
+            TimeUnit.SECONDS.sleep(1);
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            js.executeScript("window.scrollBy(0, 250)", "");
             TimeUnit.SECONDS.sleep(1);
             memberRenewalApplicationTest2.enterProfession(data.get("profession"));
             TimeUnit.SECONDS.sleep(1);
@@ -151,28 +151,22 @@ public class OnlineRenewalOfflinePayment {
             TimeUnit.SECONDS.sleep(1);
             memberRenewalApplicationTest2.enterProductDescribeBNI();
             TimeUnit.SECONDS.sleep(1);
-            JavascriptExecutor js = (JavascriptExecutor) driver;
-            js.executeScript("window.scrollBy(0, 250)", "");
-            TimeUnit.SECONDS.sleep(1);
             memberRenewalApplicationTest2.clickProceedToPayment();
             TimeUnit.SECONDS.sleep(5);
-
-
-
-
             gmailClient = new GmailClient();
-            //verify Copy of Renewal Form from Gmail account
             TimeUnit.SECONDS.sleep(20);
             String visitorEmailId = data.get("emailID");
             System.out.println("EmailID" + visitorEmailId);
             String emailIdUserName = readWritePropertyFile.loadAndReadPropertyFile("emailUserName", "properties/config.properties");
             System.out.println("EmailID user name is" + emailIdUserName);
-            String[][] queryResult = dbConnect.queryAndRetrieveRecords(readWritePropertyFile.loadAndReadPropertyFile("OnlineRenewalOfflinePaymentRenewalForm", "properties/sql.properties"));
+            String renewalFormReceived = "select subject from bni_mailer.message_template b1  join " +
+                    "  bni_mailer.mail_event_template_org b2 on b1.id_message_template =b2.message_template_id_message_template " +
+                    "  join bni.org b3 on b2.id_org = b3.id_org " +
+                    " where b3.org_name in ('HQ', '"+country+"', '"+region+"') " +
+                    "  and b2.mail_event_id_mail_event ='58' order by  id_org_type desc limit 1 ;";
+            String[][] queryResult = dbConnect.queryAndRetrieveRecords(renewalFormReceived);
             String subject = queryResult[0][0];
-            System.out.println("Subject retrieved from sql query is " + subject);   //   String emailSubject = "Copy of Renewal Form";
             gmailClient.checkEmail(emailIdUserName, subject, visitorEmailId, "", 1);
-
-
             memberRenewalApplicationPaymentProcessing = new MemberRenewalApplicationPaymentProcessing(driver);
             TimeUnit.SECONDS.sleep(1);
             memberRenewalApplicationPaymentProcessing.getMembershipTermFee();
@@ -184,22 +178,29 @@ public class OnlineRenewalOfflinePayment {
             TimeUnit.SECONDS.sleep(1);
             memberRenewalApplicationPaymentProcessing.clickSubmitButton();
             TimeUnit.SECONDS.sleep(3);
-//            Alert alert = driver.switchTo().alert();
-//             alert.accept();
+            Alert alert = driver.switchTo().alert();
+            alert.accept();
             memberRenewalApplicationPaymentProcessing.clickOkButton();
             TimeUnit.SECONDS.sleep(8);
             signOut.signOutBni();
-            gmailClient = new GmailClient();
-            //verify Renewal Approved - Member from Gmail account
-            TimeUnit.SECONDS.sleep(20);
-            String[][] queryResult2 = dbConnect.queryAndRetrieveRecords(readWritePropertyFile.loadAndReadPropertyFile("OnlineRenewalOfflinePaymentRenewalApproved", "properties/sql.properties"));
-            String subject2 = queryResult2[0][0];
-            System.out.println("Subject retrieved from sql query is " + subject2);   //   String emailSubject = "Renewal Approved - Member";
-            gmailClient.checkEmail(emailIdUserName, subject, visitorEmailId, "", 1);
 
 
+//            String visitorEmailId = data.get("emailID");
+//            String emailIdUserName = readWritePropertyFile.loadAndReadPropertyFile("emailUserName", "properties/config.properties");
+//            String lastName = data.get("lastName");
+//            String firstName = data.get("firstName");
+//            gmailClient = new GmailClient();
+            TimeUnit.SECONDS.sleep(10);
+            String renewalPreApprovedReceived = "select subject from bni_mailer.message_template b1  join " +
+                    "  bni_mailer.mail_event_template_org b2 on b1.id_message_template =b2.message_template_id_message_template " +
+                    "  join bni.org b3 on b2.id_org = b3.id_org " +
+                    " where b3.org_name in ('HQ', '"+country+"', '"+region+"') " +
+                    "  and b2.mail_event_id_mail_event ='64' order by  id_org_type desc limit 1 ;";
+            String[][] queryResult21 = dbConnect.queryAndRetrieveRecords(renewalPreApprovedReceived);
+            String subject21 = queryResult21[0][0];
+            TimeUnit.SECONDS.sleep(3);
 
-
+            gmailClient.checkEmail(emailIdUserName, subject21, visitorEmailId, "", 1);
             driver = launchBrowser.getDriver();
             launchBrowser.invokeBrowser();
             TimeUnit.SECONDS.sleep(2);
@@ -234,7 +235,6 @@ public class OnlineRenewalOfflinePayment {
             TimeUnit.SECONDS.sleep(1);
             reconcileApplications.clickSuspendedChaptersCheckBox();
             TimeUnit.SECONDS.sleep(1);
-
             reconcileApplications.clickAppStatusLink();
             renewalApproval = new RenewalApproval(driver);
             renewalApproval.clickAgreeCheckBox();
@@ -257,28 +257,45 @@ public class OnlineRenewalOfflinePayment {
             Alert alert7 = driver.switchTo().alert();
             alert7.accept();
             TimeUnit.SECONDS.sleep(10);
-           /*
-            String name = data.get("firstName")+data.get("lastName");
-            String invoiceAmountSqlQuery = " select invoice_reference, total_amount  from bni.invoice where to_person_name = '"+name+"'  and id_membership_application is null;" ;
-            String[][] invoiceAmountFromDB1 =dbConnect.queryAndRetrieveRecords(invoiceAmountSqlQuery);
-            String invoiceAmountFromDB= invoiceAmountFromDB1[0][0];
-            System.out.println("Invoice amount from DB is "+invoiceAmountFromDB);
-
-            */
             captureScreenShot = new CaptureScreenShot(driver);
             captureScreenShot.takeSnapShot(driver, "OnlineRenewalOfflinePayment");
             reconcileApplications.clickRecncileButton();
             Alert alert17 = driver.switchTo().alert();
             alert17.accept();
             TimeUnit.SECONDS.sleep(5);
-
-
+            String name1 = data.get("firstName") + " " + data.get("lastName");
+            String invoiceAmountSqlQuery = " select invoice_reference, total_amount  from bni.invoice where to_person_name = '" + name1 + "' order by invoice_reference desc ;";
+            String[][] invoiceAmountFromDB1 = dbConnect.queryAndRetrieveRecords(invoiceAmountSqlQuery);
+            String invoiceReferenceNumberDB = invoiceAmountFromDB1[0][0];
+            String invoiceAmountFromDB2 = invoiceAmountFromDB1[0][1];
+            System.out.println("Invoice Reference number from DB is " + invoiceReferenceNumberDB);
+            System.out.println("Invoice Amount from DB is " + invoiceAmountFromDB2);
+            String reconcileApplicationStatus = "Pass";
+            String renewalDateQuery2 = "select CONVERT(renewal_due_date, char) from bni.membership b1 join " +
+                    " bni.user b2 on b1.id_membership = b2.id_membership where last_name ='" + lastName + "' ; ";
+            String[][] renewalDateStatusResult2 = dbConnect.queryAndRetrieveRecords(renewalDateQuery2);
+            String renewalDate2 = renewalDateStatusResult2[0][0];
+            System.out.println("Renewal Date is " + renewalDate2);
+            String[] date12 = renewalDate2.split(" ");
+            String exactRenewalDate2 = date12[0];
+            System.out.println("date for renewal is " + exactRenewalDate2);
+            SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
+            System.out.println("Query Date : " + formatter2.format(formatter2.parse(exactRenewalDate2)));
+            String idMembershipApplication = "select id_membership_application from bni.membership_application b1 join  bni.user b2 on b1.id_membership = b2.id_membership where first_name ='" + firstName + "'  and last_name ='" + lastName + "'  order by id_membership_application desc ;";
+            String[][] MembershipApplicationIDFromDB = dbConnect.queryAndRetrieveRecords(idMembershipApplication);
+            String actualMembershipApplicationIDFromDB = MembershipApplicationIDFromDB[0][0];
+            boolean setMemFeeInvoiceNumberFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "OnlineRenewal", 11, i - j, invoiceReferenceNumberDB);
+            boolean setMemFeeInvoiceFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "OnlineRenewal", 12, i - j, invoiceAmountFromDB2);
+            boolean setRenewalDateFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "OnlineRenewal", 13, i - j, exactRenewalDate2);
+            boolean setReconcileAppliFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "OnlineRenewal", 14, i - j, reconcileApplicationStatus);
+            boolean setLateMemFeeFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "OnlineRenewal", 14, i - j, reconcileApplicationStatus);
+            boolean setMembershipApplicationIDFlag = readWriteExcel.setCellData("src/test/resources/executionReports/PricingResults/NMA.xlsx", "OnlineRenewal", 15, i - j, actualMembershipApplicationIDFromDB);
             signOut.signOutBni();
             i++;
 
-
         }
     }
+
 
     @Then("A confirmation message is displayed and I sign out from BNI")
     public void A_confirmation_message_is_displayed_and_I_sign_out_from_BNI() throws Exception {

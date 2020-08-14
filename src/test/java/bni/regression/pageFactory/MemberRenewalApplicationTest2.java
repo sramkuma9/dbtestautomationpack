@@ -14,16 +14,23 @@ public class MemberRenewalApplicationTest2 {
     public WebDriverWait wait;
 
     @FindBy(xpath="//*[@id='12']/span")
+  //  @FindBy(css="#membershipPeriod > p:nth-child(3) > label:nth-child(3) > input:nth-child(1)")
     WebElement membershipPeriodCheckBox1;
 
     @FindBy(xpath="//*[@id='24']/span")
     WebElement membershipPeriodCheckBox2;
-
     @FindBy(xpath="//*[@id='membershipCosts']/tbody/tr[3]/td[2]")
+  //  @FindBy(xpath="//*[@id='membershipCosts']/tbody/tr[2]/td[2]")
     WebElement membershipFees;
 
+    @FindBy(xpath ="//*[@id='membershipCosts']/tbody/tr[6]/td[2]")
+    WebElement membershipFeeIfMemIsLate;
     @FindBy(xpath="//*[@id='membershipCosts']/tbody/tr[3]/td[3]")
+   // @FindBy(xpath="//*[@id='membershipCosts']/tbody/tr[2]/td[3]")
     WebElement membershipTaxes;
+
+    @FindBy(xpath="//*[@id='membershipCosts']/tbody/tr[6]/td[3]")
+    WebElement membershipFeeTaxIfMemIsLate;
 
     @FindBy(xpath="/html/body/div[2]/div[1]/div[4]/div[2]/form/div[1]/div[4]/ul/li[1]/div/span/label[2]/input")
      WebElement networkingOrgCheckBox;
@@ -37,7 +44,8 @@ public class MemberRenewalApplicationTest2 {
     WebElement referralCheckBox;
 
 
-    @FindBy(xpath="/html/body/div[2]/div[1]/div[4]/div[2]/form/div[1]/div[4]/ul/li[5]/div/span/label[2]/input")
+  //  @FindBy(xpath="/html/body/div[2]/div[1]/div[4]/div[2]/form/div[1]/div[4]/ul/li[5]/div/span/label[2]/input")
+   @FindBy(xpath="/html/body/div[2]/div[1]/div[4]/div[2]/form/div[1]/div[4]/ul/li[6]/div/span/label[1]/input")
      WebElement convictedCheckBox;
 
     @FindBy(css="li.cf:nth-child(7) > div:nth-child(2) > span:nth-child(1) > input")
@@ -47,28 +55,35 @@ public class MemberRenewalApplicationTest2 {
 
              WebElement licenceCheckBox;
 
-             @FindBy(css="#\\32 82 > input[type=CHECKBOX]")
+             @FindBy(css="#\\32 7 > input[type=CHECKBOX]")
              WebElement licenceStatus;
 
 
-       @FindBy(xpath="/html/body/div[2]/div[1]/div[4]/div[2]/form/div[1]/div[4]/ul/li[6]/div/span/label[4]/input")
+     //  @FindBy(xpath="/html/body/div[2]/div[1]/div[4]/div[2]/form/div[1]/div[4]/ul/li[5]/div/span/label[1]/input")
+              @FindBy(xpath="//*[@id='134']/input")
      WebElement leadershipPositionCheckBox;
 
 
-    @FindBy(xpath="/html/body/div[2]/div[1]/div[4]/div[2]/form/div[1]/div[4]/ul/li[7]/div/span/label[1]/input")
-    WebElement recommendCheckBox;
+   // @FindBy(xpath="/html/body/div[2]/div[1]/div[4]/div[2]/form/div[1]/div[4]/ul/li[7]/div/span/label[1]/input")
+
+           // @FindBy(xpath ="/html/body/div[2]/div[1]/div[4]/div[2]/form/div[1]/div[4]/ul/li[7]/div/span/label[1]/input")
+    @FindBy(xpath="//*[@id='20']/input")
+            WebElement recommendCheckBox;
 
 
-    @FindBy(xpath ="/html/body/div[2]/div[1]/div[4]/div[2]/form/div[1]/div[4]/ul/li[8]/div/span/label[1]/input")
+   // @FindBy(xpath ="/html/body/div[2]/div[1]/div[4]/div[2]/form/div[1]/div[4]/ul/li[8]/div/span/label[1]/input")
+   @FindBy(xpath="//*[@id='30']/input")
     WebElement referralChapterCheckBox;
 
     @FindBy(css = "#productservicedescription")
     WebElement describeBNITextBox;
 
-    @FindBy(css="li.cf:nth-child(9) > div:nth-child(2) > span:nth-child(1) > textarea")
+   // @FindBy(css="#li.cf:nth-child(9) > div:nth-child(2) > span:nth-child(1) > textarea")
+
+            @FindBy(css="#questions > ul > li:nth-child(10) > div > span > textarea")
     WebElement describeTextBox;
 
-    @FindBy(css = "#\\35 95 > span")
+    @FindBy(xpath = "//*[@id='27']/input")
     WebElement leadershipTeamCheckBox;
 
     @FindBy(css = "#agreeToTermsAndConditions")
@@ -79,6 +94,13 @@ public class MemberRenewalApplicationTest2 {
 
     @FindBy(css=".ui-dialog-buttonpane > button:nth-child(2)")
     WebElement clickExtraCloseButton;
+
+    @FindBy(xpath="//*[@id='membershipCosts']/tbody/tr[2]/td[2]")
+    WebElement lateFeeUI;
+
+    @FindBy(xpath="//*[@id='membershipCosts']/tbody/tr[2]/td[3]")
+    WebElement lateFeeTaxUI;
+
 
 @FindBy(css="#profession")
 WebElement professionListBox;
@@ -96,46 +118,78 @@ WebElement  specialityListBox;
 
     public void clickMembershipPeriodCheckBox(String membershipPeriod) {
 
-       if (membershipPeriod=="12 Month")
+
+       if(membershipPeriod.equals("12 Month"))
+       {
+           membershipPeriodCheckBox1.isSelected();
+           System.out.println("12 month is selected in radio button");
+       }
+       else if (membershipPeriod == "One Year Membership")
         {
             membershipPeriodCheckBox1.click();
         }
-        if (membershipPeriod=="One Year Membership ")
+       else if (membershipPeriod == "12 Months")
         {
             membershipPeriodCheckBox1.click();
         }
-        if(membershipPeriod=="Two Year Membership ") {
+      else  if(membershipPeriod == "Two Year Membership ") {
             membershipPeriodCheckBox2.click();
         }
+      else  if(membershipPeriod == "=24 Month") {
+            membershipPeriodCheckBox2.click();
+        }
+       else if(membershipPeriod == "=24 Months") {
+            membershipPeriodCheckBox2.click();
+        }
+
         else {
+            System.out.println("else part is clicked");
             membershipPeriodCheckBox2.click();
         }
     }
 
 
-    public void getMembershipFee() {
+    public String getMembershipFee() {
 
         String membershipFeeForTheGivenTerm2 = membershipFees.getText();
         System.out.println("membership term  Fee from UI is " + membershipFeeForTheGivenTerm2);
-//
-//        WebElement table =      driver.findElement(By.xpath(“#membershipCosts > tbody > tr.period> td:nth-child(2)”));
-//                List<WebElement> rowsList = table.findElements(By.tagName(“td”));
-//
-//        List<WebElement> columnsList = null;
-//
-//        for (WebElement row : rowsList) {
-//            System.out.println();
-//            columnsList = row.findElements(By.tagName(“td”));
-//
-//            for (WebElement column : columnsList) {
-//                System.out.print(column.getText() + “, “);
-//            }
+        return membershipFeeForTheGivenTerm2;
 
     }
     public String getTaxForMembershipTerm()
     {
         String taxFetchForMem = membershipTaxes.getText();
         System.out.println("Tax for the  membership term  from UI is " +taxFetchForMem);
+        return  taxFetchForMem;
+
+    }
+
+    public String getMembershipFeeIfMemIsLate() {
+
+        String membershipFeeForTheGivenTerm3 = membershipFeeIfMemIsLate.getText();
+        System.out.println("membership term  Fee from UI for Late member is " + membershipFeeForTheGivenTerm3);
+        return membershipFeeForTheGivenTerm3;
+
+    }
+    public String getTaxForMembershipFeeIfMemIsLate()
+    {
+        String taxFetchForMem3 = membershipFeeTaxIfMemIsLate.getText();
+        System.out.println("Tax for the  membership Fee Late Member  from UI is " +taxFetchForMem3);
+        return  taxFetchForMem3;
+
+    }
+
+    public String getMembershipLateFee() {
+
+        String membershipFeeForTheGivenTerm2 = lateFeeUI.getText();
+        System.out.println("membership term Late Fee from UI is " + membershipFeeForTheGivenTerm2);
+        return membershipFeeForTheGivenTerm2;
+
+    }
+    public String getTaxForLateFee()
+    {
+        String taxFetchForMem = lateFeeTaxUI.getText();
+        System.out.println("Tax for the  membership Late Fee  from UI is " +taxFetchForMem);
         return  taxFetchForMem;
 
     }
