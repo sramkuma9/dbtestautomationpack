@@ -534,17 +534,12 @@ public class BNIConnectApplicationPortal {
 
         int counter = 0;
         Actions action = new Actions(driver);
-        //  selectMeetingDay.sendKeys("");
-        //  TimeUnit.SECONDS.sleep(2);
         meetingDayComboBox.click();
         TimeUnit.SECONDS.sleep(2);
         for (WebElement divElement : selectMeetingDay) {
             List<WebElement> a_collection = divElement.findElements(By.tagName("span"));
-
             String day = a_collection.get(0).getText();
-            // searchRegionTextbox.sendKeys(region);
-            System.out.println("Day is " + day);
-            if (meetingDay.equals(day)) {
+                if (meetingDay.equals(day)) {
                 action.moveToElement(a_collection.get(0));
                 TimeUnit.SECONDS.sleep(18);
                 WebDriverWait wait = new WebDriverWait(driver, 5);
@@ -552,7 +547,6 @@ public class BNIConnectApplicationPortal {
                 action.build().perform();
                 a_collection.get(0).click();
                 TimeUnit.SECONDS.sleep(8);
-//                a_collection.get(0).click();
                 counter++;
                 break;
             }
@@ -848,8 +842,7 @@ public class BNIConnectApplicationPortal {
         for (WebElement divElement : personalLanguageList) {
             List<WebElement> a_collection = divElement.findElements(By.tagName("span"));
             String lang = a_collection.get(0).getText();
-            System.out.println("lang is " + lang);
-            if (language.equals(lang)) {
+               if (language.equals(lang)) {
                 Robot robot = new Robot();  // Robot class throws AWT Exception
                 Thread.sleep(4000); // Thread.sleep throws InterruptedException
                 robot.keyPress(KeyEvent.VK_DOWN);  // press arrow down key of keyboard to navigate
@@ -933,8 +926,7 @@ public class BNIConnectApplicationPortal {
         for (WebElement divElement : personalIndustryListBox) {
             List<WebElement> a_collection = divElement.findElements(By.tagName("span"));
             String indus = a_collection.get(0).getText();
-            System.out.println("Industry from Dropdown in Application form is " + indus);
-            if (industry.equals(indus)) {
+                if (industry.equals(indus)) {
 
                 Robot robot = new Robot();  // Robot class throws AWT Exception
                 Thread.sleep(2000); // Thread.sleep throws InterruptedException
