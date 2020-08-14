@@ -77,7 +77,7 @@ public class PowerSearchFindASystemEvent {
             captureScreenShot = new CaptureScreenShot(driver);
             selectCountryRegionChapter.selectCountryRegChap(splitCredentials[2].trim(), splitCredentials[3].trim(), splitCredentials[4].trim());
             TimeUnit.SECONDS.sleep(5);
-            bniConnect.navigateMenu("Tools,Power Search,Find a System Event");
+            bniConnect.navigateMenu("TOOLS,Power Search,Find a System Event");
             TimeUnit.SECONDS.sleep(5);
             findASystemEvent = new FindASystemEvent(driver);
             if (!(data.get("IdHistoryType")).equals("")) {

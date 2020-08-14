@@ -82,7 +82,7 @@ public class PowerSearchFindAnInvoice {
             captureScreenShot = new CaptureScreenShot(driver);
             selectCountryRegionChapter.selectCountryRegChap(splitCredentials[2].trim(), splitCredentials[3].trim(), splitCredentials[4].trim());
             TimeUnit.SECONDS.sleep(45);
-            bniConnect.navigateMenu("Tools,Power Search,Find an Invoice");
+            bniConnect.navigateMenu("TOOLS,Power Search,Find an Invoice");
             TimeUnit.SECONDS.sleep(15);
             bniConnect = new BNIConnect(driver);
             findAnInvoice = new FindAnInvoice(driver);

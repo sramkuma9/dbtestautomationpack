@@ -73,8 +73,8 @@ public class PowerSearchFindAPerson {
             TimeUnit.SECONDS.sleep(12);
             driver = launchBrowser.getDriver();
             bniConnect = new BNIConnect(driver);
-            captureScreenShot = new CaptureScreenShot(driver);
-            bniConnect.navigateMenu("Tools,Power Search,Find a Person");
+
+            bniConnect.navigateMenu("TOOLS,Power Search,Find a Person");
             TimeUnit.SECONDS.sleep(5);
             findAPerson = new FindAPerson(driver);
             findAPerson.enterFirstName(data.get("firstName"));

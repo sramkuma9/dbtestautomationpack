@@ -74,7 +74,7 @@ public class PowerSearchFindAnOpening {
             captureScreenShot = new CaptureScreenShot(driver);
             selectCountryRegionChapter.selectCountryRegChap(splitCredentials[2].trim(), splitCredentials[3].trim(), splitCredentials[4].trim());
             TimeUnit.SECONDS.sleep(5);
-            bniConnect.navigateMenu("Tools,Power Search,Find an Opening");
+            bniConnect.navigateMenu("TOOLS,Power Search,Find an Opening");
             TimeUnit.SECONDS.sleep(5);
             findAnOpening = new FindAnOpening(driver);
             findAnOpening.selectCategory(data.get("category"));

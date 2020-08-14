@@ -77,7 +77,7 @@ public class PowerSearchFindAnOrganisation {
             captureScreenShot = new CaptureScreenShot(driver);
             selectCountryRegionChapter.selectCountryRegChap(splitCredentials[2].trim(), splitCredentials[3].trim(), splitCredentials[4].trim());
             TimeUnit.SECONDS.sleep(5);
-            bniConnect.navigateMenu("Tools,Power Search,Find an Organization");
+            bniConnect.navigateMenu("TOOLS,Power Search,Find an Organization");
             TimeUnit.SECONDS.sleep(8);
             bniConnect = new BNIConnect(driver);
             findAnOrganisation = new FindAnOrganisation(driver);
