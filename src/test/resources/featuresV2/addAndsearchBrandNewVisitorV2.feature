@@ -1,19 +1,30 @@
 
 
-      Feature: Add and search brand new visitor
 
-      Scenario: Add a brand new Visitor
-      Given  follow V2 pricing
 
-      | userName | password | country    | region          | chapter |
-      #|bni89     |Pass1word| Antarctica |Z_RG Test Region 6|Chapter A|
-      |admin     |Pass1word  |Antarctica     |Ant - Two  |Chapter C |
-     # When I enter a valid new email id and click search and click create new button and I enter the below details and check Version Terms click the save button and search the added visitor following V pricing
-            When Add a visitor for V pricing
+Feature: Add and search brand new visitor
 
-      | chapter |  | region          |  | firstName |  | lastName |  | profession       |  | speciality         |  | language     |  | person |  | visitDay |  | visitMonth |  | visitYear |  | title |  | address   |  | companyName |  | country |  | phone     |  | NewPassword |  | ConfirmPassword |
+  Scenario: Add a brand new Visitor
+    Given  follow V2 pricing
 
-      |Ant - Two |  |Chapter C   |  | selenium |  | Bni+v89   |   |Computer & Programming ||Computer Retailer|| English (US) |  | BNI    |  | 15     |  | Jul       |  | 2020     |  | Mr.   |         | PSB Nagar |  | Airtel      |  | Antarctica |  | 123456789 |           |Pass1word|  |Pass1word  |
+      | userName | password  | country    | region    | chapter   |
+      |  Bni89   | Pass1word | Antarctica | Z_RG Test Region 1|1 - Global Test Chapter |
+
+    When Add a visitor for V pricing
+
+      | chapter   |  | country    |  | region    |  | firstName |  | lastName |  | profession |  | speciality   |  | language     |  | person |  | visitDay |  | visitMonth |  | visitYear |  | title |  | address   |  | companyName |  | country2   |  | phone     |  | NewPassword |  | ConfirmPassword |
+      | 1 - Global Test Chapter |  | Antarctica |  |Z_RG Test Region 1  |  | Selenium  |  | Bni+v1705 |  | Animals    |  | Veterinarian |  | English (GB) |  | BNI    |  | 4     |  | Aug      |  | 2020      |  | Mr.   |  | PSB Nagar |  | Airtel      |  | Antarctica |  | 1234564589 |  | Pass1word   |  | Pass1word       |
+
+
+
+
+
+
+
+
+
+
+
 
 
 
