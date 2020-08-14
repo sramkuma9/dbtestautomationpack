@@ -17,8 +17,7 @@ public class DbConnect {
         {
             // DB connection details
             Class.forName(readWritePropertyFile.loadAndReadPropertyFile("driver", "properties/config.properties"));
-            //   System.out.println(" Connecting to MYSQL for getting rowcount in " + (readWritePropertyFile.loadAndReadPropertyFile("envName", "properties/config.properties")) + " database...");
-            String url = (readWritePropertyFile.loadAndReadPropertyFile("url", "properties/config.properties"));
+             String url = (readWritePropertyFile.loadAndReadPropertyFile("url", "properties/config.properties"));
             System.out.println("Url is" +url);
             String userName = (readWritePropertyFile.loadAndReadPropertyFile("userName", "properties/config.properties"));
             String password = (readWritePropertyFile.loadAndReadPropertyFile("password", "properties/config.properties"));
@@ -53,7 +52,7 @@ public class DbConnect {
             ResultSet rs = totalRowCount.executeQuery(sqlCountQuery);
             rs.next();
             rowCount = rs.getInt(1);
-System.out.println("Row count is " +rowCount);
+            System.out.println("Row count is " +rowCount);
             // closing the result set.
             rs.close();
 
@@ -69,25 +68,27 @@ System.out.println("Row count is " +rowCount);
     }
 
     public String[][] queryAndRetrieveRecords(String sqlQuery) {
+
         Connection conn = null;
         Statement actualResult = null;
         String[][] sqlData = new String[50000][50];
         ResultSet actualRS = null;
         Integer recordCount;
         String sqlCountQuery;
+        System.out.println("SQL query is " +sqlQuery);
         if (sqlQuery.indexOf('*') > 1) {
             sqlCountQuery = sqlQuery.replace("select *", "select count(*)");
-        } else {
-            sqlCountQuery = sqlQuery.replace("select", "select count(*)" + ",");
+
         }
+        else {
+           sqlCountQuery = sqlQuery.replace("select", "select count(*)" + ",");
+        }
+      //  System.out.println("SQL query is " +sqlCountQuery);
         recordCount = this.queryRecordCount(sqlCountQuery);
-System.out.println("SQL query is " +sqlCountQuery);
         try {
             // DB connection details
             Class.forName(readWritePropertyFile.loadAndReadPropertyFile("driver", "properties/config.properties"));
-         //   System.out.println(" Connecting to MYSQL for getting rowcount in " + (readWritePropertyFile.loadAndReadPropertyFile("envName", "properties/config.properties")) + " database...");
             String url = (readWritePropertyFile.loadAndReadPropertyFile("url", "properties/config.properties"));
-            System.out.println("Url is" +url);
             String userName = (readWritePropertyFile.loadAndReadPropertyFile("userName", "properties/config.properties"));
             String password = (readWritePropertyFile.loadAndReadPropertyFile("password", "properties/config.properties"));
 
@@ -97,10 +98,8 @@ System.out.println("SQL query is " +sqlCountQuery);
             actualRS = actualResult.executeQuery(sqlQuery);
             ResultSetMetaData rsmd = actualRS.getMetaData();
             Integer colCount = rsmd.getColumnCount()-1;
-
             readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
             readWriteExcel.setSqlCount("src/test/resources/inputFiles/testInput.xlsx","sqlCount",0,2,recordCount.toString());
-
             readWriteExcel.setSqlCount("src/test/resources/inputFiles/testInput.xlsx","sqlCount",1,2,colCount.toString());
 
             //getting the value of each record.
@@ -206,6 +205,7 @@ System.out.println("SQL query is " +sqlCountQuery);
             e.printStackTrace();
         }
         return sqlData;
-    }
+
+        }
 }
 

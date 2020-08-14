@@ -84,6 +84,12 @@ public class AddAVisitor {
     @FindBy(css = "#ui-datepicker-div > div > div > select.ui-datepicker-year")
     WebElement visitYear;
 
+    @FindBy(css="#visitorLanguage")
+    WebElement languageListBox;
+
+    @FindBy(css="#visitorAddressLine1")
+    WebElement addressLine1;
+
     @FindBy(css = "body > div.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-draggable > div.ui-dialog-buttonpane.ui-widget-content.ui-helper-clearfix > button:nth-child(2)")
     WebElement saveButton;
 
@@ -147,10 +153,18 @@ public class AddAVisitor {
         chapterSelect.selectByVisibleText(chapter);
     }
 
+    public void selectLanguage(String language) {
+        Select languageSelect = new Select(languageListBox);
+        languageSelect.selectByVisibleText(language);
+    }
     public void clickSearchButton(){
         searchButton.click();
          }
 
+         public void enterAddressLine1(String address)
+    {
+       addressLine1.sendKeys(address);
+    }
     public void clickAddButton(){
         addButton.click();
     }

@@ -13,13 +13,26 @@ public class Login {
     public WebDriverWait wait;
     private ReadWritePropertyFile readWritePropertyFile = new ReadWritePropertyFile();
 
-    @FindBy(css =  "#app > div > div > div.styles__AppContent-cDnHLr.gXPOuk > div > div.styles__ContentContainer-kcVUrs.DjEAQ > section.styles__Container-ieicpK.iVPZSq > div.styles__Container-jGsLTA.fXXdOL > form.styles__StyledForm-feCSaU.hJcysH > div:nth-child(1) > div > div > div > input")
-    WebElement bniUserName;
+//    @FindBy(css =  "#app > div > div > div.styles__AppContent-cDnHLr.gXPOuk > div > div.styles__ContentContainer-kcVUrs.DjEAQ > section.styles__Container-ieicpK.iVPZSq > div.styles__Container-jGsLTA.fXXdOL > form.styles__StyledForm-feCSaU.hJcysH > div:nth-child(1) > div > div > div > input")
+//    WebElement bniUserName;
 
-    @FindBy(css =  "#app > div > div > div.styles__AppContent-cDnHLr.gXPOuk > div > div.styles__ContentContainer-kcVUrs.DjEAQ > section.styles__Container-ieicpK.iVPZSq > div.styles__Container-jGsLTA.fXXdOL > form.styles__StyledForm-feCSaU.hJcysH > div:nth-child(2) > div > div > div > input")
-    WebElement bniPassword;
+  //@FindBy(css="  .bTcCMz > div:nth-child(1) > div")
+    @FindBy(xpath ="//input[@name='username']")
+  WebElement bniUserName;
 
-    @FindBy(css =  "#app > div > div > div.styles__AppContent-cDnHLr.gXPOuk > div > div.styles__ContentContainer-kcVUrs.DjEAQ > section.styles__Container-ieicpK.iVPZSq > div.styles__Container-jGsLTA.fXXdOL > form.styles__StyledForm-feCSaU.hJcysH > div.styles__ButtonContainer-iUsGiN.gqPErL > div > button > span.jss29")
+@FindBy(xpath="//input[@name='password']")
+WebElement bniPassword;
+
+
+//    @FindBy(css =  "#app > div > div > div.styles__AppContent-cDnHLr.gXPOuk > div > div.styles__ContentContainer-kcVUrs.DjEAQ > section.styles__Container-ieicpK.iVPZSq > div.styles__Container-jGsLTA.fXXdOL > form.styles__StyledForm-feCSaU.hJcysH > div:nth-child(2) > div > div > div > input")
+//    WebElement bniPassword;
+
+//    @FindBy(css =  "#app > div > div > div.styles__AppContent-cDnHLr.gXPOuk > div > div.styles__ContentContainer-kcVUrs.DjEAQ > section.styles__Container-ieicpK.iVPZSq > div.styles__Container-jGsLTA.fXXdOL > form.styles__StyledForm-feCSaU.hJcysH > div.styles__ButtonContainer-iUsGiN.gqPErL > div > button > span.jss29")
+//    WebElement bniSignIn;
+
+  //  @FindBy(xpath="(//button[@class='jss52 jss28 jss30 jss36 styles__SignInButton-dSRDTk igetQs styles__PrimaryButton-gAZLqB blfDTc styles__StyledButton-fPIFiv fhBuoo'])")
+
+    @FindBy(xpath="/html/body/div[1]/div/div/div[1]/div/div[1]/section[2]/div[2]/form[1]/div[3]/div/button")
     WebElement bniSignIn;
 
     public Login(WebDriver driver) {

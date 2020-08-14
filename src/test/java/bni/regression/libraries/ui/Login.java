@@ -14,6 +14,6 @@ public class Login {
         login.enterBniUserName(userName);
         login.enterBniPassword(password);
         login.clickBniSignInButton();
-        TimeUnit.SECONDS.sleep(6);
+        TimeUnit.SECONDS.sleep(10);
     }
 }

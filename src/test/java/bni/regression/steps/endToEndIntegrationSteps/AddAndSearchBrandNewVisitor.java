@@ -2,9 +2,11 @@ package bni.regression.steps.endToEndIntegrationSteps;
 
 import bni.regression.libraries.common.*;
 import bni.regression.libraries.common.email.GmailClient;
+import bni.regression.libraries.db.DbConnect;
 import bni.regression.libraries.ui.SelectCountryRegionChapter;
 import bni.regression.pageFactory.AddAVisitor;
 import bni.regression.pageFactory.BNIConnect;
+import bni.regression.pageFactory.Registration;
 import cucumber.api.DataTable;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -16,7 +18,10 @@ import bni.regression.libraries.ui.Login;
 import bni.regression.libraries.ui.SignOut;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -24,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertEquals;
@@ -48,14 +54,14 @@ public class AddAndSearchBrandNewVisitor {
     public List<List<String>> loginSubList;
     private CaptureScreenShot captureScreenShot;
     ReadWriteExcel readWriteExcel = new ReadWriteExcel();
-    private GmailClient gmailClient= new GmailClient();
+    private GmailClient gmailClient = new GmailClient();
+    DbConnect dbConnect = new DbConnect();
 
     @Before
     public void setup() throws Exception {
         fixedDateTime = currentDateTime.dateTime();
         readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
-      //  boolean setFlag = readWriteExcel.deleteRow("src/test/resources/inputFiles/testInput.xlsx", "addBrandNewVisitor", 0);
-       // boolean Flag = readWriteExcel.deleteRow("src/test/resources/inputFiles/testInput.xlsx", "addBrandNewVisitor", 1);
+
     }
 
     @After
@@ -83,11 +89,13 @@ public class AddAndSearchBrandNewVisitor {
             TimeUnit.SECONDS.sleep(12);
             driver = launchBrowser.getDriver();
             bniConnect = new BNIConnect(driver);
-            captureScreenShot = new CaptureScreenShot(driver);
-            bniConnect.navigateMenu("Operations,Region");
+            TimeUnit.SECONDS.sleep(4);
+            bniConnect.navigateMenu("OPERATIONS,Region");
             TimeUnit.SECONDS.sleep(3);
             selectCountryRegionChapter.selectCountryRegChap(splitCredentials[2].trim(), splitCredentials[3].trim(), splitCredentials[4].trim());
             bniConnect = new BNIConnect(driver);
+            TimeUnit.SECONDS.sleep(3);
+            bniConnect.navigateMenu("OPERATIONS,Region");
             TimeUnit.SECONDS.sleep(3);
             String language[] = readWritePropertyFile.loadAndReadPropertyFile("language", "properties/config.properties").split(",");
             int colNumber = Integer.parseInt(language[1]);
@@ -95,23 +103,18 @@ public class AddAndSearchBrandNewVisitor {
             String transMenu = readWriteExcel.getCellData("translation", colNumber, 1);
             bniConnect.selectItemFromSubListMenu(transMenu);
             addAVisitor = new AddAVisitor(driver);
-            TimeUnit.SECONDS.sleep(14);
+            TimeUnit.SECONDS.sleep(24);
             String dateTimeStamp = currentDateTime.dateTime();
-
             visitorDateTime = (dateTimeStamp.replaceAll("/", "").replaceAll(":", "").replaceAll(" ", ""));
-           System.out.println("Timestamp" +visitorDateTime);
+            System.out.println("Timestamp" + visitorDateTime);
             String hours = visitorDateTime.substring(11, 14);
-
-
             String lastName = data.get("lastName") + hours;
-           // String lastName = data.get("lastName") + visitorDateTime;
-
             addAVisitor.enterEmail(data.get("firstName") + lastName + "@gmail.com");
             TimeUnit.SECONDS.sleep(2);
             addAVisitor.clickSearchButton();
             readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
             boolean setEmailFlag = readWriteExcel.setCellData("src/test/resources/inputFiles/testInput.xlsx", "addBrandNewVisitor", 0, i, data.get("firstName") + data.get("lastName") + hours + "@gmail.com");
-            boolean setLastNameFlag = readWriteExcel.setCellData("src/test/resources/inputFiles/testInput.xlsx", "addBrandNewVisitor", 1, i-j, lastName);
+            boolean setLastNameFlag = readWriteExcel.setCellData("src/test/resources/inputFiles/testInput.xlsx", "addBrandNewVisitor", 1, i - j, lastName);
             TimeUnit.SECONDS.sleep(2);
             addAVisitor.clickSearchByNameButton();
             TimeUnit.SECONDS.sleep(2);
@@ -123,11 +126,15 @@ public class AddAndSearchBrandNewVisitor {
             driver.findElement(By.name("submit")).click();
             addAVisitor.clickCreateNewButton();
             TimeUnit.SECONDS.sleep(2);
+
+
             addAVisitor.selectChapter(data.get("chapter"));
             TimeUnit.SECONDS.sleep(2);
             addAVisitor.selectProfession(data.get("profession"));
             TimeUnit.SECONDS.sleep(2);
             addAVisitor.selectSpeciality(data.get("speciality"));
+            TimeUnit.SECONDS.sleep(2);
+            addAVisitor.selectLanguage(data.get("language"));
             TimeUnit.SECONDS.sleep(2);
             addAVisitor.selectInvitedBy(data.get("person"));
             TimeUnit.SECONDS.sleep(2);
@@ -141,6 +148,8 @@ public class AddAndSearchBrandNewVisitor {
             TimeUnit.SECONDS.sleep(2);
             addAVisitor.selectVisitorTitle(data.get("title"));
             TimeUnit.SECONDS.sleep(2);
+            addAVisitor.enterAddressLine1(data.get("address"));
+            TimeUnit.SECONDS.sleep(2);
             addAVisitor.enterVisitorFirstName(data.get("firstName"));
             TimeUnit.SECONDS.sleep(1);
             addAVisitor.enterVisitorLastName(lastName);
@@ -151,50 +160,35 @@ public class AddAndSearchBrandNewVisitor {
             TimeUnit.SECONDS.sleep(2);
             addAVisitor.enterVisitorPhoneNumber(data.get("phone"));
             TimeUnit.SECONDS.sleep(2);
-            addAVisitor.clickSaveButton();
-            TimeUnit.SECONDS.sleep(10);
-            bniConnect = new BNIConnect(driver);
-            TimeUnit.SECONDS.sleep(5);
-            bniConnect.selectItemFromSubListMenu(transMenu);
-            addAVisitor = new AddAVisitor(driver);
-            TimeUnit.SECONDS.sleep(14);
-            addAVisitor = new AddAVisitor(driver);
-          //  addAVisitor.enterEmail(data.get("firstName") + data.get("lastName") + visitorDateTime + "@gmail.com");
-            addAVisitor.enterEmail(data.get("firstName") + data.get("lastName") + hours + "@gmail.com");
-
-            TimeUnit.SECONDS.sleep(2);
-            addAVisitor.clickSearchButton();
-            TimeUnit.SECONDS.sleep(3);
-            String day = data.get(("visitDay"));
-            String year = data.get(("visitYear"));
-            String month = data.get(("visitMonth"));
-            SimpleDateFormat inputFormat = new SimpleDateFormat("MMM");
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(inputFormat.parse(month));
-            SimpleDateFormat outputFormat = new SimpleDateFormat("MM");
-            String expectedDate = day + "/" + outputFormat.format(cal.getTime()) + "/" + year;
-            addAVisitor = new AddAVisitor(driver);
-            addAVisitorDetails = addAVisitor.getSearchResults();
             captureScreenShot = new CaptureScreenShot(driver);
             captureScreenShot.takeSnapShot(driver, "searchAndAddBrandNewVisitor");
-//            assertEquals("Visit date is not correct", expectedDate, addAVisitorDetails[0]);
-            assertEquals("First Name is not correct", data.get("firstName"), addAVisitorDetails[1]);
-            assertEquals("Last Name is not correct", lastName, addAVisitorDetails[2]);
-            assertEquals("Region is not correct", data.get("region"), addAVisitorDetails[3]);
-            assertEquals("Chapter is not correct", data.get("chapter"), addAVisitorDetails[4]);
-            assertEquals("Company Name is not correct", data.get("companyName"), addAVisitorDetails[5]);
-            addAVisitor = new AddAVisitor(driver);
-            addAVisitor.clickCloseButton();
-            TimeUnit.SECONDS.sleep(2);
-            Alert alert = driver.switchTo().alert();
-            alert.accept();
-          //  gmailClient.checkEmail("dbselenium@gmail.com", "Thank you for visiting BNI-" + data.get("firstName") + " "  + data.get("lastName") + visitorDateTime, data.get("firstName") + data.get("lastName") + visitorDateTime + "@gmail.com", "applicant", i);
-            gmailClient.checkEmail("dbselenium@gmail.com", "You are just a few clicks away from completing your BNI registration!" , data.get("firstName") + data.get("lastName") + hours + "@gmail.com", "applicant", i);
+            addAVisitor.clickSaveButton();
+            TimeUnit.SECONDS.sleep(30);
+            gmailClient = new GmailClient();
+            TimeUnit.SECONDS.sleep(20);
+            readWriteExcel.setExcelFile("src/test/resources/inputFiles/testInput.xlsx");
+            String visitorEmailId = readWriteExcel.getCellData("addBrandNewVisitor", 0, 1);
+            System.out.println("EmailID" + visitorEmailId);
+            String emailIdUserName = readWritePropertyFile.loadAndReadPropertyFile("emailUserName", "properties/config.properties");
+            System.out.println("EmailID user name is" + emailIdUserName);
+            String country = data.get("country");
+            String region = data.get("region");
+            String registrationSubject = "select subject from bni_mailer.message_template b1  join " +
+                    " bni_mailer.mail_event_template_org b2 on b1.id_message_template =b2.message_template_id_message_template " +
+                    " join bni.org b3 on b2.id_org = b3.id_org " +
+                    "where b3.org_name in ('HQ', '" + country + "', '" + region + "') " +
+                    " and b2.mail_event_id_mail_event ='1' order by  id_org_type desc limit 1 ; ";
+            String[][] registrationSubjectResult = dbConnect.queryAndRetrieveRecords(registrationSubject);
+            String registrationSubjectForEmail = registrationSubjectResult[0][0];
+            String subject = registrationSubjectForEmail;
+            gmailClient.checkEmail(emailIdUserName, subject, visitorEmailId, "applicant", 1);
+
             i++;
             j++;
             signOut.signOutBni();
         }
     }
+
 
     @Then("brand new visitor details saved successfully")
     public void brand_new_visitor_details_saved_successfully() throws Exception {
@@ -206,3 +200,13 @@ public class AddAndSearchBrandNewVisitor {
         TimeUnit.SECONDS.sleep(2);
     }
 }
+
+
+
+
+
+
+
+
+
+
