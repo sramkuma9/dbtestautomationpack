@@ -21,17 +21,32 @@ public class EnterNewApplication {
     @FindBy(css = "#droppedMemberEmail")
     WebElement emailTextBox;
 
-    @FindBy(css = "#searchDroppedMember")
+    @FindBy(css = "#searchByNameBtn > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(3) > div:nth-child(1) > button")
+    WebElement searchMemberButton;
+
+    @FindBy(css="#searchBtnArea > div:nth-child(1) > button")
     WebElement searchButton;
 
     @FindBy(css = "#convertToMemberHref")
     WebElement addButton;
+
+    @FindBy(css="#enter_btn")
+    WebElement enterNewMemberButton;
+
+    @FindBy(css="#showSearchByFirstAndLastName")
+    WebElement searchByNameButton;
 
     @FindBy(css = "#datalist1 > tbody > tr")
     List<WebElement> searchResults;
 
     @FindBy(css = "#reconcile_member_btn")
     WebElement reconcileApplicationButton;
+
+    @FindBy(css="#droppedMemberFirstName")
+    WebElement firstNameTextBox;
+
+    @FindBy(css="#droppedMemberLastName")
+    WebElement lastNameTextBox;
 
     public EnterNewApplication(WebDriver driver) {
         EnterNewApplication.driver = driver;
@@ -41,6 +56,10 @@ public class EnterNewApplication {
         wait = new WebDriverWait(driver, 5);
     }
 
+    public void clickSearchMemberButton() throws InterruptedException {
+        searchMemberButton.click();
+        TimeUnit.SECONDS.sleep(2);
+    }
     public void clickSearchButton() throws InterruptedException {
         searchButton.click();
         TimeUnit.SECONDS.sleep(2);
@@ -60,6 +79,25 @@ public class EnterNewApplication {
         emailTextBox.clear();
         emailTextBox.sendKeys(emailId);
         TimeUnit.SECONDS.sleep(1);
+    }
+
+    public void clickEnterNewMemberButton()
+    {
+        enterNewMemberButton.click();
+    }
+    public void clickSearchByNameButton()
+    {
+        searchByNameButton.click();
+    }
+
+    public void enterFirstName(String firstName)
+    {
+        firstNameTextBox.sendKeys(firstName);
+    }
+
+    public void enterLastName(String lastName)
+    {
+        lastNameTextBox.sendKeys(lastName);
     }
 
     public String[] getSearchResults() throws Exception{

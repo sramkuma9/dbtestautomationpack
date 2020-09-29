@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static junit.framework.TestCase.assertEquals;
@@ -23,10 +24,10 @@ public class ReconcileApplications {
     @FindBy(css="tr> td:nth-child(8) > input")
     WebElement checkBoxPayment;
 
-    @FindBy(css = "#datalist > tbody > tr:nth-child(1) > td:nth-child(9) > a")
+    @FindBy(css = "#datalist > tbody > tr > td:nth-child(9) > a")
     WebElement reconcileButton;
 
-    @FindBy(css = "#datalist > tbody > tr:nth-child(1) > td:nth-child(5) > a")
+    @FindBy(css = "#datalist > tbody > tr > td:nth-child(5) > a")
     WebElement appStatusLink;
 
 
@@ -90,7 +91,7 @@ public class ReconcileApplications {
     {
 
         paymentReceivedCheckBox.isSelected();
-        paymentReceivedCheckBox.click();
+       paymentReceivedCheckBox.click();
     }
 
     public void clickPaymentCheckBox()
@@ -100,9 +101,23 @@ public class ReconcileApplications {
 
     public void clickRecncileButton()
     {
+
+
+       boolean clickFlag = isClickable(reconcileButton);
+        System.out.println("click statement" +clickFlag);
         reconcileButton.click();
     }
 
+    public static boolean isClickable(WebElement webe) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, 25);
+            wait.until(ExpectedConditions.elementToBeClickable(webe));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+
+    }
     public void clickSendPaymentLink()
     {
         sendPaymentLink.click();

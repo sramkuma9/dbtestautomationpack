@@ -11,12 +11,22 @@
       Given A member has to register the application via New Member application process
 
       | userName | password  | country    | region    |    chapter |
-      |globalna|Pass1word| Antarctica |Z_RG Test Region 6|Chapter A|
+      | globalna    | Pass1word | Antarctica | Z_RG Test Réĝíon 4| Chapter A|
 
       When I login  BNI and add a  Member using NMA process  and enter the below details click Proceed to payment button.
 
-      |firstName|  |lastName|  |NewPassword||ConfirmPassword||language| |city||meetingDay| |membershipTerm|  | payerName ||member|  |date| |professionalExp| |lengthProfExp| |background||appType||paymentMethod||status||changePaymentType||licenceOption||commitmentOption||substituteOption|
-      |Selenium|         |Bni+v  || Pass1word          ||Pass1word|      |German (CH)||Chennai||Monday| |1 Year|  | Selenium  |   | Selenium  | |03/07/2020||2 Years||Three | |Linguistic|   |Online New|   |Cash||Active||Cash             ||Yes||Yes||No            |
+      |firstName|  |lastName| | country   | | region   | |    chapter | |NewPassword||ConfirmPassword||language| |city||meetingDay| |membershipTerm|  | payerName ||member|  |date| |professionalExp| |lengthProfExp| |background||appType||paymentMethod||status||changePaymentType||licenceOption||commitmentOption||substituteOption|
+      |Selenium|         |bni+v2001212  || Antarctica ||Z_RG Test Réĝíon 4||Chapter A|| Pass1word          ||Pass1word|      |German (CH)||Chapter A||Tuesday| |24 Months|  | Selenium  |   | Selenium  | |03/07/2020||2 Years||Three | |Linguistic|   |Online New|   |Cash||Active||Cash             ||Yes||Yes||No            |
+
+
+
+
+
+
+
+
+
+
 
 
 
